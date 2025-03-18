@@ -15,4 +15,10 @@
     <PackageReference Include="MaterialDesignThemes" Version="5.2.2-ci921" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
