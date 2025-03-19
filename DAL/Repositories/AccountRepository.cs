@@ -16,9 +16,42 @@ namespace BLL.Repositories
         {
             this.context = context;
         }
+
+        public void AddAccount(User account)
+        {
+             context.Users.Add(account);
+             context.SaveChanges();
+
+        }
+
+        public void DeleteAccount(int id)
+        {
+            User user = GetAccountById(id);
+            if (user != null) { 
+                context.Users.Remove(user);
+                context.SaveChanges();  
+            }
+        }   
+
         public User GetAccountByEmail(string email)
         {
             return context.Users.FirstOrDefault(u => u.Email == email);
+        }
+
+        public User GetAccountById(int id)
+        {
+            return context.Users.FirstOrDefault(u => u.UserId == id);
+        }
+
+        public List<Club> GetAllClubs()
+        {
+            return context.Clubs.ToList();
+        }
+
+        public void UpdateAccount(User account)
+        {
+            context.Users.Update(account);
+            context.SaveChanges();
         }
     }
 }

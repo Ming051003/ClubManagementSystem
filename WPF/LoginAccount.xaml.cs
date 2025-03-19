@@ -26,7 +26,8 @@ namespace WPF
         public LoginAccount()
         {
             InitializeComponent();
-            _accountService = ((App)Application.Current).ServiceProvider.GetRequiredService<IAccountService>() ?? throw new ArgumentNullException(nameof(AccountService));
+            _accountService = ((App)Application.Current).ServiceProvider.GetRequiredService<IAccountService>() 
+                ?? throw new ArgumentNullException(nameof(AccountService));
 
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)

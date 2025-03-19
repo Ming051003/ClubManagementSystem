@@ -55,11 +55,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <materialDesign:PackIcon Kind="School" Width="25" Height="25" Foreground="White"/>
-                        <ComboBox x:Name="cmbClub" Margin="10 0" Width="250" BorderBrush="White" Foreground="White">
-                            <ComboBoxItem Content="Music Club"/>
-                            <ComboBoxItem Content="Sports Club"/>
-                            <ComboBoxItem Content="Art Club"/>
-                            <ComboBoxItem Content="Science Club"/>
+                        <ComboBox x:Name="cboClub" Margin="10 0" Width="250" BorderBrush="White" Background="Honeydew" Foreground="Coral"
+                                 DisplayMemberPath="ClubName" SelectedValuePath="ClubId">
                         </ComboBox>
                     </StackPanel>
 
