@@ -1,0 +1,35 @@
+﻿<Window x:Class="WPF.MemberManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF"
+        mc:Ignorable="d"
+        Title="MemberManagement" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Quản lý Thành Viên" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Members}" SelectedItem="{Binding SelectedMember}" AutoGenerateColumns="False" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mã SV" Binding="{Binding StudentID}" Width="100"/>
+                <DataGridTextColumn Header="Họ và Tên" Binding="{Binding FullName}" Width="200"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                <DataGridTextColumn Header="Vai trò" Binding="{Binding Role}" Width="150"/>
+                <DataGridTextColumn Header="Ngày tham gia" Binding="{Binding JoinDate}" Width="150"/>
+                <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Thêm" Command="{Binding AddMemberCommand}" Width="120" Margin="5"/>
+            <Button Content="Sửa" Command="{Binding EditMemberCommand}" Width="120" Margin="5"/>
+            <Button Content="Xóa" Command="{Binding DeleteMemberCommand}" Width="120" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>

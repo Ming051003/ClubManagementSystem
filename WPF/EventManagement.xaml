@@ -1,0 +1,38 @@
+﻿<Window x:Class="WPF.EventManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF"
+        mc:Ignorable="d"
+        Title="EventManagement" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Tiêu đề -->
+        <TextBlock Text="Quản lý Sự Kiện" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+
+        <!-- Danh sách sự kiện -->
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}" AutoGenerateColumns="False" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tên sự kiện" Binding="{Binding EventName}" Width="*"/>
+                <DataGridTextColumn Header="Mô tả" Binding="{Binding Description}" Width="200"/>
+                <DataGridTextColumn Header="Thời gian" Binding="{Binding EventDate}" Width="150"/>
+                <DataGridTextColumn Header="Địa điểm" Binding="{Binding Location}" Width="150"/>
+                <DataGridTextColumn Header="Số lượng tối đa" Binding="{Binding Capacity}" Width="100"/>
+                <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Các nút thao tác -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Thêm" Command="{Binding AddEventCommand}" Width="100" Margin="5"/>
+            <Button Content="Sửa" Command="{Binding EditEventCommand}" Width="100" Margin="5"/>
+            <Button Content="Xóa" Command="{Binding DeleteEventCommand}" Width="100" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>
