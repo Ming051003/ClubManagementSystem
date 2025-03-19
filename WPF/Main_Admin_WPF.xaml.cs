@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace WpfApp1
+namespace WPF
 {
     /// <summary>
     /// Interaction logic for Main_Admin_WPF.xaml
@@ -46,41 +46,41 @@ namespace WpfApp1
             }
         }
 
-        //private void UC_Admin_Home_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    MainContent.Content = new UC_Admin_Home();
-        //}
+        private void UC_Admin_Home_Checked(object sender, RoutedEventArgs e)
+        {
 
-        //private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    MainContent.Content = new UC_Admin_Staff(); 
-        //}
+        }
 
-        //private void UC_Admin_Menu_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    MainContent.Content = new UC_Admin_Menu();
-        //}
+        private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
+        {
+            //MainContent.Content = new UC_Admin_Staff();
+        }
 
-        //private void UC_Admin_WorkDay_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    MainContent.Content = new UC_Admin_WorkDay();
-        //}
+        private void UC_Admin_Menu_Checked(object sender, RoutedEventArgs e)
+        {
+            //MainContent.Content = new UC_Admin_Menu();
+        }
 
-        //private void UC_Admin_Invoice_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    MainContent.Content = new UC_Admin_Invoice();
-        //}
+        private void UC_Admin_WorkDay_Checked(object sender, RoutedEventArgs e)
+        {
+            //MainContent.Content = new UC_Admin_WorkDay();
+        }
 
-        //private void UC_Admin_Worktime_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    MainContent.Content=new UC_Admin_Worktime();
-        //}
+        private void UC_Admin_Invoice_Checked(object sender, RoutedEventArgs e)
+        {
+            //MainContent.Content = new UC_Admin_Invoice();
+        }
 
-        //private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    MainContent.Content = new UC_Admin_Inventory(); 
-        //}
+        private void UC_Admin_Worktime_Checked(object sender, RoutedEventArgs e)
+        {
+            //MainContent.Content = new UC_Admin_Worktime();
+        }
 
-        
+        private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)
+        {
+            //MainContent.Content = new UC_Admin_Inventory();
+        }
+
+
     }
 }

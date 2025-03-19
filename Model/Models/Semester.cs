@@ -13,7 +13,5 @@ public partial class Semester
 
     public DateOnly EndDate { get; set; }
 
-    public virtual ICollection<Event> Events { get; set; } = new List<Event>();
-
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
 }

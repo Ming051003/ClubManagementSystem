@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BLL.BusinessInterfaces
 {
-    public interface IAdminService
+    public interface IAccountService
     {
+        bool Login(string email, string password);
     }
 }

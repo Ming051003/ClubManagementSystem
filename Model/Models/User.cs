@@ -15,6 +15,8 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
+    public string Role { get; set; } = null!;
+
     public int? ClubId { get; set; }
 
     public DateOnly? JoinDate { get; set; }
@@ -28,6 +30,4 @@ public partial class User
     public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
 
     public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
-
-    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }
