@@ -39,7 +39,7 @@ namespace DAL.Repositories
 
         public User Login(string username, string password)
         {
-            return context.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
+            return _context.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
         }
 
         public void Update(User entity)
@@ -64,10 +64,26 @@ namespace DAL.Repositories
             return _context.Clubs.ToList();
         }
 
-        public List<User> GetAll()
+        
+
+        public void AddAccount(User account)
         {
-            var account = context.Users.Include(a => a.Club).ToList();
-            return account;
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAccount(User account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteAccount(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetAccountById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
