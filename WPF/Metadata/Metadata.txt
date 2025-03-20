@@ -1,6 +1,0 @@
-Club Management System Metadata
-Version: 1.0.0
-Created: 2025-03-20
-Description: This application is designed for managing clubs, their members, and events.
-
-This file serves as a metadata placeholder for the WPF application.

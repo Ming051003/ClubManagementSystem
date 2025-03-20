@@ -34,14 +34,14 @@ namespace WPF
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+        //protected override void OnStartup(StartupEventArgs e)
+        //{
+        //    base.OnStartup(e);
             
-            // Set the main window as the application's main window
-            MainWindow = new MainWindow();
-            MainWindow.Show();
-        }
+        //    // Set the main window as the application's main window
+        //    MainWindow = new LoginAccount();
+        //    MainWindow.Show();
+        //}
 
         private void ConfigServices(IServiceCollection services)
         {
