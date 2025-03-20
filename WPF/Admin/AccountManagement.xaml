@@ -37,7 +37,7 @@
             
             <!-- Account DataGrid -->
             <DataGrid Grid.Row="1" x:Name="dgAccount" AutoGenerateColumns="False" 
-                    IsReadOnly="True" Margin="5,0,10,0">
+                    IsReadOnly="True" Margin="5,0,10,0" SelectionChanged="dgAccount_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Roll Number" Binding="{Binding StudentId}" Width="auto"/>
                     <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" Width="auto"/>
@@ -62,31 +62,40 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--Column 1-->
             <TextBlock Text="Roll Number" Grid.Row="0"  VerticalAlignment="Center"/>
             <TextBox x:Name="txtRollNumber"  Grid.Row="1"  Margin="0,5,10,5" Height="30"  IsReadOnly="True" />
+            <TextBlock Text="Username" Grid.Row="2"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtUsername" Grid.Row="3"  Margin="0,0,10,0" Height="30" IsReadOnly="True"/>
+            <TextBlock Text="Password" Grid.Row="4"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtPassword" Grid.Row="5"  Margin="0,0,10,0" Height="30" IsReadOnly="True"/>
             <!--Column 2-->
-            <TextBlock Text="Email" Grid.Row="2"  VerticalAlignment="Center"/>
-            <TextBox x:Name="txtEmail" Grid.Row="3"  Margin="0,0,10,0" Height="30" IsReadOnly="True"/>
+            <TextBlock Text="Email" Grid.Row="6"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtEmail" Grid.Row="7"  Margin="0,0,10,0" Height="30" IsReadOnly="True"/>
             <!--Column 3-->
-            <TextBlock Text="Full Name" Grid.Row="4"  VerticalAlignment="Center"/>
-            <TextBox x:Name="txtFullName" Grid.Row="5"  Margin="0,5,10,5" Height="30" IsReadOnly="True"/>
+            <TextBlock Text="Full Name" Grid.Row="8"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtFullName" Grid.Row="9"  Margin="0,5,10,5" Height="30" IsReadOnly="True"/>
             <!--Column 4-->
-            <TextBlock Text="Role" Grid.Row="6"  VerticalAlignment="Center"/>
-            <ComboBox x:Name="cboRole" Grid.Row="7"  Margin="0,0,10,0" Height="30" IsReadOnly="True" />
+            <TextBlock Text="Role" Grid.Row="10"  VerticalAlignment="Center"/>
+            <ComboBox x:Name="cboRole" Grid.Row="11"  Margin="0,0,10,0" Height="30" IsReadOnly="True"
+                       IsEditable="False"  DisplayMemberPath="Role" SelectedValuePath="Role" />
             <!--Column 5-->
-            <TextBlock Text="Club Name" Grid.Row="8"  VerticalAlignment="Center"/>
-            <ComboBox x:Name="cboClun" Grid.Row="9"  Margin="0,0,10,0" Height="30" IsReadOnly="True" />
+            <TextBlock Text="Club Name" Grid.Row="12"  VerticalAlignment="Center"/>
+            <ComboBox x:Name="cboClub" Grid.Row="13"  Margin="0,0,10,0" Height="30" IsReadOnly="True"
+                      DisplayMemberPath="ClubName" SelectedValuePath="ClubId"/>
 
         </Grid>
     </Grid>

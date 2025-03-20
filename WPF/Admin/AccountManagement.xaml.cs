@@ -31,6 +31,8 @@ namespace WPF.Admin
             _accountService = ((App)Application.Current).ServiceProvider.GetRequiredService<IAccountService>()
                ?? throw new ArgumentNullException(nameof(AccountService));
             LoadData();
+            LoadClub();
+            LoadRole();
         }
 
         private void LoadData()
@@ -51,6 +53,44 @@ namespace WPF.Admin
                 Status = (bool)a.Status
             }).ToList();
             dgAccount.ItemsSource = data;
+        }
+
+        private void LoadClub()
+        {
+            var club = _accountService.GetAllClubs();
+            cboClub.ItemsSource = club;
+            cboClub.DisplayMemberPath = "ClubName";
+            cboClub.SelectedValuePath = "ClubId";
+        }
+
+        private void LoadRole()
+        {
+            var roles = _accountService.GetAll()
+                .Where(a => a.Role == "Member" || a.Role == "TeamLeader" || a.Role == "VicePresident" || a.Role == "President" || a.Role == "Admin")  // Filter valid roles
+                .Select(a => new
+                {
+                    a.Role  
+                })
+                .Distinct()  
+                .ToList();
+
+            cboRole.ItemsSource = roles;
+            cboRole.DisplayMemberPath = "Role";
+            cboRole.SelectedValuePath = "Role"; 
+        }
+
+        private void dgAccount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectAccount = dgAccount.SelectedItem as UserView;
+            if (selectAccount != null) {
+                txtRollNumber.Text = selectAccount.StudentId;
+                txtUsername.Text = selectAccount.UserName;
+                txtPassword.Text = selectAccount.Password;
+                txtEmail.Text = selectAccount.Email;
+                txtFullName.Text = selectAccount.FullName;
+                cboRole.SelectedValue = selectAccount.Role;
+                cboClub.SelectedValue = selectAccount.ClubId;
+            }
         }
     }
 }
