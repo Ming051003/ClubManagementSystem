@@ -52,13 +52,14 @@ namespace WPF
             else
             {
                 var result = _accountService.Login(email, password);
-                if (result)
+                if (result )
                 {
                     Main_Admin_WPF main_Admin_WPF = new Main_Admin_WPF();
                     main_Admin_WPF.Show();
                     MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
                     this.Close();
                 }
+
                 else
                 {
                     MessageBox.Show("Invalid email or password!", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
