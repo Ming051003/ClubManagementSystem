@@ -9,7 +9,8 @@ namespace BLL.BusinessInterfaces
 {
     public interface IAccountService
     {
-        bool Login(string email, string password);
+        public List<User> GetAll();
+        public User Login(string username, string password);
         public void AddAccount(User account);
         public void UpdateAccount(User account);
         public void DeleteAccount(int id);

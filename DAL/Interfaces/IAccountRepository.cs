@@ -1,15 +1,13 @@
-﻿using Model.Models;
-using System;
+using Model.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BLL.Interfaces
+namespace DAL.Interfaces
 {
     public interface IAccountRepository
+
     {
-        public User GetAccountByEmail(string email);
+        public List<User> GetAll();
+        public User Login(string username, string password);
         public void AddAccount(User account);
         public void UpdateAccount(User account);
         public void DeleteAccount(int id);

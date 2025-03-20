@@ -29,7 +29,7 @@
                     <TextBlock Text="Create Account" Margin="10" Foreground="White" TextAlignment="Center" FontSize="38" FontFamily="Great Vibes"></TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <materialDesign:PackIcon Kind="User"  Width="25" Height="25" Foreground="White"/>
-                        <TextBox x:Name="txtUsername" Margin="10 0" materialDesign:HintAssist.Hint="Enter Username / Email" Foreground="White" 
+                        <TextBox x:Name="txtUsername" Margin="10 0" materialDesign:HintAssist.Hint="Enter Username" Foreground="White" 
                    Width="250" BorderBrush="White" CaretBrush="#FFD94448" SelectionBrush="#FFD94448" 
                    />
                     </StackPanel>
@@ -46,6 +46,12 @@
                         <TextBox x:Name="txtStudentID" Margin="10 0" materialDesign:HintAssist.Hint="Roll Number" Foreground="White" 
                                  Width="250" BorderBrush="White" CaretBrush="#FFD94448" SelectionBrush="#FFD94448" 
                                  />     
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <materialDesign:PackIcon Kind="Email"  Width="25" Height="25" Foreground="White"/>
+                        <TextBox x:Name="txtEmail" Margin="10 0" materialDesign:HintAssist.Hint="Enter Email" Foreground="White" 
+                                Width="250" BorderBrush="White" CaretBrush="#FFD94448" SelectionBrush="#FFD94448" 
+                     />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <materialDesign:PackIcon Kind="Account"  Width="25" Height="25" Foreground="White"/>

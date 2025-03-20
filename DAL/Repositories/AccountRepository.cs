@@ -1,4 +1,5 @@
-﻿using BLL.Interfaces;
+﻿using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Model.Contexts;
 using Model.Models;
 using System;
@@ -33,11 +34,6 @@ namespace BLL.Repositories
             }
         }   
 
-        public User GetAccountByEmail(string email)
-        {
-            return context.Users.FirstOrDefault(u => u.Email == email);
-        }
-
         public User GetAccountById(int id)
         {
             return context.Users.FirstOrDefault(u => u.UserId == id);
@@ -52,6 +48,16 @@ namespace BLL.Repositories
         {
             context.Users.Update(account);
             context.SaveChanges();
+        }
+
+        public List<User> GetAll()
+        {
+            return context.Users.Include(u => u.Club).ToList();
+        }
+
+        public User Login(string username, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

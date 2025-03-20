@@ -9,6 +9,8 @@ public partial class User
 
     public string? StudentId { get; set; }
 
+    public string? UserName { get; set; }
+
     public string FullName { get; set; } = null!;
 
     public string Email { get; set; } = null!;
@@ -28,6 +30,4 @@ public partial class User
     public virtual ICollection<EventParticipant> EventParticipants { get; set; } = new List<EventParticipant>();
 
     public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
-
-    public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
 }
