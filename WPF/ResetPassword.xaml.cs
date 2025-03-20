@@ -23,5 +23,21 @@ namespace WPF
         {
             InitializeComponent();
         }
+
+      
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnlogin_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -13,11 +13,7 @@ public partial class Team
 
     public int ClubId { get; set; }
 
-    public int? TeamLeaderId { get; set; }
-
     public virtual Club Club { get; set; } = null!;
-
-    public virtual User? TeamLeader { get; set; }
 
     public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
 }

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using WPF.Admin;
 
 namespace WPF
 {
@@ -48,12 +49,11 @@ namespace WPF
 
         private void UC_Admin_Home_Checked(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
         {
-            //MainContent.Content = new UC_Admin_Staff();
+            MainContent.Content = new AccountManagement();
         }
 
         private void UC_Admin_Menu_Checked(object sender, RoutedEventArgs e)

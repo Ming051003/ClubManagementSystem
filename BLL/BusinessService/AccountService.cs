@@ -32,19 +32,19 @@ namespace BLL.BusinessService
             return accountRepository.GetAccountById(id);
         }
 
+        public List<User> GetAll()
+        {
+            return accountRepository.GetAll();
+        }
+
         public List<Club> GetAllClubs()
         {
             return accountRepository.GetAllClubs();
         }
 
-        public bool Login(string email, string password)
+        public User Login(string username, string password)
         {
-            var user = accountRepository.GetAccountByEmail(email);
-            if (user != null && user.Password == password)
-            {
-                return true;
-            }
-            return false;
+            return accountRepository.Login(username, password);
         }
 
         public void UpdateAccount(User account)

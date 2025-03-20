@@ -51,17 +51,23 @@ namespace WPF
         }
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtUsername.Text;
+            string username = txtUsername.Text;
             string password = txtPassword.Text;
             string studentId = txtStudentID.Text;
             string fullName = txtFullName.Text;
+            string email = txtEmail.Text;
             string role = "Member";
 
             
-            if(string.IsNullOrEmpty(email))
+            if(string.IsNullOrEmpty(username))
             {
                 MessageBox.Show("Username is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return; 
+            }
+            if(username.Length <6 || username.Length >50 )
+            {
+                MessageBox.Show("Username must be between 3 and 50 characters long.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
             if (string.IsNullOrWhiteSpace(password))
@@ -73,6 +79,12 @@ namespace WPF
             if (string.IsNullOrWhiteSpace(studentId))
             {
                 MessageBox.Show("Student ID is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(email))
+            {
+                MessageBox.Show("Username is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -109,6 +121,7 @@ namespace WPF
             }
 
             User user = new User { 
+                UserName = username,
                 Email = email,
                 Password = password,
                 StudentId = studentId,

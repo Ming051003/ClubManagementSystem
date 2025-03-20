@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model.Models;
 
-public partial class User
+public partial class UserView
 {
     public int UserId { get; set; }
 
@@ -20,16 +20,11 @@ public partial class User
     public string Role { get; set; } = null!;
 
     public int? ClubId { get; set; }
-
+    public string ClubName { get; set; } = null!;
     public DateOnly JoinDate { get; set; }
 
     public bool Status { get; set; }
 
-    public virtual Club? Club { get; set; }
 
-    public virtual ICollection<EventParticipant> EventParticipants { get; set; } = new List<EventParticipant>();
-
-    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
-
-    public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
+ 
 }

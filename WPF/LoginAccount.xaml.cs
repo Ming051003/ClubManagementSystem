@@ -41,7 +41,7 @@ namespace WPF
         }
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtUsername.Text;
+            string ussername = txtUsername.Text;
             string password = txtPassword.Text;
 
 
@@ -51,19 +51,25 @@ namespace WPF
             }
             else
             {
-                var result = _accountService.Login(email, password);
-                if (result )
-                {
-                    Main_Admin_WPF main_Admin_WPF = new Main_Admin_WPF();
-                    main_Admin_WPF.Show();
-                    MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
+                var result = _accountService.Login(ussername, password);
+                if (result != null) {
+                    if (result.Status == true)
+                    {
+                        Main_Admin_WPF main_Admin_WPF = new Main_Admin_WPF();
+                        main_Admin_WPF.Show();
+                        MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Your account is not active. Please contact the administrator.", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-
                 else
                 {
                     MessageBox.Show("Invalid email or password!", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+
             }
         }
         private void Border_MouseDown(object sender, MouseEventArgs e)
