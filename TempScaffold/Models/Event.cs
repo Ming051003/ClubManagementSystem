@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Model.Models;
+namespace TempScaffold.Models;
 
 public partial class Event
 {
@@ -11,9 +11,9 @@ public partial class Event
 
     public string? Description { get; set; }
 
-    public DateOnly EventDate { get; set; }
+    public DateTime EventDate { get; set; }
 
-    public string? Location { get; set; }
+    public string Location { get; set; } = null!;
 
     public int ClubId { get; set; }
 
@@ -24,6 +24,4 @@ public partial class Event
     public virtual Club Club { get; set; } = null!;
 
     public virtual ICollection<EventParticipant> EventParticipants { get; set; } = new List<EventParticipant>();
-
-    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 }

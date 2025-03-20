@@ -1,22 +1,24 @@
 using BLL.BusinessInterfaces;
 using BLL.BusinessService;
-using BLL.Interfaces;
-using BLL.Repositories;
+using DAL.Interfaces;
+using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Contexts;
-using System.Configuration;
-using System.Data;
-using System.IO;
 using System.Windows;
-using WPF;
+
+[assembly: ThemeInfo(
+    ResourceDictionaryLocation.None,            //where theme specific resource dictionaries are located
+                                               //(used if a resource is not found in the page,
+                                               // or application resource dictionaries)
+    ResourceDictionaryLocation.SourceAssembly   //where the generic resource dictionary is located
+                                               //(used if a resource is not found in the page,
+                                               // app, or any theme specific resource dictionaries)
+)]
 
 namespace WPF
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public IConfiguration Configuration { get; }
@@ -34,33 +36,22 @@ namespace WPF
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        //protected override void OnStartup(StartupEventArgs e)
-        //{
-        //    base.OnStartup(e);
-            
-        //    // Set the main window as the application's main window
-        //    MainWindow = new LoginAccount();
-        //    MainWindow.Show();
-        //}
-
         private void ConfigServices(IServiceCollection services)
         {
-            //Register Services here
+            // Register Services
             services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IEventService, EventService>();
+            services.AddSingleton<IUserService, UserService>();
            
-
-
-            //Register Repository here
+            // Register Repositories
             services.AddSingleton<IAccountRepository, AccountRepository>();
+            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IEventParticipantRepository, EventParticipantRepository>();
         
-
-            //Register Dbcontext
+            // Register DbContext
             services.AddDbContext<ClubManagementContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
-
-
-
         }
     }
-
 }

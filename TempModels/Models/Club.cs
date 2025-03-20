@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Model.Models;
+namespace TempModels.Models;
 
 public partial class Club
 {
@@ -11,11 +11,11 @@ public partial class Club
 
     public string? Description { get; set; }
 
-    public DateOnly EstablishedDate { get; set; }
+    public DateOnly? EstablishedDate { get; set; }
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 
-    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+    public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
 
     public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
 

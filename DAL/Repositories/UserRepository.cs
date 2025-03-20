@@ -1,4 +1,4 @@
-using BLL.Interfaces;
+using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Model.Contexts;
 using Model.Models;
@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace DAL.Repositories
 {
-    public class AccountRepository : IAccountRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ClubManagementContext _context;
-        
-        public AccountRepository(ClubManagementContext context)
+
+        public UserRepository(ClubManagementContext context)
         {
             _context = context;
         }
@@ -37,9 +37,10 @@ namespace DAL.Repositories
                 .FirstOrDefault(u => u.Email == email);
         }
 
-        public User Login(string username, string password)
+        public void Add(User entity)
         {
-            return context.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
+            _context.Users.Add(entity);
+            _context.SaveChanges();
         }
 
         public void Update(User entity)
@@ -57,17 +58,6 @@ namespace DAL.Repositories
                 _context.Users.Remove(entity);
                 _context.SaveChanges();
             }
-        }
-
-        public List<Club> GetAllClubs()
-        {
-            return _context.Clubs.ToList();
-        }
-
-        public List<User> GetAll()
-        {
-            var account = context.Users.Include(a => a.Club).ToList();
-            return account;
         }
     }
 }

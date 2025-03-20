@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Model.Models;
+namespace TempModels.Models;
 
 public partial class User
 {
@@ -9,7 +9,7 @@ public partial class User
 
     public string? StudentId { get; set; }
 
-    public string UserName { get; set; } = null!;
+    public string? UserName { get; set; }
 
     public string FullName { get; set; } = null!;
 
@@ -21,15 +21,13 @@ public partial class User
 
     public int? ClubId { get; set; }
 
-    public DateOnly JoinDate { get; set; }
+    public DateOnly? JoinDate { get; set; }
 
-    public bool Status { get; set; }
+    public bool? Status { get; set; }
 
     public virtual Club? Club { get; set; }
 
     public virtual ICollection<EventParticipant> EventParticipants { get; set; } = new List<EventParticipant>();
-
-    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
 }

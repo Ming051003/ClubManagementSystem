@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Model.Models;
+namespace TempScaffold.Models;
 
 public partial class TeamMember
 {
@@ -11,7 +11,7 @@ public partial class TeamMember
 
     public int UserId { get; set; }
 
-    public DateOnly JoinDate { get; set; }
+    public DateOnly? JoinDate { get; set; }
 
     public virtual Team Team { get; set; } = null!;
 
