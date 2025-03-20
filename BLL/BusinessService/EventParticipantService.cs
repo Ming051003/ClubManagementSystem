@@ -16,7 +16,7 @@ namespace BLL.BusinessService
             _eventParticipantRepository = eventParticipantRepository;
         }
 
-        public IEnumerable<EventParticipant> GetAllEventParticipants()
+        public List<EventParticipant> GetAllEventParticipants()
         {
             return _eventParticipantRepository.GetAll();
         }
@@ -26,14 +26,14 @@ namespace BLL.BusinessService
             return _eventParticipantRepository.GetById(id);
         }
 
-        public IEnumerable<EventParticipant> GetEventParticipantsByEvent(int eventId)
+        public List<EventParticipant> GetEventParticipantsByEvent(int eventId)
         {
-            return _eventParticipantRepository.GetAll().Where(p => p.EventId == eventId);
+            return _eventParticipantRepository.GetAll().Where(p => p.EventId == eventId).ToList();
         }
 
-        public IEnumerable<EventParticipant> GetEventParticipantsByUser(int userId)
+        public List<EventParticipant> GetEventParticipantsByUser(int userId)
         {
-            return _eventParticipantRepository.GetAll().Where(p => p.UserId == userId);
+            return _eventParticipantRepository.GetAll().Where(p => p.UserId == userId).ToList();
         }
 
         public void AddEventParticipant(EventParticipant participant)

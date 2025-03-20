@@ -1,5 +1,5 @@
-﻿using BLL.BusinessInterfaces;
-using BLL.Interfaces;
+using BLL.BusinessInterfaces;
+using DAL.Interfaces;
 using Model.Models;
 using System;
 using System.Collections.Generic;
@@ -11,35 +11,41 @@ namespace BLL.BusinessService
 {
     public class AccountService : IAccountService
     {
-        private readonly IAccountRepository accountRepository;
+        private readonly IAccountRepository _accountRepository;
+        
         public AccountService(IAccountRepository accountRepository)
         {
-            this.accountRepository = accountRepository;
+            _accountRepository = accountRepository;
         }
 
         public void AddAccount(User account)
         {
-            accountRepository.AddAccount(account);
+            _accountRepository.Add(account);
         }
 
         public void DeleteAccount(int id)
         {
-            accountRepository.DeleteAccount(id);
+            _accountRepository.Delete(id);
+        }
+
+        public User GetAccountByEmail(string email)
+        {
+            return _accountRepository.GetByEmail(email);
         }
 
         public User GetAccountById(int id)
         {
-            return accountRepository.GetAccountById(id);
+            return _accountRepository.GetById(id);
         }
 
         public List<Club> GetAllClubs()
         {
-            return accountRepository.GetAllClubs();
+            return _accountRepository.GetAllClubs().ToList();
         }
 
         public bool Login(string email, string password)
         {
-            var user = accountRepository.GetAccountByEmail(email);
+            var user = _accountRepository.GetByEmail(email);
             if (user != null && user.Password == password)
             {
                 return true;
@@ -49,7 +55,7 @@ namespace BLL.BusinessService
 
         public void UpdateAccount(User account)
         {
-            accountRepository.UpdateAccount(account);
+            _accountRepository.Update(account);
         }
     }
 }

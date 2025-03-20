@@ -78,9 +78,9 @@ CREATE TABLE Teams (
     TeamName NVARCHAR(50) NOT NULL,
     Description NVARCHAR(MAX) NULL,
     ClubID INT NOT NULL,
-    TeamLeaderID INT NULL, -- Trưởng nhóm (optional)
+    --TeamLeaderID INT NULL, -- Trưởng nhóm (optional)
     FOREIGN KEY (ClubID) REFERENCES Clubs(ClubID),
-    FOREIGN KEY (TeamLeaderID) REFERENCES Users(UserID)
+    --FOREIGN KEY (TeamLeaderID) REFERENCES Users(UserID)
 );
 
 CREATE TABLE TeamMembers (

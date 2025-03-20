@@ -2,29 +2,84 @@ using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Model.Contexts;
 using Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DAL.Repositories
 {
-    public class EventRepository : Repository<Event>, IEventRepository
+    public class EventRepository : IEventRepository
     {
-        public EventRepository(ClubManagementContext context) : base(context)
+        private readonly ClubManagementContext _context;
+
+        public EventRepository(ClubManagementContext context)
         {
+            _context = context;
         }
 
-        public override IEnumerable<Event> GetAll()
+        public List<Event> GetAll()
         {
             return _context.Events
                 .Include(e => e.Club)
                 .ToList();
         }
 
-        public override Event GetById(int id)
+        public Event GetById(int id)
         {
             return _context.Events
                 .Include(e => e.Club)
                 .FirstOrDefault(e => e.EventId == id);
+        }
+
+        public List<Event> GetByClubId(int clubId)
+        {
+            return _context.Events
+                .Include(e => e.Club)
+                .Where(e => e.ClubId == clubId)
+                .ToList();
+        }
+
+        public List<Event> GetUpcomingEvents()
+        {
+            var currentDate = DateTime.Now;
+            return _context.Events
+                .Include(e => e.Club)
+                .Where(e => e.EventDate > currentDate)
+                .OrderBy(e => e.EventDate)
+                .ToList();
+        }
+
+        public List<Event> GetPastEvents()
+        {
+            var currentDate = DateTime.Now;
+            return _context.Events
+                .Include(e => e.Club)
+                .Where(e => e.EventDate < currentDate)
+                .OrderByDescending(e => e.EventDate)
+                .ToList();
+        }
+
+        public void Add(Event entity)
+        {
+            _context.Events.Add(entity);
+            _context.SaveChanges();
+        }
+
+        public void Update(Event entity)
+        {
+            _context.Events.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var entity = _context.Events.Find(id);
+            if (entity != null)
+            {
+                _context.Events.Remove(entity);
+                _context.SaveChanges();
+            }
         }
     }
 }

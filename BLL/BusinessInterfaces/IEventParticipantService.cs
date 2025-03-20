@@ -5,10 +5,10 @@ namespace BLL.BusinessInterfaces
 {
     public interface IEventParticipantService
     {
-        IEnumerable<EventParticipant> GetAllEventParticipants();
+        List<EventParticipant> GetAllEventParticipants();
         EventParticipant GetEventParticipantById(int id);
-        IEnumerable<EventParticipant> GetEventParticipantsByEvent(int eventId);
-        IEnumerable<EventParticipant> GetEventParticipantsByUser(int userId);
+        List<EventParticipant> GetEventParticipantsByEvent(int eventId);
+        List<EventParticipant> GetEventParticipantsByUser(int userId);
         void AddEventParticipant(EventParticipant participant);
         void UpdateEventParticipant(EventParticipant participant);
         void DeleteEventParticipant(int id);

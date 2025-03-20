@@ -155,18 +155,18 @@ VALUES
 GO
 
 -- Insert data into Teams table
-INSERT INTO Teams (TeamName, Description, ClubID, TeamLeaderID)
+INSERT INTO Teams (TeamName, Description, ClubID)
 VALUES 
-    ('Web Development', 'Team focused on web development projects', 1, 4),
-    ('Mobile Development', 'Team focused on mobile app development', 1, 5),
-    ('Graphic Design', 'Team focused on graphic design projects', 2, 8),
-    ('Video Production', 'Team focused on video production', 2, 7),
-    ('Men''s Team', 'Men''s basketball team', 3, 10),
-    ('Women''s Team', 'Women''s basketball team', 3, 11),
-    ('Debate Team', 'Team focused on debate competitions', 4, 14),
-    ('Pronunciation Team', 'Team focused on pronunciation practice', 4, 15),
-    ('Band', 'Live performance band', 5, 16),
-    ('Choir', 'Vocal ensemble', 5, 17);
+    ('Web Development', 'Team focused on web development projects', 1),
+    ('Mobile Development', 'Team focused on mobile app development', 1),
+    ('Graphic Design', 'Team focused on graphic design projects', 2),
+    ('Video Production', 'Team focused on video production', 2),
+    ('Men''s Team', 'Men''s basketball team', 3),
+    ('Women''s Team', 'Women''s basketball team', 3),
+    ('Debate Team', 'Team focused on debate competitions', 4),
+    ('Pronunciation Team', 'Team focused on pronunciation practice', 4),
+    ('Band', 'Live performance band', 5),
+    ('Choir', 'Vocal ensemble', 5);
 GO
 
 -- Insert data into TeamMembers table

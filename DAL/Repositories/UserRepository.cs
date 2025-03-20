@@ -7,24 +7,57 @@ using System.Linq;
 
 namespace DAL.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UserRepository : IUserRepository
     {
-        public UserRepository(ClubManagementContext context) : base(context)
+        private readonly ClubManagementContext _context;
+
+        public UserRepository(ClubManagementContext context)
         {
+            _context = context;
         }
 
-        public override IEnumerable<User> GetAll()
+        public List<User> GetAll()
         {
             return _context.Users
                 .Include(u => u.Club)
                 .ToList();
         }
 
-        public override User GetById(int id)
+        public User GetById(int id)
         {
             return _context.Users
                 .Include(u => u.Club)
                 .FirstOrDefault(u => u.UserId == id);
+        }
+
+        public User GetByEmail(string email)
+        {
+            return _context.Users
+                .Include(u => u.Club)
+                .FirstOrDefault(u => u.Email == email);
+        }
+
+        public void Add(User entity)
+        {
+            _context.Users.Add(entity);
+            _context.SaveChanges();
+        }
+
+        public void Update(User entity)
+        {
+            _context.Users.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var entity = _context.Users.Find(id);
+            if (entity != null)
+            {
+                _context.Users.Remove(entity);
+                _context.SaveChanges();
+            }
         }
     }
 }

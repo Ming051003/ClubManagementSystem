@@ -4,10 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
-        xmlns:vm="clr-namespace:WPF.ViewModels"
-        xmlns:converters="clr-namespace:WPF.Converters"
         mc:Ignorable="d"
-        Title="Event Management" Height="700" Width="1400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="SingleBorderWindow" WindowState="Maximized"> 
+        Title="Event Management" Height="700" Width="1400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="SingleBorderWindow"> 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -28,18 +26,19 @@
         <!-- Search Panel -->
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="10">
             <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="250" Margin="0,0,10,0"/>
-            <Button Content="Search" Command="{Binding SearchCommand}" Width="80"/>
+            <TextBox x:Name="txtSearch" Width="250" Margin="0,0,10,0"/>
+            <Button x:Name="btnSearch" Content="Search" Width="80" Click="btnSearch_Click"/>
         </StackPanel>
 
         <!-- Events DataGrid -->
-        <DataGrid Grid.Row="2" Grid.Column="0" 
+        <DataGrid x:Name="dgEvents" Grid.Row="2" Grid.Column="0" 
                   ItemsSource="{Binding Events}" 
                   SelectedItem="{Binding SelectedEvent}" 
                   AutoGenerateColumns="False" 
                   IsReadOnly="True"
                   SelectionMode="Single"
                   SelectionUnit="FullRow"
+                  SelectionChanged="dgEvents_SelectionChanged"
                   Margin="10">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Event Name" Binding="{Binding EventName}" Width="auto"/>
@@ -53,26 +52,26 @@
 
         <!-- Action Buttons -->
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Add Event" Command="{Binding AddEventCommand}" Width="120" Margin="5"/>
-            <Button Content="Edit Event" Command="{Binding EditEventCommand}" Width="120" Margin="5"/>
-            <Button Content="Delete Event" Command="{Binding DeleteEventCommand}" Width="120" Margin="5"/>
-            <Button Content="View Participants" Command="{Binding ViewParticipantsCommand}" Width="150" Margin="5"/>
-            <Button Content="Send Notification" Command="{Binding SendNotificationCommand}" Width="150" Margin="5"/>
+            <Button x:Name="btnAddEvent" Content="Add Event" Width="120" Margin="5" Click="btnAddEvent_Click"/>
+            <Button x:Name="btnEditEvent" Content="Edit Event" Width="120" Margin="5" Click="btnEditEvent_Click"/>
+            <Button x:Name="btnDeleteEvent" Content="Delete Event" Width="120" Margin="5" Click="btnDeleteEvent_Click"/>
+            <Button x:Name="btnViewParticipants" Content="View Participants" Width="150" Margin="5" Click="btnViewParticipants_Click"/>
+            <Button x:Name="btnSendNotification" Content="Send Notification" Width="150" Margin="5" Click="btnSendNotification_Click"/>
         </StackPanel>
 
         <!-- Event Status Buttons -->
         <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
             <TextBlock Text="Change Status:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <Button Content="Upcoming" Command="{Binding ChangeEventStatusCommand}" CommandParameter="Upcoming" Width="100" Margin="5"/>
-            <Button Content="Ongoing" Command="{Binding ChangeEventStatusCommand}" CommandParameter="Ongoing" Width="100" Margin="5"/>
-            <Button Content="Completed" Command="{Binding ChangeEventStatusCommand}" CommandParameter="Completed" Width="100" Margin="5"/>
-            <Button Content="Cancelled" Command="{Binding ChangeEventStatusCommand}" CommandParameter="Cancelled" Width="100" Margin="5"/>
+            <Button x:Name="btnStatusUpcoming" Content="Upcoming" Width="100" Margin="5" Click="btnStatusUpcoming_Click"/>
+            <Button x:Name="btnStatusOngoing" Content="Ongoing" Width="100" Margin="5" Click="btnStatusOngoing_Click"/>
+            <Button x:Name="btnStatusCompleted" Content="Completed" Width="100" Margin="5" Click="btnStatusCompleted_Click"/>
+            <Button x:Name="btnStatusCancelled" Content="Cancelled" Width="100" Margin="5" Click="btnStatusCancelled_Click"/>
         </StackPanel>
 
         <!-- Participants List and Form -->
-        <Border Grid.Row="1" Grid.RowSpan="4" Grid.Column="1" 
+        <Border x:Name="borderParticipants" Grid.Row="1" Grid.RowSpan="4" Grid.Column="1" 
                 BorderBrush="LightGray" BorderThickness="1" Margin="10" 
-                Visibility="{Binding HasSelectedEvent, Converter={StaticResource BooleanToVisibilityConverter}}">
+                Visibility="Collapsed">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -89,15 +88,15 @@
                     <StackPanel Margin="0,0,0,10">
                         <TextBlock>
                             <Run Text="Event: " FontWeight="Bold"/>
-                            <Run Text="{Binding SelectedEvent.EventName}"/>
+                            <Run x:Name="txtEventName"/>
                         </TextBlock>
                         <TextBlock>
                             <Run Text="Date: " FontWeight="Bold"/>
-                            <Run Text="{Binding SelectedEvent.EventDate, StringFormat=d}"/>
+                            <Run x:Name="txtEventDate"/>
                         </TextBlock>
                         <TextBlock>
                             <Run Text="Status: " FontWeight="Bold"/>
-                            <Run Text="{Binding SelectedEvent.Status}"/>
+                            <Run x:Name="txtEventStatus"/>
                         </TextBlock>
                     </StackPanel>
                 </Border>
@@ -121,17 +120,17 @@
                         <TextBlock Grid.Column="2" Grid.Row="0" Text="Absent" HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="3" Grid.Row="0" Text="Total" HorizontalAlignment="Center"/>
                         
-                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding ParticipantStats[Registered]}" HorizontalAlignment="Center" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ParticipantStats[Attended]}" HorizontalAlignment="Center" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding ParticipantStats[Absent]}" HorizontalAlignment="Center" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding ParticipantStats[Total]}" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtRegisteredCount" Grid.Column="0" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtAttendedCount" Grid.Column="1" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtAbsentCount" Grid.Column="2" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtTotalCount" Grid.Column="3" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold"/>
                     </Grid>
                 </Border>
                 
                 <!-- Participants List -->
                 <StackPanel Grid.Row="3" Orientation="Vertical">
                     <TextBlock Text="Current Participants:" FontWeight="Bold" Margin="10,0,10,5"/>
-                    <DataGrid ItemsSource="{Binding EventParticipants}" 
+                    <DataGrid x:Name="dgParticipants"
                           AutoGenerateColumns="False" 
                           IsReadOnly="True"
                           SelectionUnit="FullRow"
@@ -146,12 +145,11 @@
                     
                     <!-- Add Participant -->
                     <TextBlock Text="Add Participant:" FontWeight="Bold" Margin="10,10,10,5"/>
-                    <ComboBox ItemsSource="{Binding AvailableMembers}" 
-                          SelectedItem="{Binding SelectedMember}" 
+                    <ComboBox x:Name="cmbAvailableMembers"
                           DisplayMemberPath="FullName"
                           Margin="10,5,10,5"/>
-                    <Button Content="Add to Event" Command="{Binding AddParticipantCommand}" 
-                        HorizontalAlignment="Center" Width="120" Margin="10,5,10,10"/>
+                    <Button x:Name="btnAddParticipant" Content="Add to Event" 
+                        HorizontalAlignment="Center" Width="120" Margin="10,5,10,10" Click="btnAddParticipant_Click"/>
                 </StackPanel>
             </Grid>
         </Border>

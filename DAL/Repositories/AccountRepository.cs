@@ -1,57 +1,68 @@
-﻿using BLL.Interfaces;
+using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Model.Contexts;
 using Model.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BLL.Repositories
+namespace DAL.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
-        private readonly ClubManagementContext context;
+        private readonly ClubManagementContext _context;
+        
         public AccountRepository(ClubManagementContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
-        public void AddAccount(User account)
+        public List<User> GetAll()
         {
-             context.Users.Add(account);
-             context.SaveChanges();
-
+            return _context.Users
+                .Include(u => u.Club)
+                .ToList();
         }
 
-        public void DeleteAccount(int id)
+        public User GetById(int id)
         {
-            User user = GetAccountById(id);
-            if (user != null) { 
-                context.Users.Remove(user);
-                context.SaveChanges();  
+            return _context.Users
+                .Include(u => u.Club)
+                .FirstOrDefault(u => u.UserId == id);
+        }
+
+        public User GetByEmail(string email)
+        {
+            return _context.Users
+                .Include(u => u.Club)
+                .FirstOrDefault(u => u.Email == email);
+        }
+
+        public void Add(User entity)
+        {
+            _context.Users.Add(entity);
+            _context.SaveChanges();
+        }
+
+        public void Update(User entity)
+        {
+            _context.Users.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var entity = _context.Users.Find(id);
+            if (entity != null)
+            {
+                _context.Users.Remove(entity);
+                _context.SaveChanges();
             }
-        }   
-
-        public User GetAccountByEmail(string email)
-        {
-            return context.Users.FirstOrDefault(u => u.Email == email);
-        }
-
-        public User GetAccountById(int id)
-        {
-            return context.Users.FirstOrDefault(u => u.UserId == id);
         }
 
         public List<Club> GetAllClubs()
         {
-            return context.Clubs.ToList();
-        }
-
-        public void UpdateAccount(User account)
-        {
-            context.Users.Update(account);
-            context.SaveChanges();
+            return _context.Clubs.ToList();
         }
     }
 }

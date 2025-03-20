@@ -4,10 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
-        xmlns:vm="clr-namespace:WPF.ViewModels"
-        xmlns:converters="clr-namespace:WPF.Converters"
         mc:Ignorable="d"
-        Title="Member Management" Height="700" Width="1400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="SingleBorderWindow" WindowState="Maximized">
+        Title="Member Management" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,7 +18,7 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
 
         <!-- Header -->
@@ -28,98 +27,101 @@
         <!-- Search Panel -->
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="10">
             <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0,0,10,0"/>
-            <ComboBox SelectedItem="{Binding SearchCriteria}" Width="120" Margin="0,0,10,0">
+            <TextBox x:Name="txtSearch" Width="200" Margin="0,0,10,0"/>
+            <ComboBox x:Name="cmbSearchCriteria" Width="120" Margin="0,0,10,0">
                 <ComboBoxItem Content="FullName" IsSelected="True"/>
                 <ComboBoxItem Content="StudentID"/>
                 <ComboBoxItem Content="Role"/>
             </ComboBox>
-            <Button Content="Search" Command="{Binding SearchCommand}" Width="80"/>
+            <Button x:Name="btnSearch" Content="Search" Width="80" Click="btnSearch_Click"/>
         </StackPanel>
 
         <!-- Members DataGrid -->
-        <DataGrid Grid.Row="2" Grid.Column="0" 
-                  ItemsSource="{Binding Members}" 
-                  SelectedItem="{Binding SelectedMember}" 
+        <DataGrid x:Name="dgMembers" Grid.Row="2" Grid.Column="0" 
                   AutoGenerateColumns="False" 
                   IsReadOnly="True"
                   SelectionMode="Single"
                   SelectionUnit="FullRow"
+                  SelectionChanged="dgMembers_SelectionChanged"
                   Margin="10">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}" Width="100"/>
-                <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="200"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
-                <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="100"/>
-                <DataGridTextColumn Header="Join Date" Binding="{Binding JoinDate, StringFormat=d}" Width="100"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="80"/>
+                <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}" Width="auto"/>
+                <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="auto"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="auto"/>
+                <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="auto"/>
+                <DataGridTextColumn Header="Join Date" Binding="{Binding JoinDate, StringFormat=d}" Width="auto"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Action Buttons -->
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Add Member" Command="{Binding AddMemberCommand}" Width="120" Margin="5"/>
-            <Button Content="Edit Member" Command="{Binding EditMemberCommand}" Width="120" Margin="5"/>
-            <Button Content="Delete Member" Command="{Binding DeleteMemberCommand}" Width="120" Margin="5"/>
-            <Button Content="View Activities" Command="{Binding ViewMemberActivitiesCommand}" Width="120" Margin="5"/>
+            <Button x:Name="btnAddMember" Content="Add Member" Width="135" Margin="5" Click="btnAddMember_Click"/>
+            <Button x:Name="btnEditMember" Content="Edit Member" Width="135" Margin="5" Click="btnEditMember_Click"/>
+            <Button x:Name="btnDeleteMember" Content="Delete Member" Width="135" Margin="5" Click="btnDeleteMember_Click"/>
+            <Button x:Name="btnViewActivities" Content="View Activities" Width="135" Margin="5" Click="btnViewActivities_Click"/>
         </StackPanel>
 
         <!-- Member Edit Form -->
-        <Border Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" 
+        <Border x:Name="borderEditForm" Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" 
                 BorderBrush="LightGray" BorderThickness="1" Margin="10" 
-                Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                Visibility="Collapsed">
             <StackPanel Margin="10">
                 <TextBlock Text="Member Details" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
                 
                 <TextBlock Text="Student ID:"/>
-                <TextBox Text="{Binding EditingMember.StudentId}" Margin="0,0,0,10"/>
+                <TextBox x:Name="txtStudentId" Margin="0,0,0,10"/>
                 
                 <TextBlock Text="Full Name:"/>
-                <TextBox Text="{Binding EditingMember.FullName}" Margin="0,0,0,10"/>
+                <TextBox x:Name="txtFullName" Margin="0,0,0,10"/>
                 
                 <TextBlock Text="Email:"/>
-                <TextBox Text="{Binding EditingMember.Email}" Margin="0,0,0,10"/>
+                <TextBox x:Name="txtEmail" Margin="0,0,0,10"/>
                 
                 <TextBlock Text="Password:"/>
-                <PasswordBox x:Name="PasswordBox" Margin="0,0,0,10"/>
+                <PasswordBox x:Name="txtPassword" Margin="0,0,0,10"/>
                 
                 <TextBlock Text="Role:"/>
-                <ComboBox SelectedItem="{Binding EditingMember.Role}" Margin="0,0,0,10">
+                <ComboBox x:Name="cmbRole" Margin="0,0,0,10">
                     <ComboBoxItem Content="Member"/>
                     <ComboBoxItem Content="President"/>
                     <ComboBoxItem Content="Admin"/>
                 </ComboBox>
                 
                 <TextBlock Text="Club ID:"/>
-                <TextBox Text="{Binding EditingMember.ClubId}" Margin="0,0,0,10"/>
+                <TextBox x:Name="txtClubId" Margin="0,0,0,10"/>
                 
                 <TextBlock Text="Join Date:"/>
-                <DatePicker SelectedDate="{Binding EditingMember.JoinDate}" Margin="0,0,0,10"/>
+                <DatePicker x:Name="dpJoinDate" Margin="0,0,0,10"/>
                 
                 <TextBlock Text="Status:"/>
-                <CheckBox IsChecked="{Binding EditingMember.Status}" Content="Active" Margin="0,0,0,20"/>
+                <CheckBox x:Name="chkStatus" Content="Active" Margin="0,0,0,20"/>
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Save" Command="{Binding SaveMemberCommand}" Width="80" Margin="0,0,10,0"/>
-                    <Button Content="Cancel" Command="{Binding CancelEditCommand}" Width="80"/>
+                    <Button x:Name="btnSave" Content="Save" Width="80" Margin="0,0,10,0" Click="btnSave_Click"/>
+                    <Button x:Name="btnCancel" Content="Cancel" Width="80" Click="btnCancel_Click"/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <!-- Member Activities -->
-        <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
+        <Border x:Name="borderActivities" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" 
                 BorderBrush="LightGray" BorderThickness="1" Margin="10"
-                Visibility="{Binding MemberActivities.Count, Converter={StaticResource CountToVisibilityConverter}}">
+                Visibility="Collapsed">
             <StackPanel>
                 <TextBlock Text="Member Activities" FontWeight="Bold" FontSize="16" Margin="10"/>
-                <DataGrid ItemsSource="{Binding MemberActivities}" 
-                          AutoGenerateColumns="False" 
-                          IsReadOnly="True"
-                          Height="150"
-                          Margin="10">
+                <TextBlock x:Name="txtNoActivities" Text="No activities found" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Center"
+                 Margin="10"
+                 Visibility="Visible"/>
+                <DataGrid x:Name="dgActivities"
+                         AutoGenerateColumns="False" 
+                         IsReadOnly="True" 
+                         Margin="10"
+                         Visibility="Collapsed">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Event Name" Binding="{Binding Event.EventName}" Width="200"/>
-                        <DataGridTextColumn Header="Event Date" Binding="{Binding Event.EventDate, StringFormat=d}" Width="100"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
                         <DataGridTextColumn Header="Registration Date" Binding="{Binding RegistrationDate, StringFormat=d}" Width="150"/>
                     </DataGrid.Columns>

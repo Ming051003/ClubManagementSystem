@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Model.Models;
+namespace TempModels.Models;
 
 public partial class Club
 {

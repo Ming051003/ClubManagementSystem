@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
-        xmlns:converters="clr-namespace:WPF.Converters"
         mc:Ignorable="d"
         Title="Club Management System" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -55,7 +54,7 @@
                             <TextBlock Text="• Search and filter members" Margin="10,0,0,5"/>
                         </StackPanel>
                         
-                        <Button Grid.Row="2" Content="Open Member Management" Margin="15" Padding="10" Click="btnMemberManagement_Click"/>
+                        <Button Grid.Row="2" Content="Open Member Management" Margin="15" Padding="10" Click="btnMemberManagement_Click" Height="38"/>
                     </Grid>
                 </Border>
                 
@@ -79,8 +78,8 @@
                             <TextBlock Text="• Send notifications" Margin="10,0,0,5"/>
                             <TextBlock Text="• Manage event status" Margin="10,0,0,5"/>
                         </StackPanel>
-                        
-                        <Button Grid.Row="2" Content="Open Event Management" Margin="15" Padding="10" Click="btnEventManagement_Click"/>
+
+                        <Button Grid.Row="2" Content="Open Event Management" Margin="15" Padding="10" Click="btnEventManagement_Click" Height="38"/>
                     </Grid>
                 </Border>
             </Grid>
