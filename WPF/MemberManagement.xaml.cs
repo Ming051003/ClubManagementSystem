@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BLL.BusinessInterfaces;
+using BLL.BusinessService;
+using DAL.Interfaces;
+using DAL.Repositories;
+using Model.Contexts;
+using WPF.ViewModels;
 
 namespace WPF
 {
@@ -22,6 +28,18 @@ namespace WPF
         public MemberManagement()
         {
             InitializeComponent();
+            
+            // Create context and repositories
+            var context = new ClubManagementContext();
+            IUserRepository userRepository = new UserRepository(context);
+            IEventParticipantRepository eventParticipantRepository = new EventParticipantRepository(context);
+            
+            // Create services
+            IUserService userService = new UserService(userRepository);
+            IEventParticipantService eventParticipantService = new EventParticipantService(eventParticipantRepository);
+            
+            // Create and set ViewModel
+            DataContext = new MemberViewModel(userService, eventParticipantService);
         }
     }
 }

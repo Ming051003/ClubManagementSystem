@@ -1,0 +1,107 @@
+<Window x:Class="WPF.ParticipantWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF"
+        xmlns:converters="clr-namespace:WPF.Converters"
+        mc:Ignorable="d"
+        Title="Event Participants" Height="600" Width="800" WindowStartupLocation="CenterOwner">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <TextBlock Grid.Row="0" x:Name="txtEventTitle" Text="Participants for: [Event Name]" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+        
+        <!-- Event Info -->
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Margin="0,0,10,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Date:" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtEventDate" Text="[Date]" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="5,0,5,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Location:" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtEventLocation" Text="[Location]" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+            
+            <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Margin="10,0,0,0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Status:" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtEventStatus" Text="[Status]" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        
+        <!-- Participant Statistics -->
+        <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="1" Margin="0,0,0,15" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Registered" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Attended" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Grid.Row="0" Text="Absent" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="3" Grid.Row="0" Text="Total" HorizontalAlignment="Center"/>
+                
+                <TextBlock x:Name="txtRegisteredCount" Grid.Column="0" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock x:Name="txtAttendedCount" Grid.Column="1" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock x:Name="txtAbsentCount" Grid.Column="2" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock x:Name="txtTotalCount" Grid.Column="3" Grid.Row="1" Text="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+            </Grid>
+        </Border>
+        
+        <!-- Participants List -->
+        <DataGrid Grid.Row="3" x:Name="dgParticipants" AutoGenerateColumns="False" Margin="0,0,0,15" SelectionMode="Single" IsReadOnly="True" SelectionUnit="FullRow">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Student ID" Binding="{Binding User.StudentId}" Width="100"/>
+                <DataGridTextColumn Header="Full Name" Binding="{Binding User.FullName}" Width="*"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding User.Email}" Width="200"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                <DataGridTextColumn Header="Registration Date" Binding="{Binding RegistrationDate, StringFormat=d}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!-- Status Change -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="Change Status:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <ComboBox x:Name="cmbStatus" Width="150" Margin="0,0,10,0">
+                <ComboBoxItem Content="Registered"/>
+                <ComboBoxItem Content="Attended"/>
+                <ComboBoxItem Content="Absent"/>
+            </ComboBox>
+            <Button x:Name="btnChangeStatus" Content="Update Status" Width="120" Click="btnChangeStatus_Click"/>
+        </StackPanel>
+        
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnRemoveParticipant" Content="Remove Participant" Width="150" Margin="0,0,10,0" Click="btnRemoveParticipant_Click"/>
+            <Button x:Name="btnClose" Content="Close" Width="100" Click="btnClose_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

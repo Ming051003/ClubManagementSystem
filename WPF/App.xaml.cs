@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using BLL.BusinessService;
 using BLL.Interfaces;
 using BLL.Repositories;
@@ -32,6 +32,15 @@ namespace WPF
             var services = new ServiceCollection();
             ConfigServices(services);
             ServiceProvider = services.BuildServiceProvider();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            
+            // Set the main window as the application's main window
+            MainWindow = new MainWindow();
+            MainWindow.Show();
         }
 
         private void ConfigServices(IServiceCollection services)

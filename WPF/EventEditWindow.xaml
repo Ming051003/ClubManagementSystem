@@ -1,0 +1,57 @@
+<Window x:Class="WPF.EventEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF"
+        xmlns:converters="clr-namespace:WPF.Converters"
+        mc:Ignorable="d"
+        Title="Edit Event" Height="520" Width="450" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="Edit Event" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+        
+        <!-- Event Edit Form -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Event Name:" FontWeight="Bold"/>
+                <TextBox x:Name="txtEventName" Margin="0,5,0,15"/>
+                
+                <TextBlock Text="Description:" FontWeight="Bold"/>
+                <TextBox x:Name="txtDescription" TextWrapping="Wrap" AcceptsReturn="True" Height="80" Margin="0,5,0,15"/>
+                
+                <TextBlock Text="Event Date:" FontWeight="Bold"/>
+                <DatePicker x:Name="dpEventDate" Margin="0,5,0,15"/>
+                
+                <TextBlock Text="Location:" FontWeight="Bold"/>
+                <TextBox x:Name="txtLocation" Margin="0,5,0,15"/>
+                
+                <TextBlock Text="Club ID:" FontWeight="Bold"/>
+                <TextBox x:Name="txtClubId" Margin="0,5,0,15"/>
+                
+                <TextBlock Text="Capacity:" FontWeight="Bold"/>
+                <TextBox x:Name="txtCapacity" Margin="0,5,0,15"/>
+                
+                <TextBlock Text="Status:" FontWeight="Bold"/>
+                <ComboBox x:Name="cmbStatus" Margin="0,5,0,15">
+                    <ComboBoxItem Content="Upcoming"/>
+                    <ComboBoxItem Content="Ongoing"/>
+                    <ComboBoxItem Content="Completed"/>
+                    <ComboBoxItem Content="Cancelled"/>
+                </ComboBox>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnSave" Content="Save" Width="100" Margin="0,0,10,0" Click="btnSave_Click"/>
+            <Button x:Name="btnCancel" Content="Cancel" Width="100" Click="btnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
