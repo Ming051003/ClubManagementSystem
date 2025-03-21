@@ -57,8 +57,12 @@ namespace BLL.Repositories
 
         public User Login(string username, string password)
         {
-            throw new NotImplementedException();
+            return context.Users.FirstOrDefault(u => u.UserName == username && u.Password == password); 
         }
 
+        public List<User> GetAllUsersByRole(string role)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
