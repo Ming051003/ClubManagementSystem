@@ -64,7 +64,12 @@ namespace WPF
                 MessageBox.Show("Username is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return; 
             }
-            if(username.Length <6 || username.Length >50 )
+            if (_accountService.GetAll().Any(u => u.UserName == username))
+            {
+                MessageBox.Show("Username already exists. Please choose another one.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (username.Length <6 || username.Length >50 )
             {
                 MessageBox.Show("Username must be between 3 and 50 characters long.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -105,7 +110,11 @@ namespace WPF
                 MessageBox.Show("Invalid club selection.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+            if (_accountService.GetAll().Any(u => u.StudentId == studentId && u.ClubId == clubId))
+            {
+                MessageBox.Show("A user with the same Roll number and Club already exists in this organization.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             // Validate: Kiểm tra định dạng email hợp lệ
             if (!IsValidEmail(email))
             {

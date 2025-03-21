@@ -2,14 +2,8 @@
 using BLL.BusinessService;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WPF.Admin
 {
@@ -57,9 +51,9 @@ namespace WPF.Admin
         }
         private void ApplyFilter_Click(object sender, RoutedEventArgs e)
         {
-            string searchText = tbSearch.Text.Trim();  
-            string selectedRole = cboRole.SelectedValue as string;  
-            int? selectedClubId = cboClub.SelectedValue as int?;  
+            string searchText = tbSearch.Text.Trim();
+            string selectedRole = cboRole.SelectedValue as string;
+            int? selectedClubId = cboClub.SelectedValue as int?;
 
             LoadData(searchText, selectedRole, selectedClubId);
             ClearFilter();
@@ -89,9 +83,9 @@ namespace WPF.Admin
                 .Where(a => a.Role == "Member" || a.Role == "TeamLeader" || a.Role == "VicePresident" || a.Role == "President" || a.Role == "Admin")
                 .Select(a => new
                 {
-                    a.Role  
+                    a.Role
                 })
-                .Distinct()  
+                .Distinct()
                 .ToList();
 
             cboRole.ItemsSource = roles;
@@ -105,7 +99,8 @@ namespace WPF.Admin
         private void dgAccount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectAccount = dgAccount.SelectedItem as UserView;
-            if (selectAccount != null) {
+            if (selectAccount != null)
+            {
                 txtRollNumber.Text = selectAccount.StudentId;
                 txtUsername.Text = selectAccount.UserName;
                 txtPassword.Text = selectAccount.Password;
@@ -113,21 +108,21 @@ namespace WPF.Admin
                 txtFullName.Text = selectAccount.FullName;
                 cboRole.SelectedValue = selectAccount.Role;
                 cboClub.SelectedValue = selectAccount.ClubId;
-                
+
                 if (selectAccount.Status == "Active")
                 {
-                    rbActive.IsChecked = true;    
-                    rbInactive.IsChecked = false; 
+                    rbActive.IsChecked = true;
+                    rbInactive.IsChecked = false;
                 }
                 else
                 {
-                    rbActive.IsChecked = false;   
-                    rbInactive.IsChecked = true; 
+                    rbActive.IsChecked = false;
+                    rbInactive.IsChecked = true;
                 }
             }
         }
 
-       
+
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -138,86 +133,124 @@ namespace WPF.Admin
             LoadData("", selectedRole, selectedClubId);
         }
 
-       
+
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidateForm())
+            try
             {
-                return;
+                if (!ValidateForm())
+                {
+                    return;
+                }
+
+                // Lấy dữ liệu từ form
+                string studentId = txtRollNumber.Text.Trim();
+                string username = txtUsername.Text.Trim();
+                string password = txtPassword.Text.Trim();
+                string fullName = txtFullName.Text.Trim();
+                string email = txtEmail.Text.Trim();
+                string role = cboRole.SelectedValue as string;
+                int clubId = (int)cboClub.SelectedValue;
+                bool isActive = rbActive.IsChecked == true;
+
+                if (_accountService.GetAll().Any(u => u.UserName == username))
+                {
+                    MessageBox.Show("Username already exists. Please choose another one.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (_accountService.GetAll().Any(u => u.StudentId == studentId && u.ClubId == clubId))
+                {
+                    MessageBox.Show("A user with the same Roll number and Club already exists in this organization.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                User user = new User
+                {
+                    StudentId = studentId,
+                    UserName = username,
+                    Password = password,
+                    FullName = fullName,
+                    Email = email,
+                    Role = role,
+                    ClubId = clubId,
+                    Status = isActive,
+                    JoinDate = DateOnly.FromDateTime(DateTime.Now),
+                };
+                _accountService.AddAccount(user);
+                MessageBox.Show("Thêm món thành công!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadData();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra: " + ex.Message, "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            // Lấy dữ liệu từ form
-            string studentId = txtRollNumber.Text.Trim();
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
-            string fullName = txtFullName.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string role = cboRole.SelectedValue as string;
-            int clubId = (int)cboClub.SelectedValue;
-            bool isActive = rbActive.IsChecked == true;
-
-            if (_accountService.GetAll().Any(u => u.UserName == username))
-            {
-                MessageBox.Show("Username already exists. Please choose another one.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (_accountService.GetAll().Any(u => u.StudentId == studentId && u.ClubId == clubId))
-            {
-                MessageBox.Show("A user with the same Roll number and Club already exists in this organization.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            User user = new User
-            {
-                StudentId = studentId,
-                UserName = username,
-                Password = password,
-                FullName = fullName,
-                Email = email,
-                Role = role,
-                ClubId = clubId,
-                Status = isActive,
-                JoinDate = DateOnly.FromDateTime(DateTime.Now),
-            };
-            _accountService.AddAccount(user);
-
-            LoadData();
         }
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            var selectedAccount = dgAccount.SelectedValue as User;
+            var selectedAccount = dgAccount.SelectedItem as UserView;
             if (selectedAccount == null) return;
             if (!ValidateForm()) return;
 
-            string studenId = txtRollNumber.Text.Trim();
-            string userName = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
-            string fullName = txtFullName.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string role = cboRole.SelectedValue as string;
-            int clubId = (int)cboClub.SelectedValue;
-            bool isActive = rbActive.IsChecked == true;
+            // Chuyển dữ liệu từ UserView sang User
+            var updatedAccount = new User
+            {
+                UserId = selectedAccount.UserId,
+                StudentId = txtRollNumber.Text.Trim(),
+                UserName = txtUsername.Text.Trim(),
+                FullName = txtFullName.Text.Trim(),
+                Email = txtEmail.Text.Trim(),
+                Password = txtPassword.Text.Trim(),
+                Role = cboRole.SelectedValue as string,
+                ClubId = (int)cboClub.SelectedValue,
+                Status = rbActive.IsChecked == true ? true : false,
+                JoinDate = DateOnly.FromDateTime(DateTime.Now),
+            };
 
-            // Cập nhật thông tin người dùng
-            selectedAccount.UserName = userName;
-            selectedAccount.Password = password;
-            selectedAccount.FullName = fullName;
-            selectedAccount.Email = email;
-            selectedAccount.Role = role;
-            selectedAccount.ClubId = clubId;
-            selectedAccount.Status = isActive;
-
-            _accountService.UpdateAccount(selectedAccount);
-            LoadData();
+            try
+            {
+                _accountService.UpdateAccount(updatedAccount);
+                MessageBox.Show("User updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadData();
+                ClearForm();
+               
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
 
         private void ButtonDel_Click(object sender, RoutedEventArgs e)
         {
+            var selectedAccount = dgAccount.SelectedItem as UserView;
+            if(selectedAccount == null)
+            {
+                MessageBox.Show("Please select a user to delete!", "Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
+            var result = MessageBox.Show("Are you sure you want to delete this user?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _accountService.DeleteAccount(selectedAccount.UserId);
+                    MessageBox.Show("User deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadData();
+                    ClearForm();
+                   
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}", "Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         private bool ValidateForm()
@@ -230,19 +263,12 @@ namespace WPF.Admin
                 MessageBox.Show("Username cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-           
 
-            if (string.IsNullOrWhiteSpace(studentId)) {
+            if (string.IsNullOrWhiteSpace(studentId))
+            {
                 MessageBox.Show("Roll number cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            //if (_accountService.GetAll().Any(u => u.StudentId == studentId))
-            //{
-            //    MessageBox.Show("Roll number already exists. Please choose another one.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return false;
-            //}
-            
-
 
             if (string.IsNullOrWhiteSpace(txtFullName.Text))
             {
@@ -294,6 +320,18 @@ namespace WPF.Admin
             {
                 return false;
             }
+        }
+
+        private void ClearForm()
+        {
+            txtRollNumber.Text = string.Empty;
+            txtUsername.Text = string.Empty;
+            txtPassword.Text = string.Empty;
+            txtFullName.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            cboRole.SelectedValue = -1;
+            cboClub.SelectedValue =-1;
+            rbActive.IsChecked = true;
         }
 
     }

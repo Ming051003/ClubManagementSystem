@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-            xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:WPF.Admin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -20,7 +20,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Header -->
-        <TextBlock Grid.Row="0"  Grid.ColumnSpan="2" Text="Event Management" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+        <TextBlock Grid.Row="0"  Grid.ColumnSpan="2" Text="Account Management" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="5"/>
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.8*"/>
@@ -121,7 +121,7 @@
             
             <TextBlock Text="Status" Grid.Row="14"  VerticalAlignment="Center"/>
             <StackPanel Grid.Row="15" Orientation="Horizontal" Margin="0,5,10,5" Height="30">
-                <RadioButton x:Name="rbActive" Content="Active" GroupName="Status" Margin="0,5,10,5" VerticalAlignment="Center" />
+                <RadioButton x:Name="rbActive" Content="Active" GroupName="Status" IsChecked="True" Margin="0,5,10,5" VerticalAlignment="Center" />
                 <RadioButton x:Name="rbInactive" Content="Inactive" GroupName="Status" Margin="0,5,10,5" VerticalAlignment="Center" />
             </StackPanel>
 
