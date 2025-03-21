@@ -2,6 +2,7 @@ using BLL.BusinessInterfaces;
 using BLL.BusinessService;
 using BLL.Repositories;
 using DAL.Interfaces;
+using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,15 +41,14 @@ namespace WPF
         {
             // Register Services
             services.AddSingleton<IAccountService, AccountService>();
-            //services.AddSingleton<IEventService, EventService>();
-            //services.AddSingleton<IUserService, UserService>();
-           
+            services.AddSingleton<IEventService, EventService>();
+            services.AddSingleton<IEventParticipantService, EventParticipantService>();
+
             // Register Repositories
             services.AddSingleton<IAccountRepository, AccountRepository>();
-            //services.AddSingleton<IEventRepository, EventRepository>();
-            //services.AddSingleton<IUserRepository, UserRepository>();
-            //services.AddSingleton<IEventParticipantRepository, EventParticipantRepository>();
-        
+            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IEventParticipantRepository, EventParticipantRepository>();
+
             // Register DbContext
             services.AddDbContext<ClubManagementContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));

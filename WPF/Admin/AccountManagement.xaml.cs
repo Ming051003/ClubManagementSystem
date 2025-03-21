@@ -9,13 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WPF.Admin
 {
@@ -66,7 +59,7 @@ namespace WPF.Admin
         private void LoadRole()
         {
             var roles = _accountService.GetAll()
-                .Where(a => a.Role == "Member" || a.Role == "TeamLeader" || a.Role == "VicePresident" || a.Role == "President" || a.Role == "Admin")  // Filter valid roles
+                .Where(a => a.Role == "Member" || a.Role == "TeamLeader" || a.Role == "VicePresident" || a.Role == "President" || a.Role == "Admin")
                 .Select(a => new
                 {
                     a.Role  

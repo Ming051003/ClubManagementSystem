@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Input;
 using WPF.Admin;
 
@@ -56,9 +56,9 @@ namespace WPF
             MainContent.Content = new AccountManagement();
         }
 
-        private void UC_Admin_Menu_Checked(object sender, RoutedEventArgs e)
+        private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
         {
-            //MainContent.Content = new UC_Admin_Menu();
+            MainContent.Content = new EventManagement();
         }
 
         private void UC_Admin_WorkDay_Checked(object sender, RoutedEventArgs e)
@@ -81,6 +81,6 @@ namespace WPF
             //MainContent.Content = new UC_Admin_Inventory();
         }
 
-
+        
     }
 }
