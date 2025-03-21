@@ -53,8 +53,8 @@
                     <StackPanel Margin="40,0,0,0" HorizontalAlignment="Left">
                         <!-- Thêm StackPanel để chứa "Quên mật khẩu" và "Tạo tài khoản" cùng 1 dòng -->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="Forgot Password?" Foreground="White" Cursor="Hand" Margin="10,0" 
-                                   MouseDown="ForgotPassword_Click"/>
+                            <TextBlock Text="Change Password?" Foreground="White" Cursor="Hand" Margin="10,0" 
+                                   MouseDown="ChangePassword_Click"/>
 
                             <!-- Tạo tài khoản -->
                             <TextBlock Text="Create Account" Foreground="White" Cursor="Hand" Margin="10,0" 

@@ -46,8 +46,19 @@ namespace BLL.Repositories
 
         public void UpdateAccount(User account)
         {
-            context.Users.Update(account);
-            context.SaveChanges();
+            var existingUser = context.Users.FirstOrDefault(u => u.UserId == account.UserId);
+            if (existingUser != null)
+            {
+                existingUser.StudentId = account.StudentId;
+                existingUser.UserName = account.UserName;
+                existingUser.Password = account.Password;
+                existingUser.FullName = account.FullName;
+                existingUser.Email = account.Email;
+                existingUser.Role = account.Role;
+                existingUser.ClubId = account.ClubId;
+                existingUser.Status = account.Status;
+                context.SaveChanges();
+            }           
         }
 
         public List<User> GetAll()
@@ -57,8 +68,12 @@ namespace BLL.Repositories
 
         public User Login(string username, string password)
         {
-            throw new NotImplementedException();
+            return context.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
         }
 
+        public List<User> GetAllUsersByRole(string role)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
