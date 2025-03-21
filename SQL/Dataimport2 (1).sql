@@ -2,17 +2,17 @@
 USE master;
 GO
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'ClubManagement3')
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'ClubManagement')
 BEGIN
-    ALTER DATABASE ClubManagement3 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE ClubManagement3;
+    ALTER DATABASE ClubManagement SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE ClubManagement;
 END
 GO
 
-CREATE DATABASE ClubManagement3;
+CREATE DATABASE ClubManagement;
 GO
 
-USE ClubManagement3;
+USE ClubManagement;
 GO
 
 -- Create all tables first
@@ -26,7 +26,7 @@ GO
 
 CREATE TABLE Users (
     UserID INT PRIMARY KEY IDENTITY(1,1),
-    StudentID NVARCHAR(10) NULL UNIQUE, -- Mã sinh viên FPT
+    StudentID NVARCHAR(10) NULL, -- Mã sinh viên FPT
     UserName NVARCHAR(100) NULL UNIQUE,
     FullName NVARCHAR(100) NOT NULL,
     Email NVARCHAR(100) NOT NULL,
