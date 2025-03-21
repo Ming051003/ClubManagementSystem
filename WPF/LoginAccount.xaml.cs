@@ -89,7 +89,7 @@ namespace WPF
         }
 
         // Sự kiện khi nhấn nút "Quên mật khẩu"
-        private void ForgotPassword_Click(object sender, RoutedEventArgs e)
+        private void ChangePassword_Click(object sender, RoutedEventArgs e)
         {
             // Thực hiện hành động quên mật khẩu, ví dụ mở cửa sổ quên mật khẩu
             MessageBox.Show("Redirecting to Forgot Password page");

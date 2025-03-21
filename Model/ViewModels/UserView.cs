@@ -23,7 +23,7 @@ public partial class UserView
     public string ClubName { get; set; } = null!;
     public DateOnly JoinDate { get; set; }
 
-    public bool Status { get; set; }
+    public string Status { get; set; }
 
 
  
