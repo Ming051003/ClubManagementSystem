@@ -76,45 +76,14 @@
 
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}"
-             Tag="{StaticResource color7}" Checked="UC_Admin_Inventory_Checked">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="PieChart" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Inventory" Style="{StaticResource menuButtonText}"/>
-
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}"
-             Tag="{StaticResource color6}" Checked="UC_Admin_Invoice_Checked">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Wallet" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Financial" Style="{StaticResource menuButtonText}"/>
-
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}"
-            Tag="{StaticResource color3}" Checked="UC_Admin_Worktime_Checked" >
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Truck" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Work" Style="{StaticResource menuButtonText}"/>
-
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}"
-             Tag="{StaticResource color5}" Checked="UC_Admin_WorkDay_Checked">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Box" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Day work" Style="{StaticResource menuButtonText}"/>
-
-                        </StackPanel>
-                    </RadioButton>
+                   
 
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color8}">
+                                 Tag="{StaticResource color8}" VerticalAlignment="Bottom" Checked="RadioButton_Checked">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Tools" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Ingredient" Style="{StaticResource menuButtonText}"/>
+                            <fa:IconImage Icon="SignOutAlt" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Logout" Style="{StaticResource menuButtonText}"/>
 
                         </StackPanel>
                     </RadioButton>
@@ -238,17 +207,14 @@
                                 <fa:IconImage Icon="Bell" Margin="5,0,0,0" Style="{StaticResource iconButtonIcon}"/>
                             </Button>
                         </StackPanel>
+
                     </Grid>
 
                     <!--Content section / Child views-->
                     <ContentControl x:Name="MainContent"
-                Grid.Row="2"
-                Margin="25"/>
-
+                                    Grid.Row="2" Margin="25"/>
                 </Grid>
             </Border>
-
-
         </Grid>
     </Border>
 

@@ -53,10 +53,17 @@ namespace WPF
             {
                 var result = _accountService.Login(ussername, password);
                 if (result != null) {
-                    if (result.Status == true)
+                    if (result.Status == true && result.Role == "Admin")
                     {
                         Main_Admin_WPF main_Admin_WPF = new Main_Admin_WPF();
                         main_Admin_WPF.Show();
+                        MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+                    else if (result.Status == true && result.Role == "President")
+                    {
+                        Main_President_WPF main_President_WPF = new Main_President_WPF();
+                        main_President_WPF.Show();
                         MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
                         this.Close();
                     }

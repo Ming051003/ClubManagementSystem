@@ -101,10 +101,10 @@
 
 
                     <RadioButton Style="{StaticResource menuButton}"
-                          Tag="{StaticResource color8}">
+                          Tag="{StaticResource color8}" Checked="RadioButton_Checked">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Tools" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Ingredient" Style="{StaticResource menuButtonText}"/>
+                            <fa:IconImage Icon="SignOutAlt" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Logout" Style="{StaticResource menuButtonText}"/>
 
                         </StackPanel>
                     </RadioButton>

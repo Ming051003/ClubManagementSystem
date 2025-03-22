@@ -83,5 +83,12 @@ namespace WPF
         {
 
         }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            LoginAccount loginAccount = new LoginAccount();
+            loginAccount.Show();
+            this.Close();
+        }
     }
 }
