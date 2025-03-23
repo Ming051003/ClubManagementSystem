@@ -67,6 +67,13 @@ namespace WPF
                         MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
                         this.Close();
                     }
+                    else if (result.Status == true && result.Role == "VicePresident")
+                    {
+                        Main_VicePresident_WPF main_VicePresident_WPF = new();
+                        main_VicePresident_WPF.Show();
+                        MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
                     else
                     {
                         MessageBox.Show("Your account is not active. Please contact the administrator.", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);

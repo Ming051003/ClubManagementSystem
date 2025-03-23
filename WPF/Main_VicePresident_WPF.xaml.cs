@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +11,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using FontAwesome.Sharp;
+using WPF.Admin;
+using WPF.VicePresident;
+using Model.Models;
 
 namespace WPF
 {
-    /// <summary>
-    /// Interaction logic for Main_VicePresident_WPF.xaml
-    /// </summary>
     public partial class Main_VicePresident_WPF : Window
     {
+        private Event _selectedEvent;
+        
         public Main_VicePresident_WPF()
         {
             InitializeComponent();
@@ -45,43 +48,54 @@ namespace WPF
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
             if (this.WindowState == WindowState.Normal)
-            {
                 this.WindowState = WindowState.Maximized;
+            else this.WindowState = WindowState.Normal;
+        }
+
+        private void UC_VicePresident_Member_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new AccountManagementByVicePresedent();
+        }
+        
+        private void UC_VicePresident_Event_Checked(object sender, RoutedEventArgs e)
+        {
+            var eventManagement = new EventManagement();
+            eventManagement.ViewParticipantsRequested += OnViewParticipantsRequested;
+            MainContent.Content = eventManagement;
+        }
+        
+        private void OnViewParticipantsRequested(object sender, Event eventData)
+        {
+            _selectedEvent = eventData;
+            rbEventParticipant.IsChecked = true;
+        }
+        
+        private void UC_VicePresident_EventParticipant_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_selectedEvent != null)
+            {
+                MainContent.Content = new EventParticipantManagement(_selectedEvent);
+                _selectedEvent = null;
             }
             else
             {
-                this.WindowState = WindowState.Normal;
+                MainContent.Content = new EventParticipantManagement();
             }
         }
-
-        private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
+        
+        private void UC_VicePresident_Notification_Checked(object sender, RoutedEventArgs e)
         {
-
         }
 
-        private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
+        private void UC_VicePresident_Logout_Checked(object sender, RoutedEventArgs e)
         {
-
+            LoginAccount loginAccount = new LoginAccount();
+            loginAccount.Show();
+            this.Close();
         }
 
-        private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)
+        private void UC_VicePresident_Report_Checked(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void UC_Admin_Invoice_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UC_Admin_Worktime_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UC_Admin_WorkDay_Checked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
