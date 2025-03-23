@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF.Admin;
+using WPF.President;
+using WPF.VicePresident;
 
 namespace WPF
 {
@@ -54,11 +57,11 @@ namespace WPF
             }
         }
 
-        private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
+        private void UC_User_President_Checked(object sender, RoutedEventArgs e)
         {
+            MainContent.Content = new AccountManagemenByPresident();
 
         }
-
         private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -90,5 +93,7 @@ namespace WPF
             loginAccount.Show();
             this.Close();
         }
+
+     
     }
 }

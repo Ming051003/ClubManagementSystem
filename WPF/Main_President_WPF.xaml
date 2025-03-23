@@ -51,7 +51,7 @@
 
                     <!--Menu Buttons-->                 
                     <RadioButton Style="{StaticResource menuButton}"
-                            Tag="{StaticResource color2}" Checked="UC_Admin_Staff_Checked">
+                            Tag="{StaticResource color2}" Checked="UC_User_President_Checked">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="User" Style="{StaticResource menuButtonText}"/>
@@ -232,8 +232,8 @@
 
                     <!--Content section / Child views-->
                     <ContentControl x:Name="MainContent"
-         Grid.Row="2"
-         Margin="25"/>
+                         Grid.Row="2"
+                         Margin="25"/>
 
                 </Grid>
             </Border>
