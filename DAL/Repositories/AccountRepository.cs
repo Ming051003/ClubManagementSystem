@@ -84,5 +84,11 @@ namespace BLL.Repositories
         {
             throw new NotImplementedException();
         }
+    
+        public int? GetClubIdByUsername(string username)
+        {
+            var user = context.Users.FirstOrDefault(u => u.UserName == username);
+            return user?.ClubId;
+        }
     }
 }

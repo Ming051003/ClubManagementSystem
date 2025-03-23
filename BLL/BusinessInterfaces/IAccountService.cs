@@ -16,6 +16,6 @@ namespace BLL.BusinessInterfaces
         public void DeleteAccount(int id);
         public User GetAccountById(int id);
         public List<Club> GetAllClubs();
-
+        public int? GetClubIdByUsername(string username);
     }
 }

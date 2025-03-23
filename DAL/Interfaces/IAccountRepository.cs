@@ -14,6 +14,6 @@ namespace DAL.Interfaces
         public User GetAccountById(int id);
         public List<Club> GetAllClubs();
         public List<User> GetAllUsersByRole(string role);
-
+        public int? GetClubIdByUsername(string username);
     }
 }

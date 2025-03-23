@@ -178,7 +178,7 @@ namespace WPF.Admin
                     JoinDate = DateOnly.FromDateTime(DateTime.Now),
                 };
                 _accountService.AddAccount(user);
-                MessageBox.Show("Thêm món thành công!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Added account successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
                 LoadData();
 
             }

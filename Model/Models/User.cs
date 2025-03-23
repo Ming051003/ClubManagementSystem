@@ -5,6 +5,8 @@ namespace Model.Models;
 
 public partial class User
 {
+    public static User Current { get; set; }
+
     public int UserId { get; set; }
 
     public string? StudentId { get; set; }

@@ -1,4 +1,5 @@
 ﻿using BLL.BusinessInterfaces;
+using BLL.Repositories;
 using DAL.Interfaces;
 using Model.Models;
 using System;
@@ -42,11 +43,24 @@ namespace BLL.BusinessService
             return accountRepository.GetAllClubs();
         }
 
-        public User Login(string username, string password)
+        public int? GetClubIdByUsername(string username)
         {
-            return accountRepository.Login(username, password);
+           return accountRepository.GetClubIdByUsername(username);
         }
 
+        public User Login(string username, string password)
+        {
+            User user = accountRepository.Login(username, password);
+
+            if (user != null)
+            {
+                User.Current = user;
+
+                return User.Current; 
+            }
+
+            return null;
+        }
         public void UpdateAccount(User account)
         {
             accountRepository.UpdateAccount(account);
