@@ -43,11 +43,13 @@ namespace WPF
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IEventService, EventService>();
             services.AddSingleton<IEventParticipantService, EventParticipantService>();
+            services.AddSingleton<IClubService, ClubService>();
 
             // Register Repositories
             services.AddSingleton<IAccountRepository, AccountRepository>();
             services.AddSingleton<IEventRepository, EventRepository>();
             services.AddSingleton<IEventParticipantRepository, EventParticipantRepository>();
+            services.AddSingleton<IClubRepository, ClubRepository>();
 
             // Register DbContext
             services.AddDbContext<ClubManagementContext>(options =>

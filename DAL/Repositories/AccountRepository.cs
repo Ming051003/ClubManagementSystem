@@ -46,9 +46,29 @@ namespace BLL.Repositories
 
         public void UpdateAccount(User account)
         {
-            context.Users.Update(account);
-            context.SaveChanges();
+            
+            var existingUser = context.Users.FirstOrDefault(u => u.UserId == account.UserId);
+
+            if (existingUser != null)
+            {              
+                existingUser.UserName = account.UserName;
+                existingUser.StudentId = account.StudentId;
+                existingUser.FullName = account.FullName;
+                existingUser.Email = account.Email;
+                existingUser.Password = account.Password;  
+                existingUser.Role = account.Role;
+                existingUser.ClubId = account.ClubId;
+                existingUser.Status = account.Status;
+                existingUser.JoinDate = account.JoinDate; 
+
+                context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("User not found");
+            }
         }
+
 
         public List<User> GetAll()
         {

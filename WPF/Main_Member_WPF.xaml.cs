@@ -1,21 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
-using WPF.Admin;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace WPF
 {
     /// <summary>
-    /// Interaction logic for Main_Admin_WPF.xaml
+    /// Interaction logic for Main_Member_WPF.xaml
     /// </summary>
-    public partial class Main_Admin_WPF : Window
+    public partial class Main_Member_WPF : Window
     {
-        public Main_Admin_WPF()
+        public Main_Member_WPF()
         {
             InitializeComponent();
-
         }
-
-
         private void pnlControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
@@ -49,25 +56,32 @@ namespace WPF
 
         private void UC_Admin_Home_Checked(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
         {
-            MainContent.Content = new AccountManagement();
+
         }
 
         private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
         {
-            MainContent.Content = new ClubManagement();
+
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)
         {
 
-            LoginAccount loginAccount = new LoginAccount();
-            loginAccount.Show();
-            this.Close();
-            
+        }
+
+        private void UC_Admin_Invoice_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UC_Admin_Worktime_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

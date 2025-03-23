@@ -2,24 +2,35 @@
 using BLL.BusinessService;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
-namespace WPF.Admin
+namespace WPF.President
 {
     /// <summary>
-    /// Interaction logic for AccountManagement.xaml
+    /// Interaction logic for AccountManagementByPresident.xaml
     /// </summary>
-    public partial class AccountManagement : UserControl
+    public partial class AccountManagementByPresident : UserControl
     {
         private IAccountService _accountService;
-        public AccountManagement()
+        public AccountManagementByPresident()
         {
             InitializeComponent();
             _accountService = ((App)Application.Current).ServiceProvider.GetRequiredService<IAccountService>()
                ?? throw new ArgumentNullException(nameof(AccountService));
             LoadData();
-            LoadClub();
+            //LoadClub();
             LoadRole();
         }
 
@@ -53,29 +64,27 @@ namespace WPF.Admin
         {
             string searchText = tbSearch.Text.Trim();
             string selectedRole = cboRole.SelectedValue as string;
-            int? selectedClubId = cboClub.SelectedValue as int?;
 
-            LoadData(searchText, selectedRole, selectedClubId);
+            LoadData(searchText, selectedRole);
             ClearFilter();
         }
 
         private void ClearFilter()
         {
-            cboClub1.SelectedValue = -1;
             cboRole1.SelectedValue = -1;
 
         }
-        private void LoadClub()
-        {
-            var club = _accountService.GetAllClubs();
-            cboClub.ItemsSource = club;
-            cboClub.DisplayMemberPath = "ClubName";
-            cboClub.SelectedValuePath = "ClubId";
+        //private void LoadClub()
+        //{
+        //    var club = _accountService.GetAllClubs();
+        //    cboClub.ItemsSource = club;
+        //    cboClub.DisplayMemberPath = "ClubName";
+        //    cboClub.SelectedValuePath = "ClubId";
 
-            cboClub1.ItemsSource = club;
-            cboClub1.DisplayMemberPath = "ClubName";
-            cboClub1.SelectedValuePath = "ClubId";
-        }
+        //    cboClub1.ItemsSource = club;
+        //    cboClub1.DisplayMemberPath = "ClubName";
+        //    cboClub1.SelectedValuePath = "ClubId";
+        //}
 
         private void LoadRole()
         {
@@ -107,7 +116,7 @@ namespace WPF.Admin
                 txtEmail.Text = selectAccount.Email;
                 txtFullName.Text = selectAccount.FullName;
                 cboRole.SelectedValue = selectAccount.Role;
-                cboClub.SelectedValue = selectAccount.ClubId;
+                //cboClub.SelectedValue = selectAccount.ClubId;
 
                 if (selectAccount.Status == "Active")
                 {
@@ -128,9 +137,9 @@ namespace WPF.Admin
         {
             //string searchText = tbSearch.Text.Trim();
             string selectedRole = cboRole1.SelectedValue as string;
-            int? selectedClubId = cboClub1.SelectedValue as int?;
+            //int? selectedClubId = cboClub1.SelectedValue as int?;
 
-            LoadData("", selectedRole, selectedClubId);
+            LoadData("", selectedRole);
         }
 
 
@@ -151,7 +160,7 @@ namespace WPF.Admin
                 string fullName = txtFullName.Text.Trim();
                 string email = txtEmail.Text.Trim();
                 string role = cboRole.SelectedValue as string;
-                int clubId = (int)cboClub.SelectedValue;
+                //int clubId = (int)cboClub.SelectedValue;
                 bool isActive = rbActive.IsChecked == true;
 
                 if (_accountService.GetAll().Any(u => u.UserName == username))
@@ -159,7 +168,7 @@ namespace WPF.Admin
                     MessageBox.Show("Username already exists. Please choose another one.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                if (_accountService.GetAll().Any(u => u.StudentId == studentId && u.ClubId == clubId))
+                if (_accountService.GetAll().Any(u => u.StudentId == studentId))
                 {
                     MessageBox.Show("A user with the same Roll number and Club already exists in this organization.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -173,7 +182,7 @@ namespace WPF.Admin
                     FullName = fullName,
                     Email = email,
                     Role = role,
-                    ClubId = clubId,
+                    //ClubId = clubId,
                     Status = isActive,
                     JoinDate = DateOnly.FromDateTime(DateTime.Now),
                 };
@@ -205,7 +214,7 @@ namespace WPF.Admin
                 Email = txtEmail.Text.Trim(),
                 Password = txtPassword.Text.Trim(),
                 Role = cboRole.SelectedValue as string,
-                ClubId = (int)cboClub.SelectedValue,
+                //ClubId = (int)cboClub.SelectedValue,
                 Status = rbActive.IsChecked == true ? true : false,
                 JoinDate = DateOnly.FromDateTime(DateTime.Now),
             };
@@ -216,7 +225,7 @@ namespace WPF.Admin
                 MessageBox.Show("User updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 LoadData();
                 ClearForm();
-               
+
             }
             catch (Exception ex)
             {
@@ -229,7 +238,7 @@ namespace WPF.Admin
         private void ButtonDel_Click(object sender, RoutedEventArgs e)
         {
             var selectedAccount = dgAccount.SelectedItem as UserView;
-            if(selectedAccount == null)
+            if (selectedAccount == null)
             {
                 MessageBox.Show("Please select a user to delete!", "Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -244,7 +253,7 @@ namespace WPF.Admin
                     MessageBox.Show("User deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadData();
                     ClearForm();
-                   
+
                 }
                 catch (Exception ex)
                 {
@@ -257,7 +266,7 @@ namespace WPF.Admin
         {
             string username = txtUsername.Text.Trim();
             string studentId = txtRollNumber.Text.Trim();
-            int clubId = (int)cboClub.SelectedValue;
+            //int clubId = (int)cboClub.SelectedValue;
             if (string.IsNullOrWhiteSpace(username))
             {
                 MessageBox.Show("Username cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -294,11 +303,11 @@ namespace WPF.Admin
                 return false;
             }
 
-            if (cboClub.SelectedValue == null)
-            {
-                MessageBox.Show("Please select a Club.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+            //if (cboClub.SelectedValue == null)
+            //{
+            //    MessageBox.Show("Please select a Club.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return false;
+            //}
 
             if (!rbActive.IsChecked.HasValue && !rbInactive.IsChecked.HasValue)
             {
@@ -330,9 +339,8 @@ namespace WPF.Admin
             txtFullName.Text = string.Empty;
             txtEmail.Text = string.Empty;
             cboRole.SelectedValue = -1;
-            cboClub.SelectedValue =-1;
+            //cboClub.SelectedValue = -1;
             rbActive.IsChecked = true;
         }
-
     }
 }
