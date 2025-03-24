@@ -74,6 +74,22 @@ namespace WPF
                         MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
                         this.Close();
                     }
+                    else if (result.Status == true && result.Role == "TeamLeader")
+                    {
+                        Main_TeamLeader_WPF main_TeamLeader_WPF = new();
+                        main_TeamLeader_WPF.Show();
+                        MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+                    else if (result.Status == true && result.Role == "Member")
+                    {
+                        Main_Member_WPF main_Member_WPF = new();
+                        main_Member_WPF.Show();
+                        MessageBox.Show("Login Successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+
+
                     else
                     {
                         MessageBox.Show("Your account is not active. Please contact the administrator.", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
