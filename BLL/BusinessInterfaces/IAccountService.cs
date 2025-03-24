@@ -17,5 +17,7 @@ namespace BLL.BusinessInterfaces
         public User GetAccountById(int id);
         public List<Club> GetAllClubs();
         public int? GetClubIdByUsername(string username);
+        public void UpdateAccountRoleOnly(User user);
+        public List<User> GetLeadersByClubId();
     }
 }

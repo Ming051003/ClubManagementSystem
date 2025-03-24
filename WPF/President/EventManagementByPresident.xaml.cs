@@ -17,7 +17,7 @@ namespace WPF.President
     /// <summary>
     /// Interaction logic for EventManagementByPresident.xaml
     /// </summary>
-    public partial class EventManagementByPresident : Window
+    public partial class EventManagementByPresident : UserControl
     {
         public EventManagementByPresident()
         {

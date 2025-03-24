@@ -1,6 +1,7 @@
 using BLL.BusinessInterfaces;
 using BLL.Repositories;
 using DAL.Interfaces;
+using DAL.Repositories;
 using Model.Models;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,15 @@ namespace BLL.BusinessService
         {
             accountRepository.UpdateAccount(account);
         }
+        public List<User> GetLeadersByClubId()
+        {
+            int clubId = User.Current?.ClubId ?? 0;  
+            return accountRepository.GetLeadersByClubId(clubId);
+        }
 
+        public void UpdateAccountRoleOnly(User user)
+        {
+            accountRepository.UpdateAccountRoleOnly(user);
+        }
     }
 }
