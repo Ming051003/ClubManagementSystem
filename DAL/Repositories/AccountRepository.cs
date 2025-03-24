@@ -79,16 +79,32 @@ namespace BLL.Repositories
         {
             return context.Users.FirstOrDefault(u => u.UserName == username && u.Password == password); 
         }
-
-        public List<User> GetAllUsersByRole(string role)
-        {
-            throw new NotImplementedException();
-        }
     
         public int? GetClubIdByUsername(string username)
         {
             var user = context.Users.FirstOrDefault(u => u.UserName == username);
             return user?.ClubId;
+        }
+
+        public List<User> GetLeadersByClubId(int currentClubId)
+        {
+            return context.Users
+                .Where(u => (u.Role == "TeamLeader" || u.Role == "Member") && u.ClubId == currentClubId)  
+                .ToList();
+        }
+
+        public void UpdateAccountRoleOnly(User user)
+        {
+            var existingUser = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            if (existingUser != null)
+            {
+                existingUser.Role = user.Role;
+                context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("User not found.");
+            }
         }
     }
 }

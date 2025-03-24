@@ -64,7 +64,7 @@ namespace WPF
         }
         private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
         {
-
+            MainContent.Content = new TeamManagementByPresident();
         }
 
         private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)

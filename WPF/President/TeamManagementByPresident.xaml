@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="WPF.President.TeamManagementByPresident"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPF.President"
+             mc:Ignorable="d" 
+                 d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0"  Grid.ColumnSpan="2" Text="Team Management By President" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="5"/>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Filter Panel -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition Width="*"/>-->
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10,0,0,0" >
+                    <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox x:Name="tbSearch"  Width="85" Height="30" Margin="0,0,10,10"/>
+                    <Button Content="Search"  Width="75" Margin="0,0,0,5" Click="ApplyFilter_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Account DataGrid -->
+            <DataGrid Grid.Row="1" x:Name="dgTeam" AutoGenerateColumns="False" 
+        IsReadOnly="True" Margin="5,0,10,0" SelectionChanged="dgTeam_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Team ID" Binding="{Binding TeamId}" Width="auto"/>
+                    <DataGridTextColumn Header="Team Name" Binding="{Binding TeamName}" Width="auto"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="auto"/>
+                    <DataGridTextColumn Header="Leader" Binding="{Binding Leader}" Width="auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" >
+                <Button Content="Add Team"  Width="150" Margin="5" Click="ButtonAdd_Click"/>
+                <Button Content="Edit Team"  Width="150" Margin="5" Click="ButtonEdit_Click"/>
+                <Button Content="Delete Team"  Width="150" Margin="5" Click="ButtonDel_Click"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Team ID" Grid.Row="2"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtTeamID"  Grid.Row="3"  Margin="0,0,10,5" Height="30"   />
+
+            <TextBlock Text="Team Name" Grid.Row="4"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtTeamName" Grid.Row="5"  Margin="0,0,10,0" Height="30" />
+
+            <TextBlock Text="Description" Grid.Row="6"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtDescription" Grid.Row="7"  Margin="0,0,10,0" Height="30" />
+
+            <TextBlock Text="Leader" Grid.Row="8"  VerticalAlignment="Center"/>
+            <!--<TextBox x:Name="txtLeader" Grid.Row="9"  Margin="0,0,10,0" Height="30" />-->
+            <ComboBox x:Name="cboLeader" Grid.Row="9"  Margin="0,0,10,0" Height="30" 
+            IsEditable="False" DisplayMemberPath="FullName" SelectedValuePath="UserId" />
+
+
+            <!--<TextBlock Text="Role" Grid.Row="10"  VerticalAlignment="Center"/>
+        <ComboBox x:Name="cboRole" Grid.Row="11"  Margin="0,0,10,0" Height="30" 
+           IsEditable="False"  DisplayMemberPath="Role" SelectedValuePath="Role" />-->
+
+        </Grid>
+    </Grid>
+</UserControl>

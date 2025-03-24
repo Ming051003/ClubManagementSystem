@@ -13,7 +13,9 @@ namespace DAL.Interfaces
         public void DeleteAccount(int id);
         public User GetAccountById(int id);
         public List<Club> GetAllClubs();
-        public List<User> GetAllUsersByRole(string role);
         public int? GetClubIdByUsername(string username);
+        public List<User> GetLeadersByClubId(int currentClubId);
+        public void UpdateAccountRoleOnly(User user);
+       
     }
 }
