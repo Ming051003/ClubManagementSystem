@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using BLL.Repositories;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -88,7 +88,22 @@ namespace BLL.BusinessService
             }
         }
 
-
+        public Team GetTeamById(int teamId)
+        {
+            try
+            {
+                var team = _teamRepository.GetTeamById(teamId);
+                if (team == null)
+                {
+                    throw new InvalidOperationException($"Team with ID {teamId} not found");
+                }
+                return team;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving team with ID {teamId}", ex);
+            }
+        }
 
         public void DeleteTeam(int teamId)
         {
@@ -101,6 +116,5 @@ namespace BLL.BusinessService
             _teamRepository.DeleteTeam(teamId);
         }
 
-       
     }
 }

@@ -81,7 +81,7 @@ namespace WPF
 
         private void UC_President_Team_Checked(object sender, RoutedEventArgs e)
         {
-
+            MainContent.Content = new TeamManagementByPresident();
         }
     }
 }

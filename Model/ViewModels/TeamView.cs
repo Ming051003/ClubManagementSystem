@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ namespace Model.ViewModels
         public string TeamName { get; set; }
         public string Description { get; set; }
         public string ClubName { get; set; }
+        public int ClubId { get; set; }
         public int LeaderId { get; set; }
         public string Leader { get; set; }
     }

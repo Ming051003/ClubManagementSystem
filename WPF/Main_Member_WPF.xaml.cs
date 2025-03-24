@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF.Member;
+using WPF.President;
 
 namespace WPF
 {
@@ -54,34 +56,36 @@ namespace WPF
             }
         }
 
-        private void UC_Admin_Home_Checked(object sender, RoutedEventArgs e)
+        private void UC_Member_Profile_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ProfileManagement();
+        }
+
+        private void UC_Member_Team_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new TeamManagement();
+        }
+
+        private void UC_Member_Event_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new EventEnrollment();
+        }
+
+        private void UC_Member_History_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new EventHistory();
+        }
+
+        private void UC_Member_Notifcation_Checked(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
+        private void UC_Member_Logout_Checked(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UC_Admin_Invoice_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UC_Admin_Worktime_Checked(object sender, RoutedEventArgs e)
-        {
-
+            LoginAccount loginAccount = new LoginAccount();
+            loginAccount.Show();
+            this.Close();
         }
     }
 }

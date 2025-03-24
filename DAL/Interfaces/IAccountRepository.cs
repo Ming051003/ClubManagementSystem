@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace DAL.Interfaces
 {
     public interface IAccountRepository
-
     {
         public List<User> GetAll();
         public User Login(string username, string password);
@@ -16,6 +15,7 @@ namespace DAL.Interfaces
         public int? GetClubIdByUsername(string username);
         public List<User> GetLeadersByClubId(int currentClubId);
         public void UpdateAccountRoleOnly(User user);
-       
+        public bool ChangePassword(int userId, string currentPassword, string newPassword);
+        public List<User> GetMembersByClubId(int clubId);
     }
 }

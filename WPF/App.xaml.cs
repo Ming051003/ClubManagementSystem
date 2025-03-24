@@ -45,6 +45,7 @@ namespace WPF
             services.AddSingleton<IEventParticipantService, EventParticipantService>();
             services.AddSingleton<IClubService, ClubService>();
             services.AddSingleton<ITeamService, TeamService>();
+            services.AddSingleton<ITeamMemberService, TeamMemberService>();
 
             // Register Repositories
             services.AddSingleton<IAccountRepository, AccountRepository>();
@@ -52,6 +53,8 @@ namespace WPF
             services.AddSingleton<IEventParticipantRepository, EventParticipantRepository>();
             services.AddSingleton<IClubRepository, ClubRepository>();
             services.AddSingleton<ITeamRepository, TeamRepository>();
+            services.AddSingleton<ITeamMemberRepository, TeamMemberRepository>();
+
 
             // Register DbContext
             services.AddDbContext<ClubManagementContext>(options =>

@@ -19,5 +19,7 @@ namespace BLL.BusinessInterfaces
         public int? GetClubIdByUsername(string username);
         public void UpdateAccountRoleOnly(User user);
         public List<User> GetLeadersByClubId();
+        public bool ChangePassword(int userId, string currentPassword, string newPassword);
+        public List<User> GetMembersByClubId(int clubId);
     }
 }

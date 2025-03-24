@@ -34,7 +34,7 @@ namespace BLL.BusinessService
 
         public List<EventParticipant> GetEventParticipantsByUser(int userId)
         {
-            return _eventParticipantRepository.GetAll().Where(p => p.UserId == userId).ToList();
+            return _eventParticipantRepository.GetByUserId(userId);
         }
 
         public void AddEventParticipant(EventParticipant participant)

@@ -1,4 +1,4 @@
-﻿using DAL.Interfaces;
+using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Model.Contexts;
 using Model.Models;
@@ -105,6 +105,37 @@ namespace BLL.Repositories
             {
                 throw new Exception("User not found.");
             }
+        }
+
+        public bool ChangePassword(int userId, string currentPassword, string newPassword)
+        {
+            try
+            {
+                using var context = new ClubManagementContext();
+                var user = context.Users.FirstOrDefault(u => u.UserId == userId);
+                
+                if (user == null) return false;
+                
+                // Verify current password
+                if (user.Password != currentPassword) return false;
+                
+                // Update password
+                user.Password = newPassword;
+                context.SaveChanges();
+                
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public List<User> GetMembersByClubId(int clubId)
+        {
+            return context.Users
+                .Where(u => u.ClubId == clubId && u.Role == "Member")
+                .ToList();
         }
     }
 }

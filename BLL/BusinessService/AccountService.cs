@@ -76,5 +76,33 @@ namespace BLL.BusinessService
         {
             accountRepository.UpdateAccountRoleOnly(user);
         }
+
+        public bool ChangePassword(int userId, string currentPassword, string newPassword)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword))
+                {
+                    return false;
+                }
+
+                // Validate new password
+                if (newPassword.Length < 6)
+                {
+                    return false;
+                }
+
+                return accountRepository.ChangePassword(userId, currentPassword, newPassword);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public List<User> GetMembersByClubId(int clubId)
+        {
+            return accountRepository.GetMembersByClubId(clubId);
+        }
     }
 }
