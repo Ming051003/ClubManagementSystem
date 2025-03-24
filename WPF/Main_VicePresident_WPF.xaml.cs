@@ -114,6 +114,7 @@ namespace WPF
 
         private void UC_VicePresident_Report_Checked(object sender, RoutedEventArgs e)
         {
+            MainContent.Content = new TeamManagementByVicePresident();
         }
     }
 }

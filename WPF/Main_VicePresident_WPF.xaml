@@ -86,7 +86,7 @@
                          Tag="{StaticResource color5}" Checked="UC_VicePresident_Report_Checked" >
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="ChartBar" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Report" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Team" Style="{StaticResource menuButtonText}"/>
 
                         </StackPanel>
                     </RadioButton>
