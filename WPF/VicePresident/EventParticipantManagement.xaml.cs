@@ -121,6 +121,17 @@ namespace WPF.VicePresident
             if (_selectedEvent != null)
             {
                 var eventParticipants = _eventParticipantService.GetEventParticipantsByEvent(_selectedEvent.EventId);
+                
+                // Apply status filter if selected
+                if (cmbStatusFilter != null && cmbStatusFilter.SelectedItem != null)
+                {
+                    var selectedStatus = ((ComboBoxItem)cmbStatusFilter.SelectedItem).Content.ToString();
+                    if (selectedStatus != "All Statuses")
+                    {
+                        eventParticipants = eventParticipants.Where(p => p.Status == selectedStatus).ToList();
+                    }
+                }
+                
                 dgParticipants.ItemsSource = eventParticipants;
                 UpdateParticipantStats(eventParticipants);
             }
@@ -164,6 +175,11 @@ namespace WPF.VicePresident
         {
             // This event handler will be triggered when the status is changed in the combo box
             // No implementation needed here as we're just using it to reflect the selected participant's status
+        }
+
+        private void cmbStatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadEventParticipants();
         }
 
         private void txtEventSearch_KeyDown(object sender, KeyEventArgs e)
@@ -238,43 +254,17 @@ namespace WPF.VicePresident
         {
             if (_selectedEvent != null)
             {
-                // Create a host window for the UserControl
-                _hostWindow = new Window
+                // Find the parent Main_VicePresident_WPF window
+                var mainWindow = Window.GetWindow(this) as Main_VicePresident_WPF;
+                if (mainWindow != null)
                 {
-                    Title = "Send Notification",
-                    SizeToContent = SizeToContent.WidthAndHeight,
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                    Owner = Application.Current.MainWindow,
-                    ResizeMode = ResizeMode.NoResize
-                };
-
-                // Create the NotificationWindow UserControl
-                var notificationControl = new NotificationWindow(_selectedEvent.EventName);
-
-                // Subscribe to events
-                notificationControl.SendClicked += (s, notificationData) =>
-                {
-                    // Handle notification sending logic here
-                    MessageBox.Show($"Notification sent to {notificationData.RecipientType}.", "Notification Sent", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _hostWindow.DialogResult = true;
-                    _hostWindow.Close();
-                };
-
-                notificationControl.CancelClicked += (s, args) =>
-                {
-                    _hostWindow.DialogResult = false;
-                    _hostWindow.Close();
-                };
-
-                // Set the UserControl as the window content
-                _hostWindow.Content = notificationControl;
-
-                // Show the window
-                _hostWindow.ShowDialog();
+                    // Navigate to the notification tab with the selected event
+                    mainWindow.NavigateToNotificationTab(_selectedEvent.EventName);
+                }
             }
             else
             {
-                MessageBox.Show("Please select an event to send notifications for.", "No Event Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Please select an event first.", "No Event Selected", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

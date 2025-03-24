@@ -85,6 +85,24 @@ namespace WPF
         
         private void UC_VicePresident_Notification_Checked(object sender, RoutedEventArgs e)
         {
+            NavigateToNotificationTab("All Events");
+        }
+        
+        public void NavigateToNotificationTab(string eventName)
+        {
+            rbNotification.IsChecked = true;
+            var notificationWindow = new NotificationWindow(eventName);
+            
+            notificationWindow.SendClicked += (s, args) => {
+                MessageBox.Show($"Notification sent to {args.RecipientType} with subject: {args.Subject}", 
+                    "Notification Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+            };
+            
+            notificationWindow.CancelClicked += (s, args) => {
+                // If needed, handle cancel action
+            };
+            
+            MainContent.Content = notificationWindow;
         }
 
         private void UC_VicePresident_Logout_Checked(object sender, RoutedEventArgs e)

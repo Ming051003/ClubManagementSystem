@@ -5,46 +5,118 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
         mc:Ignorable="d"
-        d:DesignHeight="400" d:DesignWidth="600">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
-        <!-- Header -->
-        <TextBlock Grid.Row="0" Text="Send Notification" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
-        
-        <!-- Recipients Selection -->
-        <StackPanel Grid.Row="1" Margin="0,0,0,15">
-            <TextBlock Text="Recipients:" FontWeight="Bold"/>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <RadioButton x:Name="rbAllParticipants" Content="All Participants" Margin="0,0,15,0" IsChecked="True"/>
-                <RadioButton x:Name="rbRegisteredOnly" Content="Registered Only" Margin="0,0,15,0"/>
-                <RadioButton x:Name="rbAttendedOnly" Content="Attended Only" Margin="0,0,15,0"/>
-                <RadioButton x:Name="rbAbsentOnly" Content="Absent Only"/>
+        d:DesignHeight="700" d:DesignWidth="1400">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel - Event List -->
+        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <TextBlock Grid.Row="0" Text="Events" FontSize="18" FontWeight="Bold" Margin="10,15,10,15"/>
+                
+                <!-- Search Box -->
+                <Grid Grid.Row="1" Margin="10,0,10,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="txtEventSearch" Grid.Column="0" Margin="0,0,5,0" KeyDown="txtEventSearch_KeyDown" 
+                             VerticalContentAlignment="Center" Padding="5,3"/>
+                    <Button x:Name="btnEventSearch" Grid.Column="1" Content="Search" Padding="10,5" Click="btnEventSearch_Click"/>
+                </Grid>
+
+                <!-- Event List -->
+                <DataGrid x:Name="dgEvents" Grid.Row="2" AutoGenerateColumns="False" 
+                          SelectionMode="Single" SelectionChanged="dgEvents_SelectionChanged"
+                          IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserReorderColumns="False" CanUserResizeRows="False"
+                          CanUserSortColumns="True" HeadersVisibility="Column"
+                          BorderThickness="1" BorderBrush="LightGray"
+                          VerticalScrollBarVisibility="Auto" Margin="10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Event Name" Binding="{Binding EventName}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- Right Panel - Notification Form -->
+        <Grid Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <TextBlock Grid.Row="0" Text="Send Notification" FontSize="22" FontWeight="Bold" Margin="0,0,0,20"/>
+            
+            <!-- Event Details -->
+            <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="0,0,0,15" Margin="0,0,0,15">
+                <StackPanel>
+                    <TextBlock x:Name="txtEventTitle" Text="Selected Event: None" FontSize="16" FontWeight="SemiBold"/>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Date:" FontWeight="SemiBold" Margin="0,0,10,5"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtEventDate" Text=""/>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Location:" FontWeight="SemiBold" Margin="20,0,10,5"/>
+                        <TextBlock Grid.Row="0" Grid.Column="3" x:Name="txtEventLocation" Text=""/>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Status:" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtEventStatus" Text=""/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
+            <!-- Recipients Selection -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,15">
+                <TextBlock Text="Recipients:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <RadioButton x:Name="rbAllParticipants" Content="All Participants" Margin="0,0,15,0" IsChecked="True"/>
+                    <RadioButton x:Name="rbRegisteredOnly" Content="Registered Only" Margin="0,0,15,0"/>
+                    <RadioButton x:Name="rbAttendedOnly" Content="Attended Only" Margin="0,0,15,0"/>
+                    <RadioButton x:Name="rbAbsentOnly" Content="Absent Only"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-        
-        <!-- Subject -->
-        <StackPanel Grid.Row="2" Margin="0,0,0,15">
-            <TextBlock Text="Subject:" FontWeight="Bold"/>
-            <TextBox x:Name="txtSubject" Margin="0,5,0,0"/>
-        </StackPanel>
-        
-        <!-- Message Content -->
-        <StackPanel Grid.Row="3" Margin="0,0,0,15">
-            <TextBlock Text="Message:" FontWeight="Bold"/>
-            <TextBox x:Name="txtMessage" Margin="0,5,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="150"/>
-        </StackPanel>
-        
-        <!-- Action Buttons -->
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="btnSend" Content="Send" Width="100" Margin="0,0,10,0" Click="btnSend_Click"/>
-            <Button x:Name="btnCancel" Content="Cancel" Width="100" Click="btnCancel_Click"/>
-        </StackPanel>
+            
+            <!-- Subject -->
+            <StackPanel Grid.Row="3" Margin="0,0,0,15">
+                <TextBlock Text="Subject:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox x:Name="txtSubject" Margin="0,0,0,15"/>
+                
+                <TextBlock Text="Message:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox x:Name="txtMessage" TextWrapping="Wrap" AcceptsReturn="True" 
+                         VerticalScrollBarVisibility="Auto" MinHeight="200"/>
+            </StackPanel>
+            
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnSend" Content="Send" Width="120" Height="35" Margin="0,0,15,0" Click="btnSend_Click"/>
+                <Button x:Name="btnCancel" Content="Cancel" Width="120" Height="35" Click="btnCancel_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

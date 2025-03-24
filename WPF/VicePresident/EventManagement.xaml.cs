@@ -432,43 +432,17 @@ namespace WPF
             var selectedEvent = dgEvents.SelectedItem as Event;
             if (selectedEvent != null)
             {
-                // Create a host window for the notification dialog
-                _hostWindow = new Window
+                // Find the parent Main_VicePresident_WPF window
+                var mainWindow = Window.GetWindow(this) as Main_VicePresident_WPF;
+                if (mainWindow != null)
                 {
-                    Title = "Send Notification",
-                    SizeToContent = SizeToContent.WidthAndHeight,
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                    Owner = Application.Current.MainWindow,
-                    ResizeMode = ResizeMode.NoResize
-                };
-                
-                // Create the notification dialog
-                var notificationControl = new NotificationWindow(selectedEvent.EventName);
-                
-                // Subscribe to events
-                notificationControl.SendClicked += (s, notificationData) => 
-                {
-                    // Handle notification sending logic here
-                    MessageBox.Show($"Notification sent to {notificationData.RecipientType}.", "Notification Sent", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _hostWindow.DialogResult = true;
-                    _hostWindow.Close();
-                };
-                
-                notificationControl.CancelClicked += (s, args) => 
-                {
-                    _hostWindow.DialogResult = false;
-                    _hostWindow.Close();
-                };
-                
-                // Set the UserControl as the window content
-                _hostWindow.Content = notificationControl;
-                
-                // Show the window
-                _hostWindow.ShowDialog();
+                    // Navigate to the notification tab with the selected event
+                    mainWindow.NavigateToNotificationTab(selectedEvent.EventName);
+                }
             }
             else
             {
-                MessageBox.Show("Please select an event to send notifications for.", "No Event Selected", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Please select an event first.", "No Event Selected", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         

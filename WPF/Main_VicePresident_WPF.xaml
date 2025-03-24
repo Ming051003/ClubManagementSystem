@@ -74,7 +74,7 @@
                         </StackPanel>
                     </RadioButton>
                     
-                    <RadioButton Style="{StaticResource menuButton}"
+                    <RadioButton x:Name="rbNotification" Style="{StaticResource menuButton}"
                         Tag="{StaticResource color3}" Checked="UC_VicePresident_Notification_Checked">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Truck" Style="{StaticResource menuButtonIcon}"/>

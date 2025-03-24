@@ -137,11 +137,22 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     
                     <TextBlock Text="Participants" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
                     
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBlock Text="Filter by Status:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="cmbStatusFilter" Width="150" SelectionChanged="cmbStatusFilter_SelectionChanged">
+                            <ComboBoxItem Content="All Statuses" IsSelected="True"/>
+                            <ComboBoxItem Content="Registered"/>
+                            <ComboBoxItem Content="Attended"/>
+                            <ComboBoxItem Content="Absent"/>
+                        </ComboBox>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
                         <Button x:Name="btnSendNotification" Content="Send Notification" Padding="10,5" Click="btnSendNotification_Click"/>
                     </StackPanel>
                 </Grid>
