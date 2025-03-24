@@ -36,8 +36,6 @@ namespace WPF.President
             ClearTeamForm();
         }
 
-        #region Team Management
-
         private void LoadTeams(string searchText = "")
         {
             try
@@ -91,19 +89,6 @@ namespace WPF.President
         private void btnAddTeam_Click(object sender, RoutedEventArgs e)
         {
             ClearTeamForm();
-            txtTeamName.Focus();
-        }
-
-        private void btnEditTeam_Click(object sender, RoutedEventArgs e)
-        {
-            var selectedTeam = dgTeam.SelectedItem as TeamView;
-            if (selectedTeam == null)
-            {
-                MessageBox.Show("Please select a team to edit.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            
-            // Form is already populated from the selection changed event
             txtTeamName.Focus();
         }
 
@@ -278,10 +263,6 @@ namespace WPF.President
             dgTeamMembers.ItemsSource = null;
         }
 
-        #endregion
-
-        #region Team Member Management
-
         private void LoadTeamMembers(int teamId)
         {
             try
@@ -332,11 +313,13 @@ namespace WPF.President
                 // Get all members in the club who are not already in the team
                 var clubId = User.Current?.ClubId ?? 0;
                 var availableMembers = _accountService.GetMembersByClubId(clubId)
-                    .Where(m => !currentTeamMembers.Contains(m.UserId))
+                    .Where(m => !currentTeamMembers.Contains(m.UserId) && m.Role == "Member")
                     .ToList();
                 
                 // Set the available members to the ComboBox
                 cboAvailableMembers.ItemsSource = availableMembers;
+                cboAvailableMembers.DisplayMemberPath = "FullName";
+                cboAvailableMembers.SelectedValuePath = "UserId";
             }
             catch (Exception ex)
             {
@@ -516,10 +499,8 @@ namespace WPF.President
             }
         }
 
-        #endregion
     }
 
-    // View model for team members with role information
     public class TeamMemberView
     {
         public int TeamMemberId { get; set; }

@@ -139,10 +139,6 @@
                               Margin="5,0" 
                               Click="btnAddTeam_Click"/>
                         
-                        <Button Content="Edit Team" 
-                              Style="{StaticResource ActionButtonStyle}"
-                              Margin="5,0" 
-                              Click="btnEditTeam_Click"/>
                         
                         <Button Content="Delete Team" 
                               Style="{StaticResource ActionButtonStyle}"
