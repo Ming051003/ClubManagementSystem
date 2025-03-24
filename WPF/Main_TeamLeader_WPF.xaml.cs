@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF.VicePresident;
 
 namespace WPF
 {
@@ -56,30 +57,33 @@ namespace WPF
 
         private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
         {
-
+            MainContent.Content = new AccountManagementByVicePresedent();
         }
 
         private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
         {
-
+            MainContent.Content = new TeamManagementByVicePresident();
         }
 
         private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)
         {
+            MainContent.Content = new EventManagement();
+        }
 
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            LoginAccount loginAccount = new LoginAccount();
+            loginAccount.Show();
+            this.Close();
         }
 
         private void UC_Admin_Invoice_Checked(object sender, RoutedEventArgs e)
         {
+            MainContent.Content = new EventParticipantManagement();
 
         }
 
         private void UC_Admin_Worktime_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UC_Admin_WorkDay_Checked(object sender, RoutedEventArgs e)
         {
 
         }
