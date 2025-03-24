@@ -9,9 +9,9 @@ using BLL.BusinessInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
 
-namespace WPF.Admin
+namespace WPF.President
 {
-    public partial class EventParticipantManagement : UserControl
+    public partial class EventParticipantManagementByPresident : UserControl
     {
         private readonly IEventService _eventService;
         private readonly IAccountService _userService;
@@ -24,7 +24,7 @@ namespace WPF.Admin
         // Event to notify when an event is selected
         public event EventHandler<Event> EventSelected;
 
-        public EventParticipantManagement()
+        public EventParticipantManagementByPresident()
         {
             InitializeComponent();
 
@@ -47,7 +47,7 @@ namespace WPF.Admin
         }
 
         // Constructor that accepts a specific event to display
-        public EventParticipantManagement(Event eventToDisplay)
+        public EventParticipantManagementByPresident(Event eventToDisplay)
         {
             InitializeComponent();
 
@@ -91,8 +91,36 @@ namespace WPF.Admin
 
         private void LoadEvents()
         {
-            _allEvents = _eventService.GetAllEvents().ToList();
-            dgEvents.ItemsSource = _allEvents;
+            try
+            {
+                // Get the current user's club ID
+                string username = User.Current?.UserName;
+                
+                if (string.IsNullOrEmpty(username))
+                {
+                    MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int? clubIdFromCurrentUser = _userService.GetClubIdByUsername(username);
+
+                if (clubIdFromCurrentUser == null)
+                {
+                    MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Get all events and filter by the current user's club ID
+                _allEvents = _eventService.GetAllEvents()
+                    .Where(e => e.ClubId == clubIdFromCurrentUser)
+                    .ToList();
+                
+                dgEvents.ItemsSource = _allEvents;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading events: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void dgEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)

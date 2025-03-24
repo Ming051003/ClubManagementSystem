@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using BLL.BusinessService;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
@@ -144,7 +144,7 @@ namespace WPF.Admin
                     return;
                 }
 
-                // Lấy dữ liệu từ form
+                // Get form data
                 string studentId = txtRollNumber.Text.Trim();
                 string username = txtUsername.Text.Trim();
                 string password = txtPassword.Text.Trim();
@@ -154,12 +154,15 @@ namespace WPF.Admin
                 int clubId = (int)cboClub.SelectedValue;
                 bool isActive = rbActive.IsChecked == true;
 
-                if (_accountService.GetAll().Any(u => u.UserName == username))
+                // Check for duplicate username (case-insensitive)
+                if (_accountService.GetAll().Any(u => u.UserName.ToLower() == username.ToLower()))
                 {
                     MessageBox.Show("Username already exists. Please choose another one.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                if (_accountService.GetAll().Any(u => u.StudentId == studentId && u.ClubId == clubId))
+
+                // Check for duplicate StudentId + ClubId combination
+                if (!string.IsNullOrEmpty(studentId) && _accountService.GetAll().Any(u => u.StudentId == studentId && u.ClubId == clubId))
                 {
                     MessageBox.Show("A user with the same Roll number and Club already exists in this organization.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -167,7 +170,7 @@ namespace WPF.Admin
 
                 User user = new User
                 {
-                    StudentId = studentId,
+                    StudentId = string.IsNullOrEmpty(studentId) ? null : studentId,
                     UserName = username,
                     Password = password,
                     FullName = fullName,
@@ -177,16 +180,24 @@ namespace WPF.Admin
                     Status = isActive,
                     JoinDate = DateOnly.FromDateTime(DateTime.Now),
                 };
-                _accountService.AddAccount(user);
-                MessageBox.Show("Added account successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadData();
 
+                try
+                {
+                    _accountService.AddAccount(user);
+                    MessageBox.Show("Added account successfully!", "Information Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadData();
+                    ClearForm();
+                }
+                catch (Exception ex)
+                {
+                    var innerMessage = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                    MessageBox.Show($"Error adding user: {innerMessage}", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xảy ra: " + ex.Message, "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error: {ex.Message}", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
@@ -255,54 +266,42 @@ namespace WPF.Admin
 
         private bool ValidateForm()
         {
-            string username = txtUsername.Text.Trim();
-            string studentId = txtRollNumber.Text.Trim();
-            int clubId = (int)cboClub.SelectedValue;
-            if (string.IsNullOrWhiteSpace(username))
+            // Check for empty required fields
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                MessageBox.Show("Username cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Username is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-
-            if (string.IsNullOrWhiteSpace(studentId))
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                MessageBox.Show("Roll number cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Password is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-
             if (string.IsNullOrWhiteSpace(txtFullName.Text))
             {
-                MessageBox.Show("Full Name cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Full Name is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-
-            if (string.IsNullOrWhiteSpace(txtEmail.Text) || !IsValidEmail(txtEmail.Text))
+            if (string.IsNullOrWhiteSpace(txtEmail.Text))
             {
-                MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Email is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-
-            if (string.IsNullOrWhiteSpace(txtPassword.Text) || txtPassword.Text.Length < 6)
-            {
-                MessageBox.Show("Password must be at least 6 characters long.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
             if (cboRole.SelectedValue == null)
             {
-                MessageBox.Show("Please select a Role.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Role is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-
             if (cboClub.SelectedValue == null)
             {
-                MessageBox.Show("Please select a Club.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Club is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            if (!rbActive.IsChecked.HasValue && !rbInactive.IsChecked.HasValue)
+            // Validate email format
+            if (!IsValidEmail(txtEmail.Text))
             {
-                MessageBox.Show("Please select the Status.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
@@ -329,8 +328,8 @@ namespace WPF.Admin
             txtPassword.Text = string.Empty;
             txtFullName.Text = string.Empty;
             txtEmail.Text = string.Empty;
-            cboRole.SelectedValue = -1;
-            cboClub.SelectedValue =-1;
+            cboRole.SelectedIndex = -1;
+            cboClub.SelectedIndex = -1;
             rbActive.IsChecked = true;
         }
 

@@ -111,6 +111,12 @@
                         <TextBlock Text="Event Date:" FontWeight="Bold"/>
                         <DatePicker x:Name="dpEventDate" Margin="0,5,0,15"/>
                         
+                        <TextBlock Text="Club:" FontWeight="Bold"/>
+                        <ComboBox x:Name="cmbClub" 
+                                  DisplayMemberPath="ClubName"
+                                  SelectedValuePath="ClubId"
+                                  Margin="0,5,0,15"/>
+                        
                         <TextBlock Text="Location:" FontWeight="Bold"/>
                         <TextBox x:Name="txtLocation" Margin="0,5,0,15"/>
                         

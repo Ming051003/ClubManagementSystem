@@ -273,60 +273,63 @@ namespace WPF.VicePresident
                 return;
             }
             
-            // Parse numeric values
-            int capacity;
-            if (!int.TryParse(txtCapacity.Text, out capacity))
+            var eventDate = dpEventDate.SelectedDate.Value;
+            var eventName = txtEventName.Text;
+            var description = txtDescription.Text;
+            var location = txtLocation.Text;
+            var capacityText = txtCapacity.Text;
+            var status = (cmbStatus.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Upcoming";
+
+            if (!int.TryParse(capacityText, out int capacity))
             {
-                MessageBox.Show("Capacity must be a valid number.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            
-            // Get the current user's club ID
-            string username = User.Current?.UserName;
-            if (string.IsNullOrEmpty(username))
-            {
-                MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a valid number for capacity.", "Invalid Capacity", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
-            if (clubIdFromCurrentUser == null)
-            {
-                MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            
-            var eventDate = dpEventDate.SelectedDate.Value;
-            var eventName = txtEventName.Text;
-            
-            // Check for duplicate event name on the same day
-            var existingEvents = _eventService.GetAllEvents().ToList();
-            var duplicateEvent = existingEvents.FirstOrDefault(e => 
-                e.EventName.Equals(eventName, StringComparison.OrdinalIgnoreCase) && 
-                e.EventDate.Date == eventDate.Date);
-                
-            if (duplicateEvent != null)
-            {
-                MessageBox.Show("An event with the same name already exists on this date.", "Duplicate Event", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            
             try
             {
-                // Create new event
+                // Get current user's club ID
+                string username = User.Current?.UserName;
+                if (string.IsNullOrEmpty(username))
+                {
+                    MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
+                if (clubIdFromCurrentUser == null)
+                {
+                    MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Check for duplicate event name on the same day
+                var existingEvents = _eventService.GetAllEvents()
+                    .Where(e => e.ClubId == clubIdFromCurrentUser)  // Only check duplicates within the same club
+                    .ToList();
+                var duplicateEvent = existingEvents.FirstOrDefault(e => 
+                    e.EventName.Equals(eventName, StringComparison.OrdinalIgnoreCase) && 
+                    e.EventDate.Date == eventDate.Date);
+                    
+                if (duplicateEvent != null)
+                {
+                    MessageBox.Show("An event with the same name already exists on this date.", "Duplicate Event", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 var newEvent = new Event
                 {
-                    EventName = txtEventName.Text,
-                    Description = txtDescription.Text,
-                    EventDate = dpEventDate.SelectedDate.Value,
-                    Location = txtLocation.Text,
-                    ClubId = clubIdFromCurrentUser.Value,
+                    EventName = eventName,
+                    Description = description,
+                    EventDate = eventDate,
+                    Location = location,
+                    ClubId = (int)clubIdFromCurrentUser,
                     Capacity = capacity,
-                    Status = (cmbStatus.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Upcoming"
+                    Status = status
                 };
                 
                 _eventService.AddEvent(newEvent);
-                MessageBox.Show("Event added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Event added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 
                 // Refresh events list and clear the form
                 LoadEvents();

@@ -62,15 +62,6 @@ namespace WPF
             MainContent.Content = new AccountManagemenByPresident();
 
         }
-        private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
-        {
-            MainContent.Content = new TeamManagementByPresident();
-        }
-        private void UC_Admin_Inventory_Checked(object sender, RoutedEventArgs e)
-        {
-            MainContent.Content = new EventManagementByPresident();
-
-        }
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             LoginAccount loginAccount = new LoginAccount();
@@ -78,6 +69,19 @@ namespace WPF
             this.Close();
         }
 
-      
+        private void UC_President_EventParticipant_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new EventParticipantManagementByPresident();
+        }
+
+        private void UC_President_Event_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new EventManagementByPresident();
+        }
+
+        private void UC_President_Team_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

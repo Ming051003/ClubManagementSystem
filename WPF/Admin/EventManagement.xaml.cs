@@ -60,6 +60,8 @@ namespace WPF
             // Set up the filter dropdown
             cmbFilterClub.ItemsSource = clubsWithAll;
             cmbFilterClub.SelectedIndex = 0; // Select "All Clubs" by default
+            
+            cmbClub.ItemsSource = _clubs;
         }
 
         private void LoadEvents()
@@ -191,6 +193,9 @@ namespace WPF
                 txtLocation.Text = selectedEvent.Location;
                 txtCapacity.Text = selectedEvent.Capacity.ToString();
                 
+                // Set club selection
+                cmbClub.SelectedValue = selectedEvent.ClubId;
+                
                 // Set status
                 foreach (ComboBoxItem item in cmbStatus.Items)
                 {
@@ -234,19 +239,18 @@ namespace WPF
                 return;
             }
             
+            // Validate club selection
+            if (cmbClub.SelectedValue == null)
+            {
+                MessageBox.Show("Please select a club.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            
             // Parse numeric values
             int capacity;
             if (!int.TryParse(txtCapacity.Text, out capacity))
             {
                 MessageBox.Show("Capacity must be a valid number.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            
-            // Get the selected club from the filter dropdown
-            var selectedClub = cmbFilterClub.SelectedItem as Club;
-            if (selectedClub == null || selectedClub.ClubId == -1) // "All Clubs" option
-            {
-                MessageBox.Show("Please select a specific club from the filter dropdown.", "Club Selection Required", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             
@@ -274,7 +278,7 @@ namespace WPF
                     Description = txtDescription.Text,
                     EventDate = dpEventDate.SelectedDate.Value,
                     Location = txtLocation.Text,
-                    ClubId = selectedClub.ClubId,
+                    ClubId = (int)cmbClub.SelectedValue,
                     Capacity = capacity,
                     Status = (cmbStatus.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Upcoming"
                 };
