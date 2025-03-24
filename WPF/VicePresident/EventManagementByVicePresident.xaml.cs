@@ -15,9 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Model.Contexts;
 using Model.Models;
 
-namespace WPF
+namespace WPF.VicePresident
 {
-    public partial class EventManagement : UserControl
+    public partial class EventManagementByVicePresident : UserControl
     {
         private IEventService _eventService;
         private IAccountService _accountService;
@@ -31,7 +31,7 @@ namespace WPF
         // Event to notify when a participant view is requested
         public event EventHandler<Event> ViewParticipantsRequested;
 
-        public EventManagement()
+        public EventManagementByVicePresident()
         {
             InitializeComponent();
             _eventService = ((App)Application.Current).ServiceProvider.GetRequiredService<IEventService>()
@@ -50,44 +50,83 @@ namespace WPF
 
         private void LoadClubs()
         {
-            _clubs = _clubService.GetClubs();
+            // Get the current user's club ID
+            string username = User.Current?.UserName;
+            int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
+
+            if (clubIdFromCurrentUser == null)
+            {
+                MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            _clubs = _clubService.GetClubs().Where(c => c.ClubId == clubIdFromCurrentUser).ToList();
             
-            // Add an "All Clubs" option at the beginning
-            var allClubsOption = new Club { ClubId = -1, ClubName = "All Clubs" };
-            var clubsWithAll = new List<Club> { allClubsOption };
-            clubsWithAll.AddRange(_clubs);
-            
-            // Set up the filter dropdown
-            cmbFilterClub.ItemsSource = clubsWithAll;
-            cmbFilterClub.SelectedIndex = 0; // Select "All Clubs" by default
-            
-            // Set up the club selection dropdown (without the "All Clubs" option)
-            cmbClub.ItemsSource = _clubs;
+            // Display the current club name in the UI
+            if (_clubs.Count > 0)
+            {
+                txtCurrentClub.Text = $"Current Club: {_clubs[0].ClubName}";
+            }
         }
 
         private void LoadEvents()
         {
-            var events = _eventService.GetAllEvents().ToList();
-            
-            // Apply club filter if one is selected
-            if (cmbFilterClub.SelectedItem is Club selectedClub && selectedClub.ClubId != -1)
+            try
             {
-                events = events.Where(e => e.ClubId == selectedClub.ClubId).ToList();
+                // Get the current user's club ID
+                string username = User.Current?.UserName;
+                
+                if (string.IsNullOrEmpty(username))
+                {
+                    MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
+
+                if (clubIdFromCurrentUser == null)
+                {
+                    MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Get all events and filter by the current user's club ID
+                var events = _eventService.GetAllEvents()
+                    .Where(e => e.ClubId == clubIdFromCurrentUser)
+                    .ToList();
+                
+                // Apply status filter if one is selected (independent of club filtering)
+                ApplyStatusFilter(ref events);
+                
+                // Apply search filter if text is entered
+                if (!string.IsNullOrWhiteSpace(txtSearch.Text))
+                {
+                    string searchText = txtSearch.Text.Trim().ToLower();
+                    events = events.Where(ev => 
+                        ev.EventName.ToLower().Contains(searchText) ||
+                        ev.Description.ToLower().Contains(searchText) ||
+                        ev.Location.ToLower().Contains(searchText) ||
+                        ev.Status.ToLower().Contains(searchText)
+                    ).ToList();
+                }
+                
+                dgEvents.ItemsSource = events;
             }
-            
-            // Apply search filter if text is entered
-            if (!string.IsNullOrWhiteSpace(txtSearch.Text))
+            catch (Exception ex)
             {
-                string searchText = txtSearch.Text.Trim().ToLower();
-                events = events.Where(ev => 
-                    ev.EventName.ToLower().Contains(searchText) ||
-                    ev.Description.ToLower().Contains(searchText) ||
-                    ev.Location.ToLower().Contains(searchText) ||
-                    ev.Status.ToLower().Contains(searchText)
-                ).ToList();
+               //MessageBox.Show($"Error loading events: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
-            dgEvents.ItemsSource = events;
+        }
+        
+        // Separate method for status filtering that can be used independently
+        private void ApplyStatusFilter(ref List<Event> events)
+        {
+            if (cmbFilterStatus?.SelectedItem is ComboBoxItem selectedStatus && 
+                selectedStatus.Content.ToString() != "All Statuses")
+            {
+                string statusFilter = selectedStatus.Content.ToString();
+                events = events.Where(e => e.Status == statusFilter).ToList();
+            }
         }
 
         private void ClearForm()
@@ -96,7 +135,6 @@ namespace WPF
             txtDescription.Text = string.Empty;
             dpEventDate.SelectedDate = DateTime.Today;
             txtLocation.Text = string.Empty;
-            cmbClub.SelectedIndex = -1;
             txtCapacity.Text = string.Empty;
             cmbStatus.SelectedIndex = 0; // Default to "Upcoming"
             
@@ -106,12 +144,61 @@ namespace WPF
 
         private void SearchEvents()
         {
-            LoadEvents(); // This now handles both search and club filtering
+            try
+            {
+                // Get the current user's club ID
+                string username = User.Current?.UserName;
+                
+                if (string.IsNullOrEmpty(username))
+                {
+                    MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
+
+                if (clubIdFromCurrentUser == null)
+                {
+                    MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Get all events and filter by the current user's club ID
+                var events = _eventService.GetAllEvents()
+                    .Where(e => e.ClubId == clubIdFromCurrentUser)
+                    .ToList();
+                
+                // Apply status filter
+                ApplyStatusFilter(ref events);
+                
+                // Apply search filter
+                if (!string.IsNullOrWhiteSpace(txtSearch?.Text))
+                {
+                    string searchText = txtSearch.Text.Trim().ToLower();
+                    events = events.Where(ev => 
+                        ev.EventName.ToLower().Contains(searchText) ||
+                        ev.Description.ToLower().Contains(searchText) ||
+                        ev.Location.ToLower().Contains(searchText) ||
+                        ev.Status.ToLower().Contains(searchText)
+                    ).ToList();
+                }
+                
+                dgEvents.ItemsSource = events;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error searching events: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         
         private void cmbFilterClub_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadEvents(); // Reload events with the new club filter
+            LoadEvents();
+        }
+
+        private void cmbFilterStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadEvents();
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -137,22 +224,13 @@ namespace WPF
             var selectedEvent = dgEvents.SelectedItem as Event;
             if (selectedEvent != null)
             {
-                // Populate form fields with selected event details
                 txtEventName.Text = selectedEvent.EventName;
                 txtDescription.Text = selectedEvent.Description;
                 dpEventDate.SelectedDate = selectedEvent.EventDate;
                 txtLocation.Text = selectedEvent.Location;
-                
-                // Set the club in the combo box
-                var club = _clubs.FirstOrDefault(c => c.ClubId == selectedEvent.ClubId);
-                if (club != null)
-                {
-                    cmbClub.SelectedItem = club;
-                }
-                
                 txtCapacity.Text = selectedEvent.Capacity.ToString();
                 
-                // Set the status in the combo box
+                // Set status
                 foreach (ComboBoxItem item in cmbStatus.Items)
                 {
                     if (item.Content.ToString() == selectedEvent.Status)
@@ -161,9 +239,6 @@ namespace WPF
                         break;
                     }
                 }
-                
-                // Change the Add Event button to say "Save Changes"
-                btnAddEvent.Content = "Save Changes";
             }
             else
             {
@@ -198,12 +273,6 @@ namespace WPF
                 return;
             }
             
-            if (cmbClub.SelectedItem == null)
-            {
-                MessageBox.Show("Please select a club.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            
             // Parse numeric values
             int capacity;
             if (!int.TryParse(txtCapacity.Text, out capacity))
@@ -212,7 +281,21 @@ namespace WPF
                 return;
             }
             
-            var selectedClub = cmbClub.SelectedItem as Club;
+            // Get the current user's club ID
+            string username = User.Current?.UserName;
+            if (string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
+            if (clubIdFromCurrentUser == null)
+            {
+                MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            
             var eventDate = dpEventDate.SelectedDate.Value;
             var eventName = txtEventName.Text;
             
@@ -237,7 +320,7 @@ namespace WPF
                     Description = txtDescription.Text,
                     EventDate = dpEventDate.SelectedDate.Value,
                     Location = txtLocation.Text,
-                    ClubId = selectedClub.ClubId,
+                    ClubId = clubIdFromCurrentUser.Value,
                     Capacity = capacity,
                     Status = (cmbStatus.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Upcoming"
                 };
@@ -283,12 +366,6 @@ namespace WPF
                 return;
             }
             
-            if (cmbClub.SelectedItem == null)
-            {
-                MessageBox.Show("Please select a club.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            
             // Parse numeric values
             int capacity;
             if (!int.TryParse(txtCapacity.Text, out capacity))
@@ -297,7 +374,28 @@ namespace WPF
                 return;
             }
             
-            var selectedClub = cmbClub.SelectedItem as Club;
+            // Get the current user's club ID
+            string username = User.Current?.UserName;
+            if (string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
+            if (clubIdFromCurrentUser == null)
+            {
+                MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            
+            // Ensure the event belongs to the user's club
+            if (selectedEvent.ClubId != clubIdFromCurrentUser)
+            {
+                MessageBox.Show("You can only update events for your own club.", "Permission Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            
             var eventDate = dpEventDate.SelectedDate.Value;
             var eventName = txtEventName.Text;
             
@@ -321,7 +419,6 @@ namespace WPF
                 selectedEvent.Description = txtDescription.Text;
                 selectedEvent.EventDate = dpEventDate.SelectedDate.Value;
                 selectedEvent.Location = txtLocation.Text;
-                selectedEvent.ClubId = selectedClub.ClubId;
                 selectedEvent.Capacity = capacity;
                 selectedEvent.Status = (cmbStatus.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Upcoming";
                 

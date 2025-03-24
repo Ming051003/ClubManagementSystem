@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
 using WPF.Admin;
+using WPF.VicePresident;
 
 namespace WPF
 {
@@ -46,28 +47,43 @@ namespace WPF
                 this.WindowState = WindowState.Normal;
             }
         }
-
-        private void UC_Admin_Home_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
+        private void UC_Admin_Member_Checked(object sender, RoutedEventArgs e)
         {
             MainContent.Content = new AccountManagement();
         }
 
-        private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
+        private void UC_Admin_Club_Checked(object sender, RoutedEventArgs e)
         {
             MainContent.Content = new ClubManagement();
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new EventManagement();
+        }
+
+        private void UC_Admin_EventParticipant_Checked(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new EventParticipantManagement();
+        }
+
+        private void UC_Admin_Notification_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void UC_Admin_Report_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UC_Admin_Logout_Checked(object sender, RoutedEventArgs e)
+        {
             LoginAccount loginAccount = new LoginAccount();
             loginAccount.Show();
             this.Close();
-            
         }
+
+
     }
 }

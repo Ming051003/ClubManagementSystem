@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="LoginAccount" Height="450" Width="800"
         KeyDown="Window_KeyDown"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     
     <Grid MouseDown="Border_MouseDown">

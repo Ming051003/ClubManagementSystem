@@ -59,7 +59,7 @@ namespace WPF
         
         private void UC_VicePresident_Event_Checked(object sender, RoutedEventArgs e)
         {
-            var eventManagement = new EventManagement();
+            var eventManagement = new VicePresident.EventManagementByVicePresident();
             eventManagement.ViewParticipantsRequested += OnViewParticipantsRequested;
             MainContent.Content = eventManagement;
         }
@@ -74,12 +74,12 @@ namespace WPF
         {
             if (_selectedEvent != null)
             {
-                MainContent.Content = new EventParticipantManagement(_selectedEvent);
+                MainContent.Content = new VicePresident.EventParticipantManagementByVicePresident(_selectedEvent);
                 _selectedEvent = null;
             }
             else
             {
-                MainContent.Content = new EventParticipantManagement();
+                MainContent.Content = new VicePresident.EventParticipantManagementByVicePresident();
             }
         }
         

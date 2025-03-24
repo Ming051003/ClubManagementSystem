@@ -53,40 +53,65 @@
 
                     <!--Menu Buttons-->
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}" Checked="UC_Admin_Home_Checked">
+    Tag="{StaticResource color2}" Checked="UC_Admin_Member_Checked">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Dashboard" Style="{StaticResource menuButtonText}"/>
-
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}"
-             Tag="{StaticResource color2}" Checked="UC_Admin_Staff_Checked">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
+                            <fa:IconImage Icon="Users" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="User" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                        Tag="{StaticResource color4}" Checked="UC_Admin_Event_Checked">
+Tag="{StaticResource color7}" Checked="UC_Admin_Club_Checked" >
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Campground" Style="{StaticResource menuButtonIcon}"/>
+                            <fa:IconImage Icon="UserFriends" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Club" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+    Tag="{StaticResource color7}" Checked="UC_Admin_Event_Checked" >
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="CalendarDay" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Event" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
+                    
+
+                    <RadioButton Style="{StaticResource menuButton}"
+    Tag="{StaticResource color6}" Checked="UC_Admin_EventParticipant_Checked" x:Name="rbEventParticipant">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="UserCheck" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="EventParticipant" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton x:Name="rbNotification" Style="{StaticResource menuButton}"
+    Tag="{StaticResource color3}" Checked="UC_Admin_Notification_Checked">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Bell" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Notification" Style="{StaticResource menuButtonText}"/>
 
                         </StackPanel>
                     </RadioButton>
-                   
+                    <RadioButton Style="{StaticResource menuButton}"
+     Tag="{StaticResource color5}" Checked="UC_Admin_Report_Checked" >
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="ChartBar" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Report" Style="{StaticResource menuButtonText}"/>
 
+                        </StackPanel>
+                    </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color8}" VerticalAlignment="Bottom" Checked="RadioButton_Checked">
+    Tag="{StaticResource color8}" VerticalAlignment="Bottom" Checked="UC_Admin_Logout_Checked">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="SignOutAlt" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Logout" Style="{StaticResource menuButtonText}"/>
 
                         </StackPanel>
                     </RadioButton>
+
 
                 </StackPanel>
             </Border>

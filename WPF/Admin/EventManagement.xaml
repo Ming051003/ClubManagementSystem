@@ -1,0 +1,138 @@
+<UserControl x:Class="WPF.EventManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF"
+        mc:Ignorable="d"
+        d:DesignHeight="700" d:DesignWidth="1400"> 
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Event Management" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+
+        <!-- Search Panel -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="txtSearch" Width="200" Margin="0,0,10,0" KeyDown="txtSearch_KeyDown"/>
+            <Button x:Name="btnSearch" Content="Search" Width="80" Margin="0,0,15,0" Click="btnSearch_Click"/>
+            
+            <TextBlock Text="Filter by Club:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="cmbFilterClub" Width="200" DisplayMemberPath="ClubName" SelectionChanged="cmbFilterClub_SelectionChanged">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+            
+            <TextBlock Text="Status:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+            <ComboBox x:Name="cmbFilterStatus" Width="120" SelectionChanged="cmbFilterStatus_SelectionChanged" Margin="0,0,5,0">
+                <ComboBoxItem Content="All Statuses" IsSelected="True"/>
+                <ComboBoxItem Content="Upcoming"/>
+                <ComboBoxItem Content="Ongoing"/>
+                <ComboBoxItem Content="Completed"/>
+                <ComboBoxItem Content="Cancelled"/>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Events DataGrid -->
+        <DataGrid x:Name="dgEvents" Grid.Row="2" Grid.Column="0" 
+                  ItemsSource="{Binding Events}" 
+                  SelectedItem="{Binding SelectedEvent}" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"
+                  SelectionChanged="dgEvents_SelectionChanged"
+                  Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Event Name" Binding="{Binding EventName}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="0.8*"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding EventDate, StringFormat=d}" Width="0.6*"/>
+                <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="0.8*"/>
+                <DataGridTextColumn Header="Capacity" Binding="{Binding Capacity}" Width="0.5*"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="0.6*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button x:Name="btnAddNewEventMain" Content="Add Event" Width="120" Margin="5" Click="btnAddNewEvent_Click"/>
+            <Button x:Name="btnAddEvent" Content="Add Event" Width="120" Margin="5" Click="btnAddEvent_Click" Visibility="Collapsed"/>
+            <Button x:Name="btnDeleteEvent" Content="Delete Event" Width="120" Margin="5" Click="btnDeleteEvent_Click"/>
+            <Button x:Name="btnViewParticipants" Content="View Participants" Width="150" Margin="5" Click="btnViewParticipants_Click"/>
+            <Button x:Name="btnSendNotification" Content="Send Notification" Width="150" Margin="5" Click="btnSendNotification_Click"/>
+        </StackPanel>
+
+        <!-- Event Status Buttons -->
+        <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <TextBlock Text="Change Status:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <Button x:Name="btnStatusUpcoming" Content="Upcoming" Width="100" Margin="5" Click="btnStatusUpcoming_Click"/>
+            <Button x:Name="btnStatusOngoing" Content="Ongoing" Width="100" Margin="5" Click="btnStatusOngoing_Click"/>
+            <Button x:Name="btnStatusCompleted" Content="Completed" Width="100" Margin="5" Click="btnStatusCompleted_Click"/>
+            <Button x:Name="btnStatusCancelled" Content="Cancelled" Width="100" Margin="5" Click="btnStatusCancelled_Click"/>
+        </StackPanel>
+
+        <!-- Event Details -->
+        <Border x:Name="borderEventDetails" Grid.Row="1" Grid.RowSpan="4" Grid.Column="1" 
+                BorderBrush="LightGray" BorderThickness="1" Margin="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Title -->
+                <TextBlock Grid.Row="0" Text="Event Details" FontWeight="Bold" FontSize="16" Margin="10,10,10,15"/>
+                
+                <!-- Event Edit Form -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="10,0,10,0">
+                        <TextBlock Text="Event Name:" FontWeight="Bold"/>
+                        <TextBox x:Name="txtEventName" Margin="0,5,0,15"/>
+                        
+                        <TextBlock Text="Description:" FontWeight="Bold"/>
+                        <TextBox x:Name="txtDescription" TextWrapping="Wrap" AcceptsReturn="True" Height="80" Margin="0,5,0,15"/>
+                        
+                        <TextBlock Text="Event Date:" FontWeight="Bold"/>
+                        <DatePicker x:Name="dpEventDate" Margin="0,5,0,15"/>
+                        
+                        <TextBlock Text="Location:" FontWeight="Bold"/>
+                        <TextBox x:Name="txtLocation" Margin="0,5,0,15"/>
+                        
+                        <TextBlock Text="Capacity:" FontWeight="Bold"/>
+                        <TextBox x:Name="txtCapacity" Margin="0,5,0,15"/>
+                        
+                        <TextBlock Text="Status:" FontWeight="Bold"/>
+                        <ComboBox x:Name="cmbStatus" Margin="0,5,0,15">
+                            <ComboBoxItem Content="Upcoming"/>
+                            <ComboBoxItem Content="Ongoing"/>
+                            <ComboBoxItem Content="Completed"/>
+                            <ComboBoxItem Content="Cancelled"/>
+                        </ComboBox>
+                    </StackPanel>
+                </ScrollViewer>
+                
+                <!-- Action Buttons -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                    <Button x:Name="btnSaveChanges" Content="Save Changes" Width="120" Margin="0,0,10,0" Click="btnSaveChanges_Click"/>
+                    <Button x:Name="btnClearForm" Content="Clear Form" Width="120" Margin="0,0,0,0" Click="btnClearForm_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

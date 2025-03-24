@@ -53,7 +53,7 @@
                     <RadioButton Style="{StaticResource menuButton}"
                         Tag="{StaticResource color2}" Checked="UC_VicePresident_Member_Checked">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
+                            <fa:IconImage Icon="Users" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="User" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
@@ -61,7 +61,7 @@
                     <RadioButton Style="{StaticResource menuButton}"
                         Tag="{StaticResource color7}" Checked="UC_VicePresident_Event_Checked" >
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="PieChart" Style="{StaticResource menuButtonIcon}"/>
+                            <fa:IconImage Icon="CalendarDay" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Event" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
@@ -69,7 +69,7 @@
                     <RadioButton Style="{StaticResource menuButton}"
                         Tag="{StaticResource color6}" Checked="UC_VicePresident_EventParticipant_Checked" x:Name="rbEventParticipant">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Wallet" Style="{StaticResource menuButtonIcon}"/>
+                            <fa:IconImage Icon="UserCheck" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="EventParticipant" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
@@ -77,7 +77,7 @@
                     <RadioButton x:Name="rbNotification" Style="{StaticResource menuButton}"
                         Tag="{StaticResource color3}" Checked="UC_VicePresident_Notification_Checked">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Truck" Style="{StaticResource menuButtonIcon}"/>
+                            <fa:IconImage Icon="Bell" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Notification" Style="{StaticResource menuButtonText}"/>
 
                         </StackPanel>
@@ -85,7 +85,7 @@
                     <RadioButton Style="{StaticResource menuButton}"
                          Tag="{StaticResource color5}" Checked="UC_VicePresident_Report_Checked" >
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Box" Style="{StaticResource menuButtonIcon}"/>
+                            <fa:IconImage Icon="ChartBar" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Report" Style="{StaticResource menuButtonText}"/>
 
                         </StackPanel>

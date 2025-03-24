@@ -31,25 +31,21 @@
             <!-- Filter Panel -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2.5*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10,0,0,0" >
-                    <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                    <TextBox x:Name="tbSearch"  Width="85" Height="30" Margin="0,0,10,10"/>
-                    <Button Content="Search"  Width="75" Margin="0,0,0,5" Click="ApplyFilter_Click"/>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0" >
+                    <TextBlock Text="Search by Name:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox x:Name="tbSearchName" Width="85" Height="30" Margin="0,0,15,0" KeyDown="SearchBox_KeyDown"/>
+                    <TextBlock Text="Search by Roll:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox x:Name="tbSearchRoll" Width="85" Height="30" Margin="0,0,10,0" KeyDown="SearchBox_KeyDown"/>
+                    <Button Content="Search" Width="75" Margin="0,0,0,0" Click="ApplyFilter_Click"/>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0" >
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0" >
                     <TextBlock Text="Role:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                    <ComboBox x:Name="cboRole1"  Width="85" Height="30" Margin="0,0,10,10"
-                              DisplayMemberPath="Role" SelectedValuePath="Role"  SelectionChanged="ComboBox_SelectionChanged"
+                    <ComboBox x:Name="cboRole1" Width="85" Height="30" Margin="0,0,10,0"
+                              DisplayMemberPath="Role" SelectedValuePath="Role" SelectionChanged="ComboBox_SelectionChanged"
                              />
-                </StackPanel>
-                <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5,0,0,0" >
-                    <TextBlock Text="Club:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                    <ComboBox x:Name="cboClub1"  Width="85" Height="30" Margin="0,0,10,10"
-                               DisplayMemberPath="ClubName" SelectedValuePath="ClubId" SelectionChanged="ComboBox_SelectionChanged"/>
                 </StackPanel>
             </Grid>
 
@@ -59,12 +55,16 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Roll Number" Binding="{Binding StudentId}" Width="auto"/>
                     <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" Width="auto"/>
-                    <DataGridTextColumn Header="Password" Binding="{Binding Password}" Width="auto"/>
+                    <DataGridTemplateColumn Header="Password" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="********" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="auto"/>
                     <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="auto"/>
                     <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="auto"/>
-                    <DataGridTextColumn Header="Club Name" Binding="{Binding ClubName}" Width="auto"/>
-                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="auto"/>
                 </DataGrid.Columns>
             </DataGrid>
             
@@ -72,14 +72,11 @@
             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" >
                 <Button Content="Add Account"  Width="150" Margin="5" Click="ButtonAdd_Click"/>
                 <Button Content="Edit Account"  Width="150" Margin="5" Click="ButtonEdit_Click"/>
-                <Button Content="Delete Account"  Width="150" Margin="5" Click="ButtonDel_Click"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
            
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="0.5*"/>
@@ -103,7 +100,7 @@
             <TextBox x:Name="txtUsername" Grid.Row="3"  Margin="0,0,10,0" Height="30" />
             
             <TextBlock Text="Password" Grid.Row="4"  VerticalAlignment="Center"/>
-            <TextBox x:Name="txtPassword" Grid.Row="5"  Margin="0,0,10,0" Height="30" />
+            <PasswordBox x:Name="txtPassword" Grid.Row="5"  Margin="0,0,10,0" Height="30" />
             
             <TextBlock Text="Email" Grid.Row="6"  VerticalAlignment="Center"/>
             <TextBox x:Name="txtEmail" Grid.Row="7"  Margin="0,0,10,0" Height="30" />
@@ -114,17 +111,9 @@
             <TextBlock Text="Role" Grid.Row="10"  VerticalAlignment="Center"/>
             <ComboBox x:Name="cboRole" Grid.Row="11"  Margin="0,0,10,0" Height="30" 
                        IsEditable="False"  DisplayMemberPath="Role" SelectedValuePath="Role" />
-           
-            <TextBlock Text="Club Name" Grid.Row="12"  VerticalAlignment="Center"/>
-            <ComboBox x:Name="cboClub" Grid.Row="13"  Margin="0,0,10,0" Height="30" 
-                      DisplayMemberPath="ClubName" SelectedValuePath="ClubId"/>
             
-            <TextBlock Text="Status" Grid.Row="14"  VerticalAlignment="Center"/>
-            <StackPanel Grid.Row="15" Orientation="Horizontal" Margin="0,5,10,5" Height="30">
-                <RadioButton x:Name="rbActive" Content="Active" GroupName="Status" IsChecked="True" Margin="0,5,10,5" VerticalAlignment="Center" />
-                <RadioButton x:Name="rbInactive" Content="Inactive" GroupName="Status" Margin="0,5,10,5" VerticalAlignment="Center" />
-            </StackPanel>
-
+            <!-- Clear Form Button -->
+            <Button Content="Clear Form" Grid.Row="13" Margin="0,0,10,0" Height="30" Click="ButtonClear_Click"/>
         </Grid>
     </Grid>
 </UserControl>
