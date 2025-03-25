@@ -50,13 +50,13 @@
                     </StackPanel>
 
                     <!--Menu Buttons-->
-                    <RadioButton Style="{StaticResource menuButton}"
+                    <!--<RadioButton Style="{StaticResource menuButton}"
       Tag="{StaticResource color2}" Checked="UC_Admin_Staff_Checked">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="User" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </RadioButton>
+                    </RadioButton>-->
 
                     <RadioButton Style="{StaticResource menuButton}"
                  Tag="{StaticResource color4}" Checked="UC_Admin_Event_Checked">

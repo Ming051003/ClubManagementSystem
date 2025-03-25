@@ -56,10 +56,10 @@ namespace WPF
             }
         }
 
-        private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
-        {
-            MainContent.Content = new AccountManagementByVicePresedent();
-        }
+        //private void UC_Admin_Staff_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    MainContent.Content = new AccountManagementByVicePresedent();
+        //}
 
         private void UC_Admin_Event_Checked(object sender, RoutedEventArgs e)
         {

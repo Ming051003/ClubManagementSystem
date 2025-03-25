@@ -93,7 +93,7 @@ namespace WPF.VicePresident
             };
 
             var roleData = _accountService.GetAll()
-                .Where(a => a.Role == "Member" || a.Role == "TeamLeader" || a.Role == "VicePresident" || a.Role == "President")
+                .Where(a => a.Role == "Member" || a.Role == "TeamLeader" || a.Role == "VicePresident")
                 .Select(a => new { a.Role }).Distinct().ToList();
 
             foreach (var role in roleData)
