@@ -1,0 +1,258 @@
+﻿<UserControl x:Class="WPF.TeamLeader.ProfileManagementByTeamLeader"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPF.Member"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#333333"/>
+        </Style>
+        <Style x:Key="LabelTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#444444"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ValueTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#E74C3C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ProfileTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Border CornerRadius="5" Background="White" Margin="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Background="#E74C3C" CornerRadius="5,5,0,0" Padding="15">
+                    <TextBlock Text="Profile Management" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White"/>
+                </Border>
+
+                <!-- Content -->
+                <Grid Grid.Row="1" Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Profile Information -->
+                    <Border Grid.Row="0" Background="#F8F8F8" CornerRadius="5" Padding="20" Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Profile Information" 
+                                     Style="{StaticResource HeaderTextBlockStyle}" 
+                                     Margin="0,0,0,15"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Full Name:" 
+                                         Style="{StaticResource LabelTextBlockStyle}" 
+                                         Margin="0,5,10,5"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtFullName" 
+                                         Style="{StaticResource ValueTextBlockStyle}"
+                                         Margin="0,5,20,5"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Student ID:" 
+                                         Style="{StaticResource LabelTextBlockStyle}"
+                                         Margin="0,5,10,5"/>
+                                <TextBlock Grid.Row="0" Grid.Column="3" x:Name="txtStudentId" 
+                                         Style="{StaticResource ValueTextBlockStyle}"
+                                         Margin="0,5,0,5"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:" 
+                                         Style="{StaticResource LabelTextBlockStyle}"
+                                         Margin="0,5,10,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtEmail" 
+                                         Style="{StaticResource ValueTextBlockStyle}"
+                                         Margin="0,5,20,5"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Username:" 
+                                         Style="{StaticResource LabelTextBlockStyle}"
+                                         Margin="0,5,10,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="3" x:Name="txtUsername" 
+                                         Style="{StaticResource ValueTextBlockStyle}"
+                                         Margin="0,5,0,5"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Club:" 
+                                         Style="{StaticResource LabelTextBlockStyle}"
+                                         Margin="0,5,10,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="txtClub" 
+                                         Style="{StaticResource ValueTextBlockStyle}"
+                                         Margin="0,5,20,5"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="2" Text="Join Date:" 
+                                         Style="{StaticResource LabelTextBlockStyle}"
+                                         Margin="0,5,10,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="3" x:Name="txtJoinDate" 
+                                         Style="{StaticResource ValueTextBlockStyle}"
+                                         Margin="0,5,0,5"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!-- Password Change Section -->
+                    <Border Grid.Row="1" Background="#F8F8F8" CornerRadius="5" Padding="20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Change Password" 
+                                     Style="{StaticResource HeaderTextBlockStyle}" 
+                                     Margin="0,0,0,15"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Current Password -->
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Current Password:" 
+                                         Style="{StaticResource LabelTextBlockStyle}" 
+                                         Margin="0,10,10,5"/>
+                                <Border Grid.Row="0" Grid.Column="1" 
+                                      BorderBrush="#DDDDDD" 
+                                      BorderThickness="1" 
+                                      CornerRadius="4" 
+                                      Margin="0,5,0,5">
+                                    <PasswordBox x:Name="txtCurrentPassword" 
+                                               Padding="10,8" 
+                                               BorderThickness="0" 
+                                               Background="Transparent"/>
+                                </Border>
+
+                                <!-- New Password -->
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="New Password:" 
+                                         Style="{StaticResource LabelTextBlockStyle}" 
+                                         Margin="0,10,10,5"/>
+                                <Border Grid.Row="1" Grid.Column="1" 
+                                      BorderBrush="#DDDDDD" 
+                                      BorderThickness="1" 
+                                      CornerRadius="4" 
+                                      Margin="0,5,0,5">
+                                    <PasswordBox x:Name="txtNewPassword" 
+                                               Padding="10,8" 
+                                               BorderThickness="0" 
+                                               Background="Transparent"/>
+                                </Border>
+
+                                <!-- Confirm Password -->
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Confirm Password:" 
+                                         Style="{StaticResource LabelTextBlockStyle}" 
+                                         Margin="0,10,10,5"/>
+                                <Border Grid.Row="2" Grid.Column="1" 
+                                      BorderBrush="#DDDDDD" 
+                                      BorderThickness="1" 
+                                      CornerRadius="4" 
+                                      Margin="0,5,0,5">
+                                    <PasswordBox x:Name="txtConfirmPassword" 
+                                               Padding="10,8" 
+                                               BorderThickness="0" 
+                                               Background="Transparent"/>
+                                </Border>
+
+                                <!-- Password Requirements -->
+                                <TextBlock Grid.Row="3" Grid.Column="0" 
+                                         Text="Password must be at least 6 characters long" 
+                                         Foreground="#777777" 
+                                         FontSize="12" 
+                                         Margin="0,5,0,15"/>
+
+                                <!-- Change Button -->
+                                <Button Grid.Row="3" Grid.Column="1" 
+                                      Content="Change Password" 
+                                      Style="{StaticResource ActionButtonStyle}" 
+                                      Click="btnChangePassword_Click" 
+                                      HorizontalAlignment="Right" 
+                                      Margin="0,5,0,0"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
