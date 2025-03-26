@@ -328,13 +328,30 @@ namespace WPF.President
 
             try
             {
+                // Get the current user's club ID
+                string username = User.Current?.UserName;
+                
+                if (string.IsNullOrEmpty(username))
+                {
+                    MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int? clubIdFromCurrentUser = _userService.GetClubIdByUsername(username);
+
+                if (clubIdFromCurrentUser == null)
+                {
+                    MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 // Get all participants for this event
                 var participants = _eventParticipantService.GetEventParticipantsByEvent(_selectedEvent.EventId);
                 var participantUserIds = participants.Select(p => p.UserId).ToList();
 
-                // Get all users who are not participants
+                // Get all users who are not participants AND are in the same club as the current user
                 _availableMembers = _userService.GetAll()
-                    .Where(u => !participantUserIds.Contains(u.UserId))
+                    .Where(u => !participantUserIds.Contains(u.UserId) && u.ClubId == clubIdFromCurrentUser)
                     .OrderBy(u => u.FullName)
                     .ToList();
 
@@ -367,6 +384,23 @@ namespace WPF.President
 
             try
             {
+                // Get the current user's club ID
+                string username = User.Current?.UserName;
+                
+                if (string.IsNullOrEmpty(username))
+                {
+                    MessageBox.Show("User is not logged in.", "Login Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int? clubIdFromCurrentUser = _userService.GetClubIdByUsername(username);
+
+                if (clubIdFromCurrentUser == null)
+                {
+                    MessageBox.Show("No club found for the current user.", "Club Not Found", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (string.IsNullOrWhiteSpace(searchTerm))
                 {
                     // If search is empty, show all available members
@@ -378,9 +412,10 @@ namespace WPF.President
                 var participants = _eventParticipantService.GetEventParticipantsByEvent(_selectedEvent.EventId);
                 var participantUserIds = participants.Select(p => p.UserId).ToList();
 
-                // Filter available members by search term
+                // Filter available members by search term AND club ID
                 var filteredMembers = _userService.GetAll()
-                    .Where(u => !participantUserIds.Contains(u.UserId) &&
+                    .Where(u => !participantUserIds.Contains(u.UserId) && 
+                           u.ClubId == clubIdFromCurrentUser &&
                            (u.FullName.ToLower().Contains(searchTerm) ||
                            (u.Email != null && u.Email.ToLower().Contains(searchTerm))))
                     .OrderBy(u => u.FullName)

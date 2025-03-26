@@ -73,7 +73,7 @@ namespace WPF.Member
                     (e.Event.Location != null && e.Event.Location.ToLower().Contains(searchText))).ToList();
             }
             
-            // Create view models with unenroll capability
+            // Create view models (removed unenroll capability)
             var participationViewModels = filteredParticipations.Select(p => new
             {
                 EventParticipantId = p.EventParticipantId,
@@ -82,9 +82,8 @@ namespace WPF.Member
                 Status = p.Status,
                 RegistrationDate = p.RegistrationDate,
                 Event = p.Event,
-                User = p.User,
-                // Can unenroll if event status is Upcoming or Cancelled
-                CanUnenroll = p.Event.Status == "Upcoming" || p.Event.Status == "Cancelled"
+                User = p.User
+                // Removed CanUnenroll property
             }).ToList();
             
             dgEventHistory.ItemsSource = participationViewModels;
@@ -134,6 +133,8 @@ namespace WPF.Member
             txtDescription.Text = string.Empty;
         }
 
+        /*
+        // Commented out unenroll functionality
         private void btnUnenroll_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -172,5 +173,6 @@ namespace WPF.Member
                 MessageBox.Show($"Error unenrolling from event: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        */
     }
 }

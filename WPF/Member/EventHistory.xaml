@@ -144,6 +144,7 @@
                             <DataGridTextColumn Header="Registration Date" Binding="{Binding RegistrationDate, StringFormat=dd/MM/yyyy}" Width="*"/>
                             <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
                             <DataGridTextColumn Header="Location" Binding="{Binding Event.Location}" Width="*"/>
+                            <!-- Removed Actions column with Unenroll button
                             <DataGridTemplateColumn Header="Actions" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -157,6 +158,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+                            -->
                         </DataGrid.Columns>
                     </DataGrid>
                     

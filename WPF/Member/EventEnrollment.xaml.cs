@@ -39,8 +39,19 @@ namespace WPF.Member
                     return;
                 }
 
-                // Get all events instead of just the user's club events
-                _allEvents = _eventService.GetAllEvents().ToList();
+                // Get the current user's club ID
+                int? clubId = User.Current.ClubId;
+                
+                if (clubId == null)
+                {
+                    MessageBox.Show("You are not associated with any club.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Get only events from the user's club
+                _allEvents = _eventService.GetAllEvents()
+                    .Where(e => e.ClubId == clubId)
+                    .ToList();
                 
                 // Get user's participations
                 var userParticipations = _eventParticipantService.GetEventParticipantsByUser(User.Current.UserId);
