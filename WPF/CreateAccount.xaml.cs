@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using BLL.BusinessService;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
@@ -52,7 +52,7 @@ namespace WPF
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsername.Text;
-            string password = txtPassword.Text;
+            string password = txtPassword.Password;
             string studentId = txtStudentID.Text;
             string fullName = txtFullName.Text;
             string email = txtEmail.Text;
@@ -169,9 +169,10 @@ namespace WPF
         private void ClearForm()
         {
             txtUsername.Clear();
-            txtPassword.Clear();
+            txtPassword.Password = "";
             txtStudentID.Clear();
             txtFullName.Clear();
+            txtEmail.Clear();
             cboClub.SelectedIndex = -1; 
         }
         private void btnlogin_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using BLL.BusinessService;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
@@ -11,9 +11,6 @@ using System.Windows.Controls;
 
 namespace WPF.TeamLeader
 {
-    /// <summary>
-    /// Interaction logic for TeamManagementByTeamLeader.xaml
-    /// </summary>
     public partial class TeamManagementByTeamLeader : UserControl
     {
         private readonly ITeamService _teamService;
@@ -53,7 +50,6 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Find the team where the current user is a member
                 var teamMember = _teamMemberService.GetTeamMembersByUserId(User.Current.UserId).FirstOrDefault();
                 if (teamMember == null)
                 {
@@ -68,13 +64,11 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Populate team details
                 txtTeamID.Text = team.TeamId.ToString();
                 txtTeamName.Text = team.TeamName;
                 txtDescription.Text = team.Description;
                 _selectedTeamId = team.TeamId;
 
-                // Find the team leader (user with TeamLeader role in this team)
                 var teamLeader = _teamMemberService.GetTeamMembersByTeamId(team.TeamId)
                     .FirstOrDefault(tm => tm.User.Role == "TeamLeader")?.User;
 
@@ -84,7 +78,6 @@ namespace WPF.TeamLeader
                     cboLeader.SelectedIndex = 0;
                 }
 
-                // Load team members
                 LoadTeamMembers(_selectedTeamId);
             }
             catch (Exception ex)
@@ -155,7 +148,6 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Ensure the user is the team leader
                 bool isTeamLeader = User.Current.Role == "TeamLeader";
                 if (!isTeamLeader)
                 {
@@ -184,7 +176,6 @@ namespace WPF.TeamLeader
         {
             try
             {
-                // If in edit mode, ask user if they want to discard changes
                 if (_isEditMode)
                 {
                     var result = MessageBox.Show("You have unsaved changes. Do you want to discard them?",
@@ -192,13 +183,11 @@ namespace WPF.TeamLeader
 
                     if (result == MessageBoxResult.No)
                     {
-                        // Revert selection change
                         dgTeamMembers.SelectedItem = _selectedTeamMember;
                         return;
                     }
                     else
                     {
-                        // Exit edit mode
                         SetEditMode(false);
                     }
                 }
@@ -207,16 +196,13 @@ namespace WPF.TeamLeader
 
                 if (_selectedTeamMember != null)
                 {
-                    // Show member details
                     txtMemberId.Text = _selectedTeamMember.User.UserId.ToString();
                     txtMemberName.Text = _selectedTeamMember.User.FullName;
                     txtStudentId.Text = _selectedTeamMember.User.StudentId;
                     txtEmail.Text = _selectedTeamMember.User.Email;
 
-                    // Set role in combo box
                     cboMemberRole.SelectedIndex = _selectedTeamMember.Role == "TeamLeader" ? 1 : 0;
 
-                    // Show the action buttons
                     if (_selectedTeamMember.User.UserId != User.Current.UserId)
                     {
                         btnRemoveMember.Visibility = Visibility.Visible;
@@ -230,7 +216,6 @@ namespace WPF.TeamLeader
 
                     btnClearSelection.Visibility = Visibility.Visible;
 
-                    // Hide the "no selection" message
                     txtNoSelection.Visibility = Visibility.Collapsed;
                 }
                 else
@@ -246,27 +231,22 @@ namespace WPF.TeamLeader
 
         private void ClearMemberDetails()
         {
-            // Clear member details
             txtMemberId.Text = string.Empty;
             txtMemberName.Text = string.Empty;
             txtStudentId.Text = string.Empty;
             txtEmail.Text = string.Empty;
             cboMemberRole.SelectedIndex = -1;
 
-            // Hide all action buttons
             btnRemoveMember.Visibility = Visibility.Collapsed;
             btnEditMember.Visibility = Visibility.Collapsed;
             btnSaveMember.Visibility = Visibility.Collapsed;
             btnCancelEdit.Visibility = Visibility.Collapsed;
             btnClearSelection.Visibility = Visibility.Collapsed;
 
-            // Show the "no selection" message
             txtNoSelection.Visibility = Visibility.Visible;
 
-            // Clear the selection
             _selectedTeamMember = null;
 
-            // Exit edit mode if active
             if (_isEditMode)
             {
                 SetEditMode(false);
@@ -277,13 +257,11 @@ namespace WPF.TeamLeader
         {
             _isEditMode = isEdit;
 
-            // Toggle read-only state for editable fields
             txtMemberName.IsReadOnly = !isEdit;
             txtStudentId.IsReadOnly = !isEdit;
             txtEmail.IsReadOnly = !isEdit;
             cboMemberRole.IsEnabled = isEdit;
 
-            // Toggle button visibility based on edit mode
             if (isEdit)
             {
                 btnEditMember.Visibility = Visibility.Collapsed;
@@ -315,7 +293,6 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Enter edit mode
                 SetEditMode(true);
             }
             catch (Exception ex)
@@ -334,7 +311,6 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Validate inputs
                 string fullName = txtMemberName.Text.Trim();
                 string studentId = txtStudentId.Text.Trim();
                 string email = txtEmail.Text.Trim();
@@ -361,12 +337,10 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Check if role is being changed to TeamLeader
                 bool isPromotingToLeader = _selectedTeamMember.Role != "TeamLeader" && role == "TeamLeader";
 
                 if (isPromotingToLeader)
                 {
-                    // Check if there's already a team leader
                     var currentLeader = _teamMemberService.GetTeamMembersByTeamId(_selectedTeamId)
                         .FirstOrDefault(tm => tm.User.Role == "TeamLeader");
 
@@ -383,7 +357,6 @@ namespace WPF.TeamLeader
                     }
                 }
 
-                // Update user information
                 var user = _selectedTeamMember.User;
                 user.FullName = fullName;
                 user.StudentId = studentId;
@@ -394,10 +367,8 @@ namespace WPF.TeamLeader
 
                 MessageBox.Show("Member details updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Exit edit mode
                 SetEditMode(false);
 
-                // Refresh the team members list
                 LoadTeamMembers(_selectedTeamId);
             }
             catch (Exception ex)
@@ -410,7 +381,6 @@ namespace WPF.TeamLeader
         {
             try
             {
-                // Revert changes by reloading the current member data
                 if (_selectedTeamMember != null)
                 {
                     txtMemberName.Text = _selectedTeamMember.User.FullName;
@@ -419,7 +389,6 @@ namespace WPF.TeamLeader
                     cboMemberRole.SelectedIndex = _selectedTeamMember.Role == "TeamLeader" ? 1 : 0;
                 }
 
-                // Exit edit mode
                 SetEditMode(false);
             }
             catch (Exception ex)
@@ -455,10 +424,8 @@ namespace WPF.TeamLeader
                 _teamMemberService.DeleteTeamMember(_selectedTeamMember.TeamMemberId);
                 MessageBox.Show($"{_selectedTeamMember.User.FullName} has been removed from the team.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Reload team members
                 LoadTeamMembers(_selectedTeamId);
 
-                // Clear member details
                 ClearMemberDetails();
                 dgTeamMembers.SelectedItem = null;
             }

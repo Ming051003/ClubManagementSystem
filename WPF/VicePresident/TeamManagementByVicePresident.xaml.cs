@@ -11,9 +11,6 @@ using System.Windows.Controls;
 
 namespace WPF.VicePresident
 {
-    /// <summary>
-    /// Interaction logic for TeamManagementByPresident.xaml
-    /// </summary>
     public partial class TeamManagementByVicePresident : UserControl
     {
         private readonly ITeamService _teamService;
@@ -53,7 +50,6 @@ namespace WPF.VicePresident
                 
                 dgTeam.ItemsSource = teams;
                 
-                // Clear team members if no team is selected
                 if (_selectedTeamId == 0)
                 {
                     dgTeamMembers.ItemsSource = null;
@@ -96,7 +92,6 @@ namespace WPF.VicePresident
         {
             try
             {
-                // Validate inputs
                 string teamName = txtTeamName.Text.Trim();
                 if (string.IsNullOrEmpty(teamName))
                 {
@@ -123,12 +118,10 @@ namespace WPF.VicePresident
                     return;
                 }
 
-                // Check if it's an add or update operation
                 bool isNewTeam = string.IsNullOrEmpty(txtTeamID.Text);
                 
                 if (isNewTeam)
                 {
-                    // Create new team
                     Team team = new Team
                     {
                         TeamName = teamName,
@@ -141,7 +134,6 @@ namespace WPF.VicePresident
                 }
                 else
                 {
-                    // Update existing team
                     int teamId = int.Parse(txtTeamID.Text);
                     
                     var selectedTeam = dgTeam.SelectedItem as TeamView;
@@ -151,10 +143,8 @@ namespace WPF.VicePresident
                         return;
                     }
                     
-                    // Update leader role if changed
                     if (selectedTeam.LeaderId != leaderUserId)
                     {
-                        // Demote old leader
                         var oldLeader = _accountService.GetAccountById(selectedTeam.LeaderId);
                         if (oldLeader != null && oldLeader.Role == "TeamLeader")
                         {
@@ -162,7 +152,6 @@ namespace WPF.VicePresident
                             _accountService.UpdateAccountRoleOnly(oldLeader);
                         }
 
-                        // Promote new leader
                         var newLeader = _accountService.GetAccountById(leaderUserId);
                         if (newLeader == null)
                         {
@@ -177,7 +166,6 @@ namespace WPF.VicePresident
                         }
                     }
 
-                    // Update team
                     Team team = new Team
                     {
                         TeamId = teamId,
@@ -190,7 +178,6 @@ namespace WPF.VicePresident
                     MessageBox.Show("Team updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 
-                // Refresh data
                 LoadTeams();
                 ClearTeamForm();
             }
@@ -241,10 +228,8 @@ namespace WPF.VicePresident
                 txtDescription.Text = selectedTeam.Description;
                 cboLeader.SelectedValue = selectedTeam.LeaderId;
                 
-                // Save selected team ID
                 _selectedTeamId = selectedTeam.TeamId;
                 
-                // Load team members
                 LoadTeamMembers(_selectedTeamId);
             }
             else
@@ -269,10 +254,8 @@ namespace WPF.VicePresident
             {
                 if (teamId <= 0) return;
                 
-                // Get all team members
                 var teamMembers = _teamMemberService.GetTeamMembersByTeamId(teamId);
                 
-                // Create a list of team members with role information
                 var teamMembersWithRoles = new List<TeamMemberView>();
                 foreach (var member in teamMembers)
                 {
@@ -282,15 +265,12 @@ namespace WPF.VicePresident
                         User = member.User,
                         JoinDate = member.JoinDate,
                         Role = member.User.Role,
-                        // Can promote if user is a regular member (not already a team leader)
                         CanPromote = member.User.Role == "Member"
                     });
                 }
                 
-                // Display team members in the DataGrid
                 dgTeamMembers.ItemsSource = teamMembersWithRoles;
                 
-                // Load available members for the dropdown
                 LoadAvailableMembers();
             }
             catch (Exception ex)
@@ -305,18 +285,15 @@ namespace WPF.VicePresident
             {
                 if (_selectedTeamId <= 0) return;
                 
-                // Get current team members
                 var currentTeamMembers = _teamMemberService.GetTeamMembersByTeamId(_selectedTeamId)
                     .Select(tm => tm.UserId)
                     .ToList();
                 
-                // Get all members in the club who are not already in the team
                 var clubId = User.Current?.ClubId ?? 0;
                 var availableMembers = _accountService.GetMembersByClubId(clubId)
                     .Where(m => !currentTeamMembers.Contains(m.UserId) && m.Role == "Member")
                     .ToList();
                 
-                // Set the available members to the ComboBox
                 cboAvailableMembers.ItemsSource = availableMembers;
                 cboAvailableMembers.DisplayMemberPath = "FullName";
                 cboAvailableMembers.SelectedValuePath = "UserId";
@@ -329,7 +306,6 @@ namespace WPF.VicePresident
 
         private void dgTeamMembers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // This can be used if you need to perform actions when a team member is selected
         }
 
         private void btnAddMember_Click(object sender, RoutedEventArgs e)
@@ -348,7 +324,6 @@ namespace WPF.VicePresident
                     return;
                 }
                 
-                // Get the selected member
                 var selectedMember = cboAvailableMembers.SelectedItem as User;
                 if (selectedMember == null)
                 {
@@ -356,7 +331,6 @@ namespace WPF.VicePresident
                     return;
                 }
                 
-                // Create new team member
                 var teamMember = new TeamMember
                 {
                     TeamId = _selectedTeamId,
@@ -364,12 +338,10 @@ namespace WPF.VicePresident
                     JoinDate = DateOnly.FromDateTime(DateTime.Now)
                 };
                 
-                // Add the member to the team
                 _teamMemberService.AddTeamMember(teamMember);
                 
                 MessageBox.Show($"{selectedMember.FullName} has been added to the team.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                // Refresh team members list
                 LoadTeamMembers(_selectedTeamId);
             }
             catch (Exception ex)
@@ -382,7 +354,6 @@ namespace WPF.VicePresident
         {
             try
             {
-                // Get the team member from the button's DataContext
                 var button = sender as Button;
                 var teamMember = button.DataContext as TeamMemberView;
                 
@@ -400,7 +371,6 @@ namespace WPF.VicePresident
                     return;
                 }
                 
-                // Get the current team
                 var selectedTeam = dgTeam.SelectedItem as TeamView;
                 if (selectedTeam == null)
                 {
@@ -408,7 +378,6 @@ namespace WPF.VicePresident
                     return;
                 }
                 
-                // Demote current leader
                 var currentLeader = _accountService.GetAccountById(selectedTeam.LeaderId);
                 if (currentLeader != null && currentLeader.Role == "TeamLeader")
                 {
@@ -416,7 +385,6 @@ namespace WPF.VicePresident
                     _accountService.UpdateAccountRoleOnly(currentLeader);
                 }
                 
-                // Promote new leader
                 var newLeader = _accountService.GetAccountById(teamMember.User.UserId);
                 if (newLeader == null)
                 {
@@ -427,7 +395,6 @@ namespace WPF.VicePresident
                 newLeader.Role = "TeamLeader";
                 _accountService.UpdateAccountRoleOnly(newLeader);
                 
-                // Update team with new leader
                 Team team = new Team
                 {
                     TeamId = selectedTeam.TeamId,
@@ -440,11 +407,9 @@ namespace WPF.VicePresident
                 
                 MessageBox.Show($"{teamMember.User.FullName} has been promoted to Team Leader.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                // Refresh data
                 LoadTeams();
                 LoadTeamMembers(_selectedTeamId);
                 
-                // Update leader dropdown
                 LoadLeaders();
                 cboLeader.SelectedValue = newLeader.UserId;
             }
@@ -458,7 +423,6 @@ namespace WPF.VicePresident
         {
             try
             {
-                // Get the team member from the button's DataContext
                 var button = sender as Button;
                 var teamMember = button.DataContext as TeamMemberView;
                 
@@ -468,7 +432,6 @@ namespace WPF.VicePresident
                     return;
                 }
                 
-                // Check if the member is the team leader
                 var selectedTeam = dgTeam.SelectedItem as TeamView;
                 if (selectedTeam != null && teamMember.User.UserId == selectedTeam.LeaderId)
                 {
@@ -485,12 +448,10 @@ namespace WPF.VicePresident
                     return;
                 }
                 
-                // Remove the team member
                 _teamMemberService.DeleteTeamMember(teamMember.TeamMemberId);
                 
                 MessageBox.Show($"{teamMember.User.FullName} has been removed from the team.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                // Refresh team members list
                 LoadTeamMembers(_selectedTeamId);
             }
             catch (Exception ex)
@@ -500,7 +461,6 @@ namespace WPF.VicePresident
         }
     }
 
-    // View model for team members with role information
     public class TeamMemberView
     {
         public int TeamMemberId { get; set; }

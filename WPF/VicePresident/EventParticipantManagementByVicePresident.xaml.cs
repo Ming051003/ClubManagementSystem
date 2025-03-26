@@ -20,15 +20,12 @@ namespace WPF.VicePresident
         private Window _hostWindow;
         private List<User> _availableMembers = new List<User>();
         private List<Event> _allEvents = new List<Event>();
-
-        // Event to notify when an event is selected
         public event EventHandler<Event> EventSelected;
 
         public EventParticipantManagementByVicePresident()
         {
             InitializeComponent();
 
-            // Get services
             _eventService = ((App)Application.Current).ServiceProvider.GetRequiredService<IEventService>()
                ?? throw new ArgumentNullException(nameof(IEventService));
             _userService = ((App)Application.Current).ServiceProvider.GetRequiredService<IAccountService>()
@@ -36,22 +33,15 @@ namespace WPF.VicePresident
             _eventParticipantService = ((App)Application.Current).ServiceProvider.GetRequiredService<IEventParticipantService>()
                ?? throw new ArgumentNullException(nameof(IEventParticipantService));
 
-            // Load events
             LoadEvents();
-
-            // Initialize status combo box
             cmbStatus.SelectedIndex = 0;
-
-            // Subscribe to selection changed event for participants
             dgParticipants.SelectionChanged += dgParticipants_SelectionChanged;
         }
 
-        // Constructor that accepts a specific event to display
         public EventParticipantManagementByVicePresident(Event eventToDisplay)
         {
             InitializeComponent();
 
-            // Get services
             _eventService = ((App)Application.Current).ServiceProvider.GetRequiredService<IEventService>()
                ?? throw new ArgumentNullException(nameof(IEventService));
             _userService = ((App)Application.Current).ServiceProvider.GetRequiredService<IAccountService>()
@@ -59,21 +49,14 @@ namespace WPF.VicePresident
             _eventParticipantService = ((App)Application.Current).ServiceProvider.GetRequiredService<IEventParticipantService>()
                ?? throw new ArgumentNullException(nameof(IEventParticipantService));
 
-            // Load all events first
             LoadEvents();
-            
-            // Initialize status combo box
             cmbStatus.SelectedIndex = 0;
-
-            // Subscribe to selection changed event for participants
             dgParticipants.SelectionChanged += dgParticipants_SelectionChanged;
 
-            // Select the specified event
             if (eventToDisplay != null)
             {
                 _selectedEvent = eventToDisplay;
                 
-                // Select the event in the DataGrid
                 foreach (var evt in dgEvents.Items)
                 {
                     if (evt is Event e && e.EventId == eventToDisplay.EventId)
@@ -93,7 +76,6 @@ namespace WPF.VicePresident
         {
             try
             {
-                // Get the current user's club ID
                 string username = User.Current?.UserName;
                 
                 if (string.IsNullOrEmpty(username))
@@ -110,7 +92,6 @@ namespace WPF.VicePresident
                     return;
                 }
 
-                // Get all events and filter by the current user's club ID
                 _allEvents = _eventService.GetAllEvents()
                     .Where(e => e.ClubId == clubIdFromCurrentUser)
                     .ToList();
@@ -129,17 +110,9 @@ namespace WPF.VicePresident
             if (selectedEvent != null)
             {
                 _selectedEvent = selectedEvent;
-
-                // Notify parent control if needed
                 EventSelected?.Invoke(this, selectedEvent);
-
-                // Load participants for the selected event
                 LoadEventParticipants();
-
-                // Update event details
                 UpdateEventDetails();
-
-                // Load available members
                 LoadAvailableMembers();
             }
         }
@@ -150,7 +123,6 @@ namespace WPF.VicePresident
             {
                 var eventParticipants = _eventParticipantService.GetEventParticipantsByEvent(_selectedEvent.EventId);
                 
-                // Apply status filter if selected
                 if (cmbStatusFilter != null && cmbStatusFilter.SelectedItem != null)
                 {
                     var selectedStatus = ((ComboBoxItem)cmbStatusFilter.SelectedItem).Content.ToString();
@@ -180,13 +152,11 @@ namespace WPF.VicePresident
 
         private void dgParticipants_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Update the status combo box based on selection
             if (dgParticipants.SelectedItems.Count == 1)
             {
                 var selectedParticipant = dgParticipants.SelectedItem as EventParticipant;
                 if (selectedParticipant != null)
                 {
-                    // Find and select the matching status in the combo box
                     foreach (ComboBoxItem item in cmbStatus.Items)
                     {
                         if (item.Content.ToString() == selectedParticipant.Status)
@@ -201,8 +171,6 @@ namespace WPF.VicePresident
 
         private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // This event handler will be triggered when the status is changed in the combo box
-            // No implementation needed here as we're just using it to reflect the selected participant's status
         }
 
         private void cmbStatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -226,17 +194,14 @@ namespace WPF.VicePresident
             {
                 if (string.IsNullOrWhiteSpace(searchTerm))
                 {
-                    // If search is empty, show all events
                     dgEvents.ItemsSource = _allEvents;
                     return;
                 }
 
-                // Filter events by name
                 var filteredEvents = _allEvents
                     .Where(ev => ev.EventName.ToLower().Contains(searchTerm))
                     .ToList();
 
-                // Update the DataGrid
                 dgEvents.ItemsSource = filteredEvents;
 
                 if (filteredEvents.Count == 0)
@@ -271,7 +236,6 @@ namespace WPF.VicePresident
                 _eventParticipantService.UpdateEventParticipant(participant);
             }
 
-            // Refresh participants
             LoadEventParticipants();
 
             MessageBox.Show($"{dgParticipants.SelectedItems.Count} participants updated to status: {newStatus}",
@@ -282,11 +246,9 @@ namespace WPF.VicePresident
         {
             if (_selectedEvent != null)
             {
-                // Find the parent Main_VicePresident_WPF window
                 var mainWindow = Window.GetWindow(this) as Main_VicePresident_WPF;
                 if (mainWindow != null)
                 {
-                    // Navigate to the notification tab with the selected event
                     mainWindow.NavigateToNotificationTab(_selectedEvent.EventName);
                 }
             }
@@ -310,8 +272,6 @@ namespace WPF.VicePresident
                     if (result == MessageBoxResult.Yes)
                     {
                         _eventParticipantService.DeleteEventParticipant(participant.EventParticipantId);
-
-                        // Refresh participants
                         LoadEventParticipants();
                     }
                 }
@@ -328,7 +288,6 @@ namespace WPF.VicePresident
 
             try
             {
-                // Get the current user's club ID
                 string username = User.Current?.UserName;
                 
                 if (string.IsNullOrEmpty(username))
@@ -345,17 +304,14 @@ namespace WPF.VicePresident
                     return;
                 }
 
-                // Get all participants for this event
                 var participants = _eventParticipantService.GetEventParticipantsByEvent(_selectedEvent.EventId);
                 var participantUserIds = participants.Select(p => p.UserId).ToList();
 
-                // Get all users who are not participants AND are in the same club as the current user
                 _availableMembers = _userService.GetAll()
                     .Where(u => !participantUserIds.Contains(u.UserId) && u.ClubId == clubIdFromCurrentUser)
                     .OrderBy(u => u.FullName)
                     .ToList();
 
-                // Update the list box
                 lbAvailableMembers.ItemsSource = _availableMembers;
             }
             catch (Exception ex)
@@ -384,7 +340,6 @@ namespace WPF.VicePresident
 
             try
             {
-                // Get the current user's club ID
                 string username = User.Current?.UserName;
                 
                 if (string.IsNullOrEmpty(username))
@@ -403,16 +358,13 @@ namespace WPF.VicePresident
 
                 if (string.IsNullOrWhiteSpace(searchTerm))
                 {
-                    // If search is empty, show all available members
                     LoadAvailableMembers();
                     return;
                 }
 
-                // Get all participants for this event
                 var participants = _eventParticipantService.GetEventParticipantsByEvent(_selectedEvent.EventId);
                 var participantUserIds = participants.Select(p => p.UserId).ToList();
 
-                // Filter available members by search term AND club ID
                 var filteredMembers = _userService.GetAll()
                     .Where(u => !participantUserIds.Contains(u.UserId) && 
                            u.ClubId == clubIdFromCurrentUser &&
@@ -421,7 +373,6 @@ namespace WPF.VicePresident
                     .OrderBy(u => u.FullName)
                     .ToList();
 
-                // Update the list box
                 lbAvailableMembers.ItemsSource = filteredMembers;
 
                 if (filteredMembers.Count == 0)
@@ -458,7 +409,6 @@ namespace WPF.VicePresident
         {
             try
             {
-                // Check if user is already a participant
                 var existingParticipants = _eventParticipantService.GetEventParticipantsByEvent(_selectedEvent.EventId);
                 if (existingParticipants.Any(p => p.UserId == user.UserId))
                 {
@@ -467,7 +417,6 @@ namespace WPF.VicePresident
                     return;
                 }
 
-                // Create new participant
                 var newParticipant = new EventParticipant
                 {
                     EventId = _selectedEvent.EventId,
@@ -477,8 +426,6 @@ namespace WPF.VicePresident
                 };
 
                 _eventParticipantService.AddEventParticipant(newParticipant);
-
-                // Refresh participants
                 LoadEventParticipants();
 
                 MessageBox.Show($"{user.FullName} has been added to the event.",
@@ -528,7 +475,6 @@ namespace WPF.VicePresident
         {
             if (_selectedEvent != null)
             {
-                // Update event details in the UI
                 txtEventTitle.Text = _selectedEvent.EventName;
                 txtEventDate.Text = _selectedEvent.EventDate.ToString("d");
                 txtEventLocation.Text = _selectedEvent.Location;
@@ -536,7 +482,6 @@ namespace WPF.VicePresident
             }
             else
             {
-                // Clear event details
                 txtEventTitle.Text = "Event Details";
                 txtEventDate.Text = "";
                 txtEventLocation.Text = "";

@@ -10,9 +10,6 @@ using System.Windows.Input;
 
 namespace WPF.Member
 {
-    /// <summary>
-    /// Interaction logic for EventEnrollment.xaml
-    /// </summary>
     public partial class EventEnrollment : UserControl
     {
         private readonly IEventService _eventService;
@@ -39,7 +36,6 @@ namespace WPF.Member
                     return;
                 }
 
-                // Get the current user's club ID
                 int? clubId = User.Current.ClubId;
                 
                 if (clubId == null)
@@ -48,36 +44,25 @@ namespace WPF.Member
                     return;
                 }
 
-                // Get only events from the user's club
                 _allEvents = _eventService.GetAllEvents()
                     .Where(e => e.ClubId == clubId)
                     .ToList();
                 
-                // Get user's participations
                 var userParticipations = _eventParticipantService.GetEventParticipantsByUser(User.Current.UserId);
                 
-                // Add participation status to events
                 foreach (var evt in _allEvents)
                 {
-                    // Count participants for this event
                     var participants = _eventParticipantService.GetEventParticipantsByEvent(evt.EventId);
                     _eventParticipantCounts[evt.EventId] = participants.Count;
                     
-                    // Check if user is already participating
                     var isParticipating = userParticipations.Any(p => p.EventId == evt.EventId);
                     
-                    // Determine if user can enroll
-                    // User can enroll if:
-                    // 1. Event is not full (enrolled < capacity)
-                    // 2. Event status is "Upcoming" or "Ongoing"
-                    // 3. User is not already participating
                     bool isFull = _eventParticipantCounts[evt.EventId] >= evt.Capacity;
                     bool isActive = evt.Status == "Upcoming" || evt.Status == "Ongoing";
                     
                     _eventEnrollmentStatus[evt.EventId] = !isParticipating && !isFull && isActive;
                 }
                 
-                // Apply initial filter (All Events)
                 ApplyFilters();
             }
             catch (Exception ex)
@@ -92,14 +77,12 @@ namespace WPF.Member
 
             var filteredEvents = _allEvents;
             
-            // Apply status filter
             string statusFilter = ((ComboBoxItem)cmbStatus.SelectedItem)?.Content.ToString();
             if (statusFilter != "All Events" && !string.IsNullOrEmpty(statusFilter))
             {
                 filteredEvents = filteredEvents.Where(e => e.Status == statusFilter).ToList();
             }
             
-            // Apply search text filter
             if (!string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 string searchText = txtSearch.Text.ToLower();
@@ -108,7 +91,6 @@ namespace WPF.Member
                     (e.Location != null && e.Location.ToLower().Contains(searchText))).ToList();
             }
 
-            // Create view models with participant count and enrollment status
             var eventViewModels = filteredEvents.Select(e => new
             {
                 Event = e,
@@ -168,7 +150,6 @@ namespace WPF.Member
         {
             try
             {
-                // Get the event from the button's DataContext
                 var button = sender as Button;
                 var viewModel = button.DataContext as dynamic;
                 var selectedEvent = viewModel.Event as Event;
@@ -179,13 +160,11 @@ namespace WPF.Member
                     return;
                 }
                 
-                // Confirm enrollment
                 var result = MessageBox.Show($"Are you sure you want to enroll in the event '{selectedEvent.EventName}'?", 
                     "Confirm Enrollment", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 
                 if (result == MessageBoxResult.Yes)
                 {
-                    // Create new event participant
                     var participant = new EventParticipant
                     {
                         EventId = selectedEvent.EventId,
@@ -194,13 +173,11 @@ namespace WPF.Member
                         Status = "Registered"
                     };
                     
-                    // Add participant
                     _eventParticipantService.AddEventParticipant(participant);
                     
                     MessageBox.Show($"You have successfully enrolled in the event '{selectedEvent.EventName}'.", 
                         "Enrollment Successful", MessageBoxButton.OK, MessageBoxImage.Information);
                     
-                    // Refresh events to update enrollment status
                     LoadEvents();
                 }
             }

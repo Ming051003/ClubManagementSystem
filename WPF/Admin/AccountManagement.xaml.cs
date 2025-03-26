@@ -103,7 +103,7 @@ namespace WPF.Admin
             {
                 txtRollNumber.Text = selectAccount.StudentId;
                 txtUsername.Text = selectAccount.UserName;
-                txtPassword.Text = selectAccount.Password;
+                txtPassword.Password = selectAccount.Password;
                 txtEmail.Text = selectAccount.Email;
                 txtFullName.Text = selectAccount.FullName;
                 cboRole.SelectedValue = selectAccount.Role;
@@ -147,7 +147,7 @@ namespace WPF.Admin
                 // Get form data
                 string studentId = txtRollNumber.Text.Trim();
                 string username = txtUsername.Text.Trim();
-                string password = txtPassword.Text.Trim();
+                string password = txtPassword.Password.Trim();
                 string fullName = txtFullName.Text.Trim();
                 string email = txtEmail.Text.Trim();
                 string role = cboRole.SelectedValue as string;
@@ -214,7 +214,7 @@ namespace WPF.Admin
                 UserName = txtUsername.Text.Trim(),
                 FullName = txtFullName.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
-                Password = txtPassword.Text.Trim(),
+                Password = txtPassword.Password.Trim(),
                 Role = cboRole.SelectedValue as string,
                 ClubId = (int)cboClub.SelectedValue,
                 Status = rbActive.IsChecked == true ? true : false,
@@ -272,7 +272,7 @@ namespace WPF.Admin
                 MessageBox.Show("Username is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            if (string.IsNullOrWhiteSpace(txtPassword.Password))
             {
                 MessageBox.Show("Password is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -325,7 +325,7 @@ namespace WPF.Admin
         {
             txtRollNumber.Text = string.Empty;
             txtUsername.Text = string.Empty;
-            txtPassword.Text = string.Empty;
+            txtPassword.Password = string.Empty;
             txtFullName.Text = string.Empty;
             txtEmail.Text = string.Empty;
             cboRole.SelectedIndex = -1;

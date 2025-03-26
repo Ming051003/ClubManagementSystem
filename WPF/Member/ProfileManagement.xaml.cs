@@ -7,9 +7,6 @@ using System.Windows.Controls;
 
 namespace WPF.Member
 {
-    /// <summary>
-    /// Interaction logic for ProfileManagement.xaml
-    /// </summary>
     public partial class ProfileManagement : UserControl
     {
         private readonly IAccountService _accountService;
@@ -63,7 +60,6 @@ namespace WPF.Member
                 string newPassword = txtNewPassword.Password;
                 string confirmPassword = txtConfirmPassword.Password;
 
-                // Validate inputs
                 if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
                 {
                     MessageBox.Show("All password fields are required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -76,7 +72,6 @@ namespace WPF.Member
                     return;
                 }
 
-                // Verify current password
                 var user = _accountService.GetAccountById(User.Current.UserId);
                 if (user.Password != currentPassword)
                 {
@@ -84,13 +79,11 @@ namespace WPF.Member
                     return;
                 }
 
-                // Update password
                 user.Password = newPassword;
                 _accountService.UpdateAccount(user);
 
                 MessageBox.Show("Password updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                // Clear password fields
                 txtCurrentPassword.Password = "";
                 txtNewPassword.Password = "";
                 txtConfirmPassword.Password = "";

@@ -24,11 +24,7 @@ namespace WPF.VicePresident
         private IEventParticipantService _eventParticipantService;
         private IClubService _clubService;
         private List<Club> _clubs;
-        
-        // Container for hosting UserControls
         private Window _hostWindow;
-
-        // Event to notify when a participant view is requested
         public event EventHandler<Event> ViewParticipantsRequested;
 
         public EventManagementByVicePresident()
@@ -50,7 +46,6 @@ namespace WPF.VicePresident
 
         private void LoadClubs()
         {
-            // Get the current user's club ID
             string username = User.Current?.UserName;
             int? clubIdFromCurrentUser = _accountService.GetClubIdByUsername(username);
 
@@ -62,7 +57,6 @@ namespace WPF.VicePresident
 
             _clubs = _clubService.GetClubs().Where(c => c.ClubId == clubIdFromCurrentUser).ToList();
             
-            // Display the current club name in the UI
             if (_clubs.Count > 0)
             {
                 txtCurrentClub.Text = $"Current Club: {_clubs[0].ClubName}";
@@ -73,7 +67,6 @@ namespace WPF.VicePresident
         {
             try
             {
-                // Get the current user's club ID
                 string username = User.Current?.UserName;
                 
                 if (string.IsNullOrEmpty(username))
@@ -90,15 +83,12 @@ namespace WPF.VicePresident
                     return;
                 }
 
-                // Get all events and filter by the current user's club ID
                 var events = _eventService.GetAllEvents()
                     .Where(e => e.ClubId == clubIdFromCurrentUser)
                     .ToList();
                 
-                // Apply status filter if one is selected (independent of club filtering)
                 ApplyStatusFilter(ref events);
                 
-                // Apply search filter if text is entered
                 if (!string.IsNullOrWhiteSpace(txtSearch.Text))
                 {
                     string searchText = txtSearch.Text.Trim().ToLower();
@@ -112,13 +102,9 @@ namespace WPF.VicePresident
                 
                 dgEvents.ItemsSource = events;
             }
-            catch (Exception ex)
-            {
-               //MessageBox.Show($"Error loading events: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            catch (Exception ex) { }
         }
         
-        // Separate method for status filtering that can be used independently
         private void ApplyStatusFilter(ref List<Event> events)
         {
             if (cmbFilterStatus?.SelectedItem is ComboBoxItem selectedStatus && 
@@ -136,9 +122,7 @@ namespace WPF.VicePresident
             dpEventDate.SelectedDate = DateTime.Today;
             txtLocation.Text = string.Empty;
             txtCapacity.Text = string.Empty;
-            cmbStatus.SelectedIndex = 0; // Default to "Upcoming"
-            
-            // Reset the Add Event button text
+            cmbStatus.SelectedIndex = 0;
             btnAddEvent.Content = "Add Event";
         }
 
@@ -146,7 +130,6 @@ namespace WPF.VicePresident
         {
             try
             {
-                // Get the current user's club ID
                 string username = User.Current?.UserName;
                 
                 if (string.IsNullOrEmpty(username))
@@ -163,15 +146,12 @@ namespace WPF.VicePresident
                     return;
                 }
 
-                // Get all events and filter by the current user's club ID
                 var events = _eventService.GetAllEvents()
                     .Where(e => e.ClubId == clubIdFromCurrentUser)
                     .ToList();
                 
-                // Apply status filter
                 ApplyStatusFilter(ref events);
                 
-                // Apply search filter
                 if (!string.IsNullOrWhiteSpace(txtSearch?.Text))
                 {
                     string searchText = txtSearch.Text.Trim().ToLower();
@@ -230,7 +210,6 @@ namespace WPF.VicePresident
                 txtLocation.Text = selectedEvent.Location;
                 txtCapacity.Text = selectedEvent.Capacity.ToString();
                 
-                // Set status
                 foreach (ComboBoxItem item in cmbStatus.Items)
                 {
                     if (item.Content.ToString() == selectedEvent.Status)
@@ -248,13 +227,11 @@ namespace WPF.VicePresident
 
         private void btnAddEvent_Click(object sender, RoutedEventArgs e)
         {
-            // This method now just redirects to Add New Event functionality
             btnAddNewEvent_Click(sender, e);
         }
 
         private void btnAddNewEvent_Click(object sender, RoutedEventArgs e)
         {
-            // Validate input
             if (string.IsNullOrWhiteSpace(txtEventName.Text))
             {
                 MessageBox.Show("Event name is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -288,7 +265,6 @@ namespace WPF.VicePresident
 
             try
             {
-                // Get current user's club ID
                 string username = User.Current?.UserName;
                 if (string.IsNullOrEmpty(username))
                 {
@@ -303,9 +279,8 @@ namespace WPF.VicePresident
                     return;
                 }
 
-                // Check for duplicate event name on the same day
                 var existingEvents = _eventService.GetAllEvents()
-                    .Where(e => e.ClubId == clubIdFromCurrentUser)  // Only check duplicates within the same club
+                    .Where(e => e.ClubId == clubIdFromCurrentUser)
                     .ToList();
                 var duplicateEvent = existingEvents.FirstOrDefault(e => 
                     e.EventName.Equals(eventName, StringComparison.OrdinalIgnoreCase) && 
@@ -331,7 +306,6 @@ namespace WPF.VicePresident
                 _eventService.AddEvent(newEvent);
                 MessageBox.Show("Event added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                // Refresh events list and clear the form
                 LoadEvents();
                 ClearForm();
             }
@@ -350,7 +324,6 @@ namespace WPF.VicePresident
                 return;
             }
             
-            // Validate input
             if (string.IsNullOrWhiteSpace(txtEventName.Text))
             {
                 MessageBox.Show("Event name is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -369,15 +342,12 @@ namespace WPF.VicePresident
                 return;
             }
             
-            // Parse numeric values
-            int capacity;
-            if (!int.TryParse(txtCapacity.Text, out capacity))
+            if (!int.TryParse(txtCapacity.Text, out int capacity))
             {
                 MessageBox.Show("Capacity must be a valid number.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             
-            // Get the current user's club ID
             string username = User.Current?.UserName;
             if (string.IsNullOrEmpty(username))
             {
@@ -392,7 +362,6 @@ namespace WPF.VicePresident
                 return;
             }
             
-            // Ensure the event belongs to the user's club
             if (selectedEvent.ClubId != clubIdFromCurrentUser)
             {
                 MessageBox.Show("You can only update events for your own club.", "Permission Denied", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -402,7 +371,6 @@ namespace WPF.VicePresident
             var eventDate = dpEventDate.SelectedDate.Value;
             var eventName = txtEventName.Text;
             
-            // Check for duplicate event name on the same day (excluding current event)
             var existingEvents = _eventService.GetAllEvents().ToList();
             var duplicateEvent = existingEvents.FirstOrDefault(e => 
                 e.EventName.Equals(eventName, StringComparison.OrdinalIgnoreCase) && 
@@ -417,7 +385,6 @@ namespace WPF.VicePresident
             
             try
             {
-                // Update existing event
                 selectedEvent.EventName = txtEventName.Text;
                 selectedEvent.Description = txtDescription.Text;
                 selectedEvent.EventDate = dpEventDate.SelectedDate.Value;
@@ -428,7 +395,6 @@ namespace WPF.VicePresident
                 _eventService.UpdateEvent(selectedEvent);
                 MessageBox.Show("Event updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                // Refresh events list
                 LoadEvents();
             }
             catch (Exception ex)
@@ -518,7 +484,6 @@ namespace WPF.VicePresident
             var selectedEvent = dgEvents.SelectedItem as Event;
             if (selectedEvent != null)
             {
-                // Raise the event to notify that a participant view is requested
                 ViewParticipantsRequested?.Invoke(this, selectedEvent);
             }
             else
@@ -532,11 +497,9 @@ namespace WPF.VicePresident
             var selectedEvent = dgEvents.SelectedItem as Event;
             if (selectedEvent != null)
             {
-                // Find the parent Main_VicePresident_WPF window
                 var mainWindow = Window.GetWindow(this) as Main_VicePresident_WPF;
                 if (mainWindow != null)
                 {
-                    // Navigate to the notification tab with the selected event
                     mainWindow.NavigateToNotificationTab(selectedEvent.EventName);
                 }
             }

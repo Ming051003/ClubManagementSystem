@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
 using System;
@@ -10,9 +10,6 @@ using System.Windows.Input;
 
 namespace WPF.TeamLeader
 {
-    /// <summary>
-    /// Interaction logic for EventHistory.xaml
-    /// </summary>
     public partial class EventHistoryByTeamLeader : UserControl
     {
         private readonly IEventService _eventService;
@@ -39,10 +36,8 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Get all participations for the current user
                 _allParticipations = _eventParticipantService.GetEventParticipantsByUser(User.Current.UserId).ToList();
 
-                // Apply initial filter (All Participations)
                 ApplyFilters();
             }
             catch (Exception ex)
@@ -57,14 +52,12 @@ namespace WPF.TeamLeader
 
             var filteredParticipations = _allParticipations;
 
-            // Apply status filter
             string statusFilter = ((ComboBoxItem)cmbStatus.SelectedItem)?.Content.ToString();
             if (statusFilter != "All Registrations" && !string.IsNullOrEmpty(statusFilter))
             {
                 filteredParticipations = filteredParticipations.Where(e => e.Status == statusFilter).ToList();
             }
 
-            // Apply search text filter
             if (!string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 string searchText = txtSearch.Text.ToLower();
@@ -73,7 +66,6 @@ namespace WPF.TeamLeader
                     (e.Event.Location != null && e.Event.Location.ToLower().Contains(searchText))).ToList();
             }
 
-            // Create view models (removed unenroll capability)
             var participationViewModels = filteredParticipations.Select(p => new
             {
                 EventParticipantId = p.EventParticipantId,
@@ -83,7 +75,6 @@ namespace WPF.TeamLeader
                 RegistrationDate = p.RegistrationDate,
                 Event = p.Event,
                 User = p.User
-                // Removed CanUnenroll property
             }).ToList();
 
             dgEventHistory.ItemsSource = participationViewModels;
@@ -133,13 +124,10 @@ namespace WPF.TeamLeader
             txtDescription.Text = string.Empty;
         }
 
-
-        // Commented out unenroll functionality
         private void btnUnenroll_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Get the event participation from the button's DataContext
                 var button = sender as Button;
                 var viewModel = button.DataContext as dynamic;
 
@@ -152,19 +140,16 @@ namespace WPF.TeamLeader
                 int eventId = viewModel.EventId;
                 string eventName = viewModel.Event.EventName;
 
-                // Confirm unenrollment
                 var result = MessageBox.Show($"Are you sure you want to unenroll from the event '{eventName}'?",
                     "Confirm Unenrollment", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    // Delete the event participation
                     _eventParticipantService.DeleteEventParticipant(eventId, User.Current.UserId);
 
                     MessageBox.Show($"You have successfully unenrolled from the event '{eventName}'.",
                         "Unenrollment Successful", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    // Refresh event history to update status
                     LoadEventHistory();
                 }
             }
@@ -173,6 +158,5 @@ namespace WPF.TeamLeader
                 MessageBox.Show($"Error unenrolling from event: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using BLL.BusinessService;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -42,10 +42,10 @@ namespace WPF
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             string ussername = txtUsername.Text;
-            string password = txtPassword.Text;
+            string password = txtPassword.Password;
 
 
-            if (txtUsername.Text == null || txtPassword.Text == null)
+            if (txtUsername.Text == null || string.IsNullOrEmpty(txtPassword.Password))
             {
                 MessageBox.Show("Incorrect username/password", "Error Message", MessageBoxButton.OK, MessageBoxImage.Error);
             }

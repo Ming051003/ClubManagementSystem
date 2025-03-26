@@ -1,4 +1,4 @@
-﻿using BLL.BusinessInterfaces;
+using BLL.BusinessInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Model.Models;
 using System;
@@ -60,7 +60,6 @@ namespace WPF.TeamLeader
                 string newPassword = txtNewPassword.Password;
                 string confirmPassword = txtConfirmPassword.Password;
 
-                // Validate inputs
                 if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
                 {
                     MessageBox.Show("All password fields are required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -73,7 +72,6 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Verify current password
                 var user = _accountService.GetAccountById(User.Current.UserId);
                 if (user.Password != currentPassword)
                 {
@@ -81,13 +79,11 @@ namespace WPF.TeamLeader
                     return;
                 }
 
-                // Update password
                 user.Password = newPassword;
                 _accountService.UpdateAccount(user);
 
                 MessageBox.Show("Password updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Clear password fields
                 txtCurrentPassword.Password = "";
                 txtNewPassword.Password = "";
                 txtConfirmPassword.Password = "";
